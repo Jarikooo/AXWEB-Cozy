@@ -1,0 +1,1 @@
+command: Use the GitHub tool to update project-context.md in my file with a summary of everything we built today and what we need to do next.
