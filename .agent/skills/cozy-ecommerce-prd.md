@@ -9,6 +9,8 @@ description: Product Requirements Document and Business Context for the Cozy Maa
 **Project Name:** Cozy2 (Cozy Maassluis Redesign)
 **Client Context:** Cozy Maassluis is a boutique and lifestyle store looking to modernize their ecommerce presence without creating the administrative burden of running a "second store."
 **Business Goal:** Facilitate steady business growth and increase foot traffic to the physical store, rather than focusing purely on massive online sales. The digital experience must reflect the physical store's "warm home feeling" and personal touch.
+**Business Goal 2:** When designing frontend, keep in mind that our task is conversion rates, and not the coolest website of all time.
+We need people to buy products, not be distracted from buying them.
 
 ## 2. Target Audience & USP (Unique Selling Proposition)
 - **Primary Audience:** Existing loyal customers and new local/regional shoppers discovering the brand via Instagram.

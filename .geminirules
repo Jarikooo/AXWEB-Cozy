@@ -1,0 +1,31 @@
+# Project: Cozy2 (Cozy Maassluis)
+
+# 1. Context & PRD
+- The PRD and business context are explicitly located at `c:\Users\aagul\AXWEB\.agent\skills\cozy-ecommerce-prd.md`. Use this for architectural, design, and feature constraints. 
+- Project progression and recent work history are tracked at `c:\Users\aagul\AXWEB\Cozy2\project-context.md`.
+- Progression tracking rules using the github tool are in `c:\Users\aagul\AXWEB\Agentic Modules\github-tool.md`.
+
+# 2. Whole Codebase Searches
+- When asked to search, check, or analyze the "whole codebase", you MUST prioritize using the `github` MCP server tools to search the remote repository instead of manually searching all local files piece-by-piece. This ensures a faster and more comprehensive search.
+The github repo we're working on currently: https://github.com/Jarikooo/AXWEB-Cozy.git
+this does not account for anything that has not been committed yet.
+
+# 3. Usage of MCP servers
+- Whenever building code use the context7 mcp server. **Trigger:** Always apply this rule when I ask for code generation, setup steps, configuration, or debugging that involves external libraries, frameworks, SDKs, or APIs.
+
+# 4. Skill Triggers:
+
+Skill Triggers:
+- If a prompt involves database optimization, complex Postgres queries, or N+1 problems, YOU MUST load and follow [c:\Users\aagul\AXWEB\.agent\skills\database-performance-optimizer\SKILL.md](cci:7://file:///Users/aagul/AXWEB/.agent/skills/database-performance-optimizer/SKILL.md:0:0-0:0).
+
+- If a prompt involves Medusa.js services, entities, or backend architecture, YOU MUST load and follow [c:\Users\aagul\AXWEB\.agent\skills\medusa-backend-architect\SKILL.md](cci:7://file:///Users/aagul/AXWEB/.agent/skills/medusa-backend-architect/SKILL.md:0:0-0:0).
+
+- If a prompt involves authentication, authorization, or data validation, YOU MUST load and follow `c:\Users\aagul\AXWEB\.agent\skills\security-defensive-auditor\SKILL.md`.
+
+- If a prompt involves any frontend work, check C:\Users\aagul\AXWEB\.agent\skills\SKILL.md and keep this in mind.
+
+# 5. Workflow Automation
+- If you notice the USER repeatedly asking you to perform the same sequence of actions (e.g., deploying, building, or specific refactoring steps), proactively create a new workflow file in `.agent/workflows/[name].md` so they can use a `/slash-command` next time.
+
+# 6. Bug reporting
+- When I report a bug or when you find a bug, don't start by trying to fix it. Instead, start by writing a test that reproduces the bug. Then, have subagents try to fix the bug and provit it with a passing test.
