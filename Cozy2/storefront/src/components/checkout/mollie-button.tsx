@@ -1,0 +1,73 @@
+"use client";
+
+import React, { useState } from "react";
+import { StoreCart } from "@medusajs/types";
+import { sdk } from "@/lib/medusa";
+
+export function MolliePaymentButton({ cart, notReady }: { cart: StoreCart | null, notReady: boolean }) {
+    const [submitting, setSubmitting] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+    const handlePayment = async () => {
+        setSubmitting(true);
+        setErrorMessage(null);
+
+        try {
+            if (!cart) throw new Error("No cart available.");
+
+            // First, ensure a Mollie payment session is initialized
+            const { cart: updatedCart } = await sdk.store.cart.update(cart.id, {
+                // Trigger payment session reset/init (you could pass an empty payload to force update)
+            });
+
+            // Medusa 2.x handles payment collections differently. We assume we initiate a payment session.
+            // We will call the Medusa store cart payment session initialization endpoint
+            const { payment_collection } = await sdk.store.payment.initiatePaymentSession(cart, {
+                provider_id: "pp_mollie-hosted-checkout_mollie",
+            });
+
+            const session = payment_collection?.payment_sessions?.find(
+                (s: any) => s.status === "pending" && s.provider_id === "pp_mollie-hosted-checkout_mollie"
+            );
+
+            if (!session) {
+                throw new Error("Geen actieve Mollie betaalsessie gevonden.");
+            }
+
+            const sessionData = session.data as Record<string, any>;
+            const checkoutUrl =
+                sessionData?._links?.checkout?.href ||
+                sessionData?.url ||
+                sessionData?.checkout_url;
+
+            if (checkoutUrl) {
+                window.location.href = checkoutUrl;
+            } else {
+                console.error("Mollie sessie data mist een URL:", session.data);
+                throw new Error("Kon de Mollie betaallink niet vinden in de backend response.");
+            }
+        } catch (err: any) {
+            let msg = err.message || "An unknown error occurred during checkout.";
+            if (msg.toLowerCase().includes("unreachable")) {
+                msg = "Localhost constraint: Mollie requires a public Medusa URL (like Ngrok) for webhooks to generate actual checkout links.";
+            }
+            setErrorMessage(msg);
+            setSubmitting(false);
+        }
+    };
+
+    return (
+        <div className="flex flex-col gap-2">
+            <button
+                disabled={notReady || submitting}
+                onClick={handlePayment}
+                className="w-full flex items-center justify-center py-4 bg-mollie-blue hover:bg-mollie-blue/90 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl font-sans text-xs font-bold uppercase tracking-widest transition-all duration-300 shadow-md active:scale-[0.98] bg-blue-600"
+            >
+                {submitting ? "Redirecting to Mollie..." : "Pay with Mollie (iDeal / Klarna)"}
+            </button>
+            {errorMessage && (
+                <span className="text-red-500 font-sans text-xs mt-2 text-center">{errorMessage}</span>
+            )}
+        </div>
+    );
+}

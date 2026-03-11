@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@200..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f655a6",
+                        "background-light": "#F0F9F6",
+                        "background-dark": "#221019",
+                        "zinc-950": "#09090b",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "0px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #F0F9F6;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-zinc-950 dark:text-slate-100 antialiased overflow-hidden">
+<!-- Cart Backdrop Overlay -->
+<div class="relative flex h-screen w-full flex-col overflow-hidden">
+<!-- Main Content Background (Simulated behind drawer) -->
+<div class="flex-1 p-6 opacity-40">
+<header class="flex justify-between items-center mb-10">
+<span class="text-2xl font-bold tracking-tighter uppercase italic">Cozy2</span>
+<span class="material-symbols-outlined">menu</span>
+</header>
+<div class="grid grid-cols-2 gap-4">
+<div class="aspect-square bg-zinc-200"></div>
+<div class="aspect-square bg-zinc-200"></div>
+<div class="aspect-square bg-zinc-200"></div>
+<div class="aspect-square bg-zinc-200"></div>
+</div>
+</div>
+<!-- Shopping Cart Drawer Overlay -->
+<div class="absolute inset-0 z-50 flex justify-end bg-zinc-950/20 backdrop-blur-sm">
+<div class="h-full w-full max-w-[400px] bg-background-light dark:bg-zinc-900 border-l border-zinc-950/10 flex flex-col">
+<!-- Drawer Header -->
+<div class="flex items-center justify-between p-6 border-b border-zinc-950">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-zinc-950 dark:text-slate-100">shopping_bag</span>
+<h2 class="text-xl font-bold tracking-tight uppercase">Your Cart</h2>
+</div>
+<button class="flex items-center justify-center p-2 hover:bg-primary/10">
+<span class="material-symbols-outlined text-2xl">close</span>
+</button>
+</div>
+<!-- Cart Items List -->
+<div class="flex-1 overflow-y-auto no-scrollbar divide-y divide-zinc-950">
+<!-- Item 1 -->
+<div class="p-6 py-12 flex gap-6 items-start">
+<div class="w-24 h-24 shrink-0 bg-zinc-100 border border-zinc-950/5 overflow-hidden">
+<div class="w-full h-full bg-cover bg-center" data-alt="Minimalist white ceramic wave textured vase" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBpopLJRZqNOOuxkbQgJY7BIT9_CQ1gwUQvD3nVlK3lAgXOgOVbMFqvYP8O6Y-VFrwSQsB0CdSUpVYYbfTfH-nC0UReh6lxGb4JjY-WuXMcegnLco8Enuigf7O1nLC4rrbBd42KN_xJt93XaLV0wV6EMOelPdA7AcE1XiKWrBQmUgHNia0nxcAuuI4J_0QcbYHlDOpBskL_l5clgukzMsjZaQ8prITcvEgIOWq0Rw79lKRb7olNsvDtVJLoSor_jQCBVyV_nALkhhg')"></div>
+</div>
+<div class="flex flex-col flex-1 gap-4">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<p class="text-lg font-bold leading-none uppercase tracking-wide">Ceramic Wave Vase</p>
+<p class="text-sm font-medium text-zinc-600 dark:text-slate-400 mt-1 uppercase tracking-tighter">Bone White / Large</p>
+</div>
+<button class="text-zinc-400 hover:text-primary">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex items-center border border-zinc-950 bg-white">
+<button class="w-8 h-8 flex items-center justify-center hover:bg-zinc-50 border-r border-zinc-950">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<input class="w-10 text-center text-sm font-bold border-none focus:ring-0 p-0 bg-transparent" type="number" value="1"/>
+<button class="w-8 h-8 flex items-center justify-center hover:bg-zinc-50 border-l border-zinc-950">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+<p class="text-lg font-bold tracking-tight">$45.00</p>
+</div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="p-6 py-12 flex gap-6 items-start">
+<div class="w-24 h-24 shrink-0 bg-zinc-100 border border-zinc-950/5 overflow-hidden">
+<div class="w-full h-full bg-cover bg-center" data-alt="Soft wool blend throw blanket with fringe" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAna3O-uYlfVKezR--qPnhp1q1kyg0FU2Esgy3l9i8Ag5NlLfVP9In4CEmm9wUzsbtcF6ioZ7f2DuwEC67FGN044Cu_cdq0x1y9Wgd65fqArJdMVkMhuykyl9Sh_mtSBEcV50g5788eJT_X8akZ6YqmC8F4oAfhLNTXfiuXAa7FdgoCmqPPdWjMLGGs4AlfO-BJ1ZdsYsSsQJoBffKjinUdwZhNOkdm8VSHclWz9RBBLL-0x7a5-O4VRZI0NqhOv0Ap8oUBOq-RuJs')"></div>
+</div>
+<div class="flex flex-col flex-1 gap-4">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<p class="text-lg font-bold leading-none uppercase tracking-wide">Wool Blend Throw</p>
+<p class="text-sm font-medium text-zinc-600 dark:text-slate-400 mt-1 uppercase tracking-tighter">Sage Green</p>
+</div>
+<button class="text-zinc-400 hover:text-primary">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex items-center border border-zinc-950 bg-white">
+<button class="w-8 h-8 flex items-center justify-center hover:bg-zinc-50 border-r border-zinc-950">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<input class="w-10 text-center text-sm font-bold border-none focus:ring-0 p-0 bg-transparent" type="number" value="1"/>
+<button class="w-8 h-8 flex items-center justify-center hover:bg-zinc-50 border-l border-zinc-950">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+<p class="text-lg font-bold tracking-tight">$89.00</p>
+</div>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="p-6 py-12 flex gap-6 items-start">
+<div class="w-24 h-24 shrink-0 bg-zinc-100 border border-zinc-950/5 overflow-hidden">
+<div class="w-full h-full bg-cover bg-center" data-alt="Handcrafted scented candle in glass jar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCkqWdwoPYhtSECv4wgfk-awPdcUjpmmMULYhWk2e5Qnm12G_yWR9ItE4oTm7Q9yOW9mAt9xCuRdl2MWLZKh3YKbWnvUYgEUzF7_Px2RgA2lsTbCWlBBTEHAZ1eM8-_qgKRvw0-qv7MplLrYC0P1D5oUbFEIg78--moH4i-fzMEFAe3DKZRvS0yh_jL2gI0ZA9qg7FkDxHzpVV714ya_Xg0w_dRC9N1y8VXUCcjCNEEnZydURqvaYRnrC7K4_hGQFVD7BnIT8uSLSg')"></div>
+</div>
+<div class="flex flex-col flex-1 gap-4">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<p class="text-lg font-bold leading-none uppercase tracking-wide">Scented Candle - Moss</p>
+<p class="text-sm font-medium text-zinc-600 dark:text-slate-400 mt-1 uppercase tracking-tighter">Woodland / 200g</p>
+</div>
+<button class="text-zinc-400 hover:text-primary">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex items-center border border-zinc-950 bg-white">
+<button class="w-8 h-8 flex items-center justify-center hover:bg-zinc-50 border-r border-zinc-950">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<input class="w-10 text-center text-sm font-bold border-none focus:ring-0 p-0 bg-transparent" type="number" value="2"/>
+<button class="w-8 h-8 flex items-center justify-center hover:bg-zinc-50 border-l border-zinc-950">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+<p class="text-lg font-bold tracking-tight">$64.00</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Checkout Section -->
+<div class="p-6 space-y-6 bg-white border-t border-zinc-950">
+<div class="space-y-2">
+<div class="flex justify-between text-sm uppercase tracking-widest font-medium">
+<span>Subtotal</span>
+<span>$198.00</span>
+</div>
+<div class="flex justify-between text-sm uppercase tracking-widest font-medium text-zinc-400">
+<span>Shipping</span>
+<span>Calculated later</span>
+</div>
+<div class="pt-4 flex justify-between text-xl font-bold uppercase tracking-tight">
+<span>Total</span>
+<span>$198.00</span>
+</div>
+</div>
+<button class="w-full bg-primary text-white py-6 text-base font-bold uppercase tracking-widest hover:opacity-90 active:scale-[0.98] transition-transform">
+                        Proceed to Checkout
+                    </button>
+<p class="text-[10px] text-center text-zinc-400 uppercase tracking-widest leading-relaxed">
+                        Secure checkout powered by Cozy2 Pay. <br/> 
+                        Taxes included in final calculation.
+                    </p>
+</div>
+</div>
+</div>
+</div>
+</body></html>

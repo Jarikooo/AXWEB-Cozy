@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f4258c", // Punchy bubblegum pink
+                        "background-light": "#F0F9F6", // Translucent mint green
+                        "background-dark": "#1a2421",
+                        "zinc-950": "#09090b",
+                        "mint-border": "rgba(204, 235, 226, 0.5)"
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0px", 
+                        "lg": "0px", 
+                        "xl": "0px", 
+                        "full": "0px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-zinc-950 dark:text-slate-100 font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<div class="flex items-center bg-background-light dark:bg-background-dark p-4 justify-between sticky top-0 z-50 border-b border-mint-border">
+<div class="text-zinc-950 dark:text-slate-100 flex size-10 items-center justify-start">
+<span class="material-symbols-outlined">arrow_back</span>
+</div>
+<h2 class="text-zinc-950 dark:text-slate-100 text-sm font-bold uppercase tracking-widest flex-1 text-center">Cozy2</h2>
+<div class="flex w-10 items-center justify-end">
+<button class="flex cursor-pointer items-center justify-center bg-transparent text-zinc-950 dark:text-slate-100 p-0">
+<span class="material-symbols-outlined">shopping_bag</span>
+</button>
+</div>
+</div>
+<div class="p-12 bg-white dark:bg-zinc-900 border-b border-mint-border">
+<div class="aspect-square w-full bg-background-light dark:bg-background-dark flex items-center justify-center p-8">
+<img alt="Minimalist designer gift object" class="w-full h-full object-contain" data-alt="A sculptural minimalist ceramic object on a pale background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDa92tWeG_IpobicOUMrNwNA81WekGxlF77iV2yrj65ECfw8DhlBhO0Ld74QzViNxZoSvP0nPv7M8AdPVDZkRLUJGubWtOxVxN3kGglQcKlEHPkIdmLkPgjmCskND7iht4U9872vZ8nfrueTgDCwxuf4b-t9kYC62pZle9Qb7cKGj2D0mjgPkz4muECYpZe2_wBX9IuGNI-otzGTiDr8KJhTBAcM6f203H7z7r6ebUj6mlCcJAxtNNtkYYLxGoSbKkBCYXfTAs0RcE"/>
+</div>
+</div>
+<div class="px-6 pt-10 pb-6">
+<div class="flex justify-between items-start mb-2">
+<h1 class="text-zinc-950 dark:text-slate-100 text-3xl font-bold leading-tight tracking-tight uppercase">
+                    Minimalist<br/>Playful Gift
+                </h1>
+<span class="material-symbols-outlined text-zinc-950 dark:text-slate-100">favorite</span>
+</div>
+<p class="text-zinc-950/60 dark:text-slate-400 text-sm uppercase tracking-widest mb-6">Object 01 — Copenhagen Edition</p>
+<h2 class="text-zinc-950 dark:text-slate-100 text-2xl font-bold tracking-tight mb-8">$48.00</h2>
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-5 text-center uppercase tracking-widest transition-colors mb-12">
+                Add to Cart
+            </button>
+<div class="border-t border-zinc-950/20">
+<div class="flex justify-between items-center py-5 border-b border-zinc-950/20 cursor-pointer">
+<span class="text-xs font-bold uppercase tracking-widest">Features</span>
+<span class="material-symbols-outlined text-sm">add</span>
+</div>
+<div class="flex justify-between items-center py-5 border-b border-zinc-950/20 cursor-pointer">
+<span class="text-xs font-bold uppercase tracking-widest">Shipping &amp; Returns</span>
+<span class="material-symbols-outlined text-sm">add</span>
+</div>
+<div class="flex justify-between items-center py-5 border-b border-zinc-950/20 cursor-pointer">
+<span class="text-xs font-bold uppercase tracking-widest">Material &amp; Care</span>
+<span class="material-symbols-outlined text-sm">add</span>
+</div>
+</div>
+</div>
+<div class="px-6 py-16 bg-white/50 dark:bg-zinc-950/20">
+<h3 class="text-xs font-bold uppercase tracking-[0.2em] mb-12 text-center text-zinc-950/40">You might also like</h3>
+<div class="grid grid-cols-2 gap-12">
+<div class="flex flex-col">
+<div class="aspect-[3/4] bg-background-light dark:bg-background-dark mb-4 p-4">
+<img alt="Minimalist toy" class="w-full h-full object-contain" data-alt="Simple wooden aesthetic toy for display" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXTrB0Nnvc_rMQxeTRMYq0MHXqIShr-Qrz5vQzGW-bERlBmTkqPd9TNd9N6GnXD6TlUNKxuxvB6icj1cgCKVGOr3EgAbD4ZHdWMZCy0rtyf2GONDGh4rMHSxAtJ3GEotEtkXKgZ_EvYmmjT5ldb3rTktbSX-TylBvGR-DD9foJECBlxvN2VQBAjqRBUJQ9ZU2cOwoev-RtsO9Y_bAKFEp1nT_r20Z2U98n9uCCkc9josJ9cOhA7Z8I6NufzAmlpbh4LKmZxtyvo4E"/>
+</div>
+<span class="text-[10px] font-bold uppercase tracking-widest text-zinc-950">Nordic Block</span>
+<span class="text-[10px] text-zinc-950/60">$32.00</span>
+</div>
+<div class="flex flex-col">
+<div class="aspect-[3/4] bg-background-light dark:bg-background-dark mb-4 p-4">
+<img alt="Gift box" class="w-full h-full object-contain" data-alt="A clean white gift box with sharp edges" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMsAcqF0AYSp8dUnZ6gw6JRlASeFTP73TS2LJBqj7Kygk5hr6eGBMtDPLIR_fWgnVJQE6yKKknpVNQ1r6ZF1Mwhw0KehFZ9jxZIRNPfdDb7MSb094EQu_8K4nq8fQfIURewWGV5_eHzU0KMPhFeRN78qzRu_EouWs5CMphVWZe5jh4iajPQ_8tLAtbx437n6uE2pwGM4S1NbNFNrdauYAzHvN34p0K7ndiHKzYnDcJG4HrS1AiEJItMYDY8xCs0qTb-s9RfKfXnr0"/>
+</div>
+<span class="text-[10px] font-bold uppercase tracking-widest text-zinc-950">Sculptural Box</span>
+<span class="text-[10px] text-zinc-950/60">$24.00</span>
+</div>
+</div>
+</div>
+<div class="h-20"></div>
+<div class="fixed bottom-0 left-0 right-0 z-50 flex gap-2 border-t border-mint-border bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md px-4 pb-6 pt-3">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-zinc-950 dark:text-slate-100" href="#">
+<span class="material-symbols-outlined text-[24px]">home</span>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-zinc-950/40 dark:text-slate-100/40" href="#">
+<span class="material-symbols-outlined text-[24px]">search</span>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-zinc-950/40 dark:text-slate-100/40" href="#">
+<span class="material-symbols-outlined text-[24px]">favorite</span>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-zinc-950/40 dark:text-slate-100/40" href="#">
+<span class="material-symbols-outlined text-[24px]">person</span>
+</a>
+</div>
+</div>
+
+</body></html>

@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-primary: #f4258c;
+  --color-background-light: #f8f5f7;
+  --color-background-dark: #221019;
+  --color-mint: #e8f4f1;
+  --color-zinc-950: #09090b;
+
+  --color-background: var(--color-background-light);
+  --color-foreground: var(--color-zinc-950);
+
+  --font-display: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+
+  --font-manrope: var(--font-manrope);
+
+  --radius-DEFAULT: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-full: 9999px;
+
+  --animate-slide-in-right: slide-in-right 0.6s cubic-bezier(0.25, 1, 0.5, 1) both;
+  --animate-slide-in-left: slide-in-left 0.6s cubic-bezier(0.25, 1, 0.5, 1) both;
+
+  @keyframes slide-in-right {
+    from {
+      opacity: 0;
+      transform: translateX(100px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slide-in-left {
+    from {
+      opacity: 0;
+      transform: translateX(-100px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
+
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    min-height: max(884px, 100dvh);
+    @apply font-display antialiased selection:bg-primary/20 selection:text-zinc-950;
+  }
+}
+
+@layer utilities {
+  .sharp-shadow {
+    box-shadow: 4px 4px 0px 0px rgba(9, 9, 11, 0.05);
+  }
+}
