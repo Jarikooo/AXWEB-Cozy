@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import Image from "next/image";
 import { fetchMedusaProducts } from "@/lib/medusa";
 import { Product } from "@/types";
@@ -8,6 +8,7 @@ import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { useWishlist } from "@/lib/context/wishlist-context";
 import { useCart } from "@/lib/context/cart-context";
+import gsap from "gsap";
 
 export function ProductGrid() {
     const searchParams = useSearchParams();
@@ -21,7 +22,9 @@ export function ProductGrid() {
     const [totalCount, setTotalCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [addingToCartId, setAddingToCartId] = useState<string | null>(null);
+    const [addedToCartId, setAddedToCartId] = useState<string | null>(null);
     const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+    const gridRef = useRef<HTMLDivElement>(null);
 
     // Newsletter state
     const [email, setEmail] = useState("");
@@ -29,18 +32,20 @@ export function ProductGrid() {
 
     const handleSubscribe = async (e: React.FormEvent) => {
         e.preventDefault();
-        setStatus("Subscribing...");
+        setStatus("Bezig...");
         try {
             const res = await fetch('/api/newsletter', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
-            if (res.ok) { setStatus("Subscribed!"); setEmail(""); }
-            else { setStatus("Error"); }
+            if (res.ok) { setStatus("Ingeschreven!"); setEmail(""); }
+            else { setStatus("Fout"); }
         } catch {
-            setStatus("Error");
+            setStatus("Fout");
         }
     };
 
-    // Sort state
-    const [sortBy, setSortBy] = useState("Featured");
+    // Sort state — initialize from URL if present
+    const sortParam = searchParams.get("sort") || "";
+    const initialSort = sortParam === "nieuw" ? "Uitgelicht" : sortParam === "prijs-laag" ? "Prijs: Laag-Hoog" : sortParam === "prijs-hoog" ? "Prijs: Hoog-Laag" : "Uitgelicht";
+    const [sortBy, setSortBy] = useState(initialSort);
     const [isSortOpen, setIsSortOpen] = useState(false);
 
     const ITEMS_PER_PAGE = 6;
@@ -138,7 +143,7 @@ export function ProductGrid() {
         
         const dynamicCats = Array.from(catMap.entries()).map(([id, label]) => ({ id, label }));
         // Always surface 'All Products' at the top
-        return [{ id: "all", label: "All Products" }, ...dynamicCats];
+        return [{ id: "all", label: "Alle Producten" }, ...dynamicCats];
     }, [cachedProducts]);
 
     // Apply Client filtering & sorting over all cached products
@@ -175,11 +180,11 @@ export function ProductGrid() {
         }
 
         // 5. Sorting
-        if (sortBy === "Featured") {
+        if (sortBy === "Uitgelicht") {
              allProds.sort((a, b) => (a.isNew === b.isNew ? 0 : a.isNew ? -1 : 1));
-        } else if (sortBy === "Price: Low to High") {
+        } else if (sortBy === "Prijs: Laag-Hoog") {
              allProds.sort((a, b) => a.price - b.price);
-        } else if (sortBy === "Price: High to Low") {
+        } else if (sortBy === "Prijs: Hoog-Laag") {
              allProds.sort((a, b) => b.price - a.price);
         }
 
@@ -207,6 +212,34 @@ export function ProductGrid() {
         router.push(`${pathname}?${params.toString()}`);
     };
 
+    // Staggered entrance animation for product cards
+    useEffect(() => {
+        if (!gridRef.current || displayedProducts.length === 0) return;
+        const cards = gridRef.current.querySelectorAll<HTMLElement>(".product-card");
+        if (cards.length === 0) return;
+
+        gsap.set(cards, { opacity: 0, y: 30 });
+        gsap.to(cards, {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            stagger: 0.08,
+            ease: "power2.out",
+            clearProps: "transform",
+        });
+    }, [displayedProducts]);
+
+    // Wishlist heart bounce
+    const bounceHeart = useCallback((el: HTMLElement) => {
+        gsap.fromTo(el, { scale: 1 }, {
+            scale: 1.4,
+            duration: 0.15,
+            yoyo: true,
+            repeat: 1,
+            ease: "power2.out",
+        });
+    }, []);
+
     const generatePageNumbers = () => {
         let pages = [];
         for (let i = 1; i <= (totalPages || 1); i++) {
@@ -223,18 +256,23 @@ export function ProductGrid() {
                 <Image src="https://picsum.photos/seed/cozyshop1/1920/1080" alt="Shop Hero" fill className="object-cover opacity-80 mix-blend-multiply" />
                 <div className="relative z-10 text-center">
                     <h1 className="text-5xl md:text-7xl font-bold tracking-tighter text-[#18181b] uppercase">
-                        {categoryId === "all" ? "Shop All" : availableCategories.find(c => c.id === categoryId)?.label || "Shop"}
+                        {categoryId === "all" ? "Alle Producten" : availableCategories.find(c => c.id === categoryId)?.label || "Shop"}
                     </h1>
                 </div>
             </div>
 
             <div className="w-full mx-auto grid grid-cols-1 md:grid-cols-[240px_1fr] lg:grid-cols-[280px_1fr] flex-1">
                 {/* Sidebar Filters */}
-                <aside className="hidden md:block sticky top-[73px] h-[calc(100vh-73px)] overflow-y-auto border-r border-[#18181b] p-8 bg-white z-10 shadow-[4px_0px_0px_rgba(24,24,27,0.05)]">
+                <aside className="hidden md:block sticky top-[73px] h-[calc(100vh-73px)] overflow-y-auto scrollbar-hide border-r border-[#18181b] p-8 bg-white z-10 shadow-[4px_0px_0px_rgba(24,24,27,0.05)]">
                 <div className="space-y-12">
                     {/* Categories */}
                     <div>
-                        <h3 className="text-xs font-bold uppercase tracking-widest text-[#18181b] mb-6">Categories</h3>
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="size-8 bg-mint border border-[#18181b] flex items-center justify-center shrink-0">
+                                <span className="material-symbols-outlined !text-[16px] text-[#18181b]">category</span>
+                            </div>
+                            <h3 className="text-xs font-bold uppercase tracking-widest text-[#18181b]">Categorieën</h3>
+                        </div>
                         <div className="space-y-4">
                             {availableCategories.map((cat) => (
                                 <button
@@ -252,7 +290,12 @@ export function ProductGrid() {
 
                     {/* Price Range */}
                     <div>
-                        <h3 className="text-xs font-bold uppercase tracking-widest text-[#18181b] mb-6">Max Price: €{priceRange}</h3>
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="size-8 bg-[#ffe4e6] border border-[#18181b] flex items-center justify-center shrink-0">
+                                <span className="material-symbols-outlined !text-[16px] text-[#18181b]">payments</span>
+                            </div>
+                            <h3 className="text-xs font-bold uppercase tracking-widest text-[#18181b]">Max Prijs: €{priceRange}</h3>
+                        </div>
                         <div className="space-y-4 border border-[#18181b] p-4 shadow-[4px_4px_0px_#18181b] bg-white">
                             <input 
                                 type="range" 
@@ -273,14 +316,19 @@ export function ProductGrid() {
                     {availableColors.length > 0 && (
                         <div>
                             <div className="flex items-center justify-between mb-6">
-                                <h3 className="text-xs font-bold uppercase tracking-widest text-[#18181b]">Kleur</h3>
+                                <div className="flex items-center gap-3">
+                                    <div className="size-8 bg-mint border border-[#18181b] flex items-center justify-center shrink-0">
+                                        <span className="material-symbols-outlined !text-[16px] text-[#18181b]">palette</span>
+                                    </div>
+                                    <h3 className="text-xs font-bold uppercase tracking-widest text-[#18181b]">Kleur</h3>
+                                </div>
                                 {selectedColor && (
-                                    <button onClick={() => setSelectedColor(null)} className="text-[10px] uppercase font-bold text-red-500 hover:underline">Clear</button>
+                                    <button onClick={() => setSelectedColor(null)} className="text-[10px] uppercase font-bold text-primary hover:underline">Wissen</button>
                                 )}
                             </div>
                             <div className="flex flex-wrap gap-4">
                                 {availableColors.map(color => (
-                                    <button 
+                                    <button
                                         key={color}
                                         onClick={() => setSelectedColor(selectedColor === color ? null : color)}
                                         className={`size-8 border-[#18181b] shadow-[3px_3px_0px_#18181b] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[5px_5px_0px_#18181b] transition-all ${
@@ -298,9 +346,14 @@ export function ProductGrid() {
                     {availableSizes.length > 0 && (
                         <div>
                             <div className="flex items-center justify-between mb-6">
-                                <h3 className="text-xs font-bold uppercase tracking-widest text-[#18181b]">Size</h3>
+                                <div className="flex items-center gap-3">
+                                    <div className="size-8 bg-[#ffe4e6] border border-[#18181b] flex items-center justify-center shrink-0">
+                                        <span className="material-symbols-outlined !text-[16px] text-[#18181b]">straighten</span>
+                                    </div>
+                                    <h3 className="text-xs font-bold uppercase tracking-widest text-[#18181b]">Maat</h3>
+                                </div>
                                 {selectedSize && (
-                                    <button onClick={() => setSelectedSize(null)} className="text-[10px] uppercase font-bold text-red-500 hover:underline">Clear</button>
+                                    <button onClick={() => setSelectedSize(null)} className="text-[10px] uppercase font-bold text-primary hover:underline">Wissen</button>
                                 )}
                             </div>
                             <div className="flex flex-wrap gap-3">
@@ -326,7 +379,7 @@ export function ProductGrid() {
             {/* Mobile Filter Drawer */}
             {isMobileFilterOpen && (
                 <div className="fixed inset-0 z-[100] md:hidden">
-                    <div className="absolute inset-0 bg-[#18181b]/20 backdrop-blur-sm" onClick={() => setIsMobileFilterOpen(false)} />
+                    <div className="absolute inset-0 bg-[#18181b]/30" onClick={() => setIsMobileFilterOpen(false)} />
                     <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-[#18181b] max-h-[75vh] overflow-y-auto p-6">
                         <div className="flex items-center justify-between mb-6">
                             <h3 className="text-sm font-bold uppercase tracking-widest text-[#18181b]">Filters</h3>
@@ -392,7 +445,7 @@ export function ProductGrid() {
             )}
 
             {/* Product Grid Area */}
-            <div className="bg-[#fdf4ff] p-6 md:p-8 lg:p-12 w-full flex-1">
+            <div className="bg-[#f8f5f7] p-6 md:p-8 lg:p-12 w-full flex-1">
                 {/* Breadcrumbs & Header */}
                 <div className="mb-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                     <div>
@@ -403,7 +456,7 @@ export function ProductGrid() {
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
-                        <span className="text-sm text-[#18181b] font-bold hidden sm:inline">{Math.max(0, categoryId !== "all" ? allFetchedProducts.length : totalCount)} items</span>
+                        <span className="text-sm text-[#18181b] font-bold hidden sm:inline">{Math.max(0, categoryId !== "all" ? allFetchedProducts.length : totalCount)} producten</span>
 
                         {/* Mobile Filter Button */}
                         <button
@@ -419,15 +472,15 @@ export function ProductGrid() {
                                 onClick={() => setIsSortOpen(!isSortOpen)}
                                 className="flex items-center gap-2 text-sm font-bold text-[#18181b] bg-white px-4 py-2 border border-[#18181b] shadow-[4px_4px_0px_#18181b] hover:bg-[#ffe4e6] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all"
                             >
-                                <span>Sort by: {sortBy}</span>
+                                <span>Sorteer: {sortBy}</span>
                                 <span className="material-symbols-outlined !text-[18px]">expand_more</span>
                             </button>
                             
                             {isSortOpen && (
                                 <div className="absolute top-full right-0 mt-3 w-48 bg-white border border-[#18181b] shadow-[4px_4px_0px_#18181b] z-50 py-1">
-                                    <button onClick={() => { setSortBy("Featured"); setIsSortOpen(false); }} className="block w-full text-left px-4 py-2 text-sm font-bold text-[#18181b] hover:bg-[#ffe4e6]">Featured</button>
-                                    <button onClick={() => { setSortBy("Price: Low to High"); setIsSortOpen(false); }} className="block w-full text-left px-4 py-2 text-sm font-bold text-[#18181b] hover:bg-[#ffe4e6]">Price: Low to High</button>
-                                    <button onClick={() => { setSortBy("Price: High to Low"); setIsSortOpen(false); }} className="block w-full text-left px-4 py-2 text-sm font-bold text-[#18181b] hover:bg-[#ffe4e6]">Price: High to Low</button>
+                                    <button onClick={() => { setSortBy("Uitgelicht"); setIsSortOpen(false); }} className="block w-full text-left px-4 py-2 text-sm font-bold text-[#18181b] hover:bg-[#ffe4e6]">Uitgelicht</button>
+                                    <button onClick={() => { setSortBy("Prijs: Laag-Hoog"); setIsSortOpen(false); }} className="block w-full text-left px-4 py-2 text-sm font-bold text-[#18181b] hover:bg-[#ffe4e6]">Prijs: Laag-Hoog</button>
+                                    <button onClick={() => { setSortBy("Prijs: Hoog-Laag"); setIsSortOpen(false); }} className="block w-full text-left px-4 py-2 text-sm font-bold text-[#18181b] hover:bg-[#ffe4e6]">Prijs: Hoog-Laag</button>
                                 </div>
                             )}
                         </div>
@@ -435,55 +488,74 @@ export function ProductGrid() {
                 </div>
 
                 {loading && !allFetchedProducts.length ? (
-                    <div className="p-16 flex items-center justify-center text-xs font-bold uppercase tracking-widest text-[#18181b]">
-                        Loading gallery...
+                    <div className="p-16 flex flex-col items-center justify-center gap-4">
+                        <div className="size-12 bg-mint border border-[#18181b] flex items-center justify-center animate-pulse">
+                            <span className="material-symbols-outlined !text-[24px] text-[#18181b]">shopping_bag</span>
+                        </div>
+                        <span className="text-xs font-bold uppercase tracking-widest text-[#18181b]">Laden...</span>
                     </div>
                 ) : displayedProducts.length === 0 ? (
-                    <div className="p-32 text-center text-[#18181b]/60 font-bold uppercase tracking-widest">
-                        <h3 className="italic mb-2">No Curations Found.</h3>
-                        <p className="text-xs">Try selecting a different category.</p>
+                    <div className="p-20 flex flex-col items-center justify-center gap-6">
+                        <div className="size-16 bg-[#ffe4e6] border border-[#18181b] flex items-center justify-center">
+                            <span className="material-symbols-outlined !text-[32px] text-[#18181b]">search_off</span>
+                        </div>
+                        <div className="text-center">
+                            <h3 className="text-lg font-extrabold tracking-tighter uppercase italic text-[#18181b] mb-2">Helaas, niks gevonden!</h3>
+                            <p className="text-sm text-[#18181b]/60 leading-relaxed max-w-xs">Pas je filters aan of bekijk al onze producten — er is vast iets moois bij.</p>
+                        </div>
+                        <button
+                            onClick={() => { setSelectedColor(null); setSelectedSize(null); setPriceRange(maxPriceAvailable); updateCategory("all"); }}
+                            className="px-6 py-3 bg-white text-[#18181b] font-bold uppercase tracking-widest text-xs border border-[#18181b] shadow-[4px_4px_0px_#18181b] hover:bg-[#ffe4e6] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all"
+                        >
+                            Alle filters wissen
+                        </button>
                     </div>
                 ) : (
                     <>
                         {/* Grid */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+                        <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
                             {displayedProducts.map((product) => (
-                                <div key={product.id} className="group flex flex-col relative h-full">
+                                <div key={product.id} className="product-card group flex flex-col relative h-full">
                                     {/* Image Box */}
                                     <div className="relative aspect-square w-full bg-white border border-[#18181b]">
-                                        {product.image ? (
-                                            <Image
-                                                src={product.image}
-                                                alt={product.name}
-                                                fill
-                                                className="object-cover"
-                                            />
-                                        ) : (
-                                            <div className="w-full h-full bg-[#f4f4f5]" />
-                                        )}
-                                        
+                                        {/* Inner overflow wrapper for image zoom */}
+                                        <div className="absolute inset-0 overflow-hidden">
+                                            {product.image ? (
+                                                <Image
+                                                    src={product.image}
+                                                    alt={product.name}
+                                                    fill
+                                                    className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                                                />
+                                            ) : (
+                                                <div className="w-full h-full bg-[#f4f4f5]" />
+                                            )}
+                                        </div>
+
                                         {/* Tags (inside box, top left) */}
                                         {product.isNew && (
-                                            <div className="absolute top-2 left-2 z-10 bg-[#f9a8d4] text-[#18181b] text-[10px] font-bold uppercase tracking-wider px-2 py-1 border border-[#18181b]">New</div>
+                                            <div className="absolute top-2 left-2 z-10 bg-mint text-[#18181b] text-[10px] font-bold uppercase tracking-wider px-2 py-1 border border-[#18181b]">Nieuw</div>
                                         )}
                                         {product.price < 30 && !product.isNew && (
-                                            <div className="absolute top-2 left-2 z-10 bg-[#18181b] text-white text-[10px] font-bold uppercase tracking-wider px-2 py-1">Sale</div>
+                                            <div className="absolute top-2 left-2 z-10 bg-primary text-white text-[10px] font-bold uppercase tracking-wider px-2 py-1 border border-[#18181b]">Sale</div>
                                         )}
                                         
                                         {/* Wishlist Button (overlapping top right) */}
                                         <button
-                                            onClick={() => {
+                                            onClick={(e) => {
+                                                const heartEl = e.currentTarget.querySelector(".heart-icon") as HTMLElement;
                                                 if (isInWishlist(product.id)) {
                                                     removeFromWishlist(product.id);
                                                 } else {
                                                     addToWishlist(product);
                                                 }
+                                                if (heartEl) bounceHeart(heartEl);
                                             }}
                                             className="absolute -top-3 -right-3 z-20 size-10 bg-white border border-[#18181b] shadow-[4px_4px_0px_#18181b] flex items-center justify-center hover:bg-[#ffe4e6] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all"
                                             aria-label={isInWishlist(product.id) ? "Verwijder van verlanglijst" : "Toevoegen aan verlanglijst"}
                                         >
                                             <span
-                                                className="material-symbols-outlined !text-[20px] text-[#18181b]"
+                                                className="heart-icon material-symbols-outlined !text-[20px] text-[#18181b]"
                                                 style={isInWishlist(product.id) ? { fontVariationSettings: "'FILL' 1", color: "#f4258c" } : undefined}
                                             >favorite</span>
                                         </button>
@@ -496,19 +568,30 @@ export function ProductGrid() {
                                                     setAddingToCartId(product.id);
                                                     try {
                                                         await addItem(product.variantId, 1);
+                                                        setAddedToCartId(product.id);
+                                                        setTimeout(() => setAddedToCartId(null), 1500);
                                                     } finally {
                                                         setAddingToCartId(null);
                                                     }
                                                 }}
                                                 disabled={!product.variantId || addingToCartId === product.id}
-                                                className="pointer-events-auto w-3/4 max-w-[200px] h-12 bg-white border border-[#18181b] shadow-[4px_4px_0px_#18181b] flex items-center justify-center gap-2 hover:bg-[#ffe4e6] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none text-[10px] font-bold uppercase tracking-widest text-[#18181b]"
+                                                className={`pointer-events-auto w-3/4 max-w-[200px] h-12 border border-[#18181b] shadow-[4px_4px_0px_#18181b] flex items-center justify-center gap-2 hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none text-[10px] font-bold uppercase tracking-widest ${
+                                                    addedToCartId === product.id
+                                                        ? "bg-mint text-[#18181b]"
+                                                        : "bg-white text-[#18181b] hover:bg-[#ffe4e6]"
+                                                }`}
                                             >
                                                 {addingToCartId === product.id ? (
                                                     "Toevoegen..."
+                                                ) : addedToCartId === product.id ? (
+                                                    <>
+                                                        <span className="material-symbols-outlined !text-[20px] text-[#18181b]">check</span>
+                                                        Toegevoegd!
+                                                    </>
                                                 ) : (
                                                     <>
-                                                        <span className="material-symbols-outlined !text-[20px] text-[#18181b]">shopping_cart</span>
-                                                        In Wagen
+                                                        <span className="material-symbols-outlined !text-[20px] text-[#18181b]">add_shopping_cart</span>
+                                                        Toevoegen
                                                     </>
                                                 )}
                                             </button>
@@ -592,8 +675,11 @@ export function ProductGrid() {
         {/* Newsletter Section */}
         <section className="bg-mint p-8 md:p-16 border-t border-[#18181b]">
             <div className="space-y-6 text-center max-w-md mx-auto">
-                <h2 className="text-2xl md:text-3xl font-extrabold uppercase tracking-widest text-[#18181b] italic">Join the Club</h2>
-                <p className="text-sm text-[#18181b] font-bold tracking-wide">10% off your first curation of curiosities.</p>
+                <div className="inline-block bg-white border border-[#18181b] px-4 py-2 mb-2">
+                    <span className="material-symbols-outlined !text-[20px] text-primary">mail</span>
+                </div>
+                <h2 className="text-2xl md:text-3xl font-extrabold uppercase tracking-widest text-[#18181b] italic">Word Lid</h2>
+                <p className="text-sm text-[#18181b] font-bold tracking-wide">10% korting op je eerste bestelling.</p>
                 <form onSubmit={handleSubscribe} className="flex flex-col gap-4">
                     <input
                         value={email}
@@ -603,13 +689,23 @@ export function ProductGrid() {
                         type="email"
                         required
                     />
-                    <button
-                        type="submit"
-                        className="bg-white text-[#18181b] font-bold uppercase tracking-widest text-xs py-4 border border-[#18181b] shadow-[4px_4px_0px_#18181b] hover:bg-[#ffe4e6] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all disabled:opacity-50 disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:hover:bg-white disabled:hover:shadow-[4px_4px_0px_#18181b]"
-                        disabled={!!status && status !== "Error"}
-                    >
-                        {status || "Sign Me Up"}
-                    </button>
+                    {status === "Ingeschreven!" ? (
+                        <div className="flex flex-col items-center gap-3 py-2">
+                            <div className="size-12 bg-white border border-[#18181b] flex items-center justify-center">
+                                <span className="material-symbols-outlined !text-[24px] text-primary">celebration</span>
+                            </div>
+                            <p className="text-sm font-bold text-[#18181b]">Welkom bij de Cozy club!</p>
+                            <p className="text-xs text-[#18181b]/60">Check je inbox voor je kortingscode.</p>
+                        </div>
+                    ) : (
+                        <button
+                            type="submit"
+                            className="bg-white text-[#18181b] font-bold uppercase tracking-widest text-xs py-4 border border-[#18181b] shadow-[4px_4px_0px_#18181b] hover:bg-[#ffe4e6] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all disabled:opacity-50 disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:hover:bg-white disabled:hover:shadow-[4px_4px_0px_#18181b]"
+                            disabled={status === "Bezig..."}
+                        >
+                            {status === "Fout" ? "Probeer opnieuw" : status || "Schrijf Me In"}
+                        </button>
+                    )}
                 </form>
             </div>
         </section>

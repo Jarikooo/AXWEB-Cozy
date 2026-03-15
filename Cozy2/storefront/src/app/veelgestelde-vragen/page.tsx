@@ -124,7 +124,7 @@ export default function FAQPage() {
                     <p className="text-xl text-zinc-950 font-extrabold uppercase tracking-tighter italic mb-6">Niet gevonden wat je zocht?</p>
                     <a
                         href="/contact"
-                        className="inline-block px-8 py-4 bg-primary text-white font-sans text-xs font-bold uppercase tracking-widest transition-all duration-300 border border-zinc-950 hover:bg-primary/90"
+                        className="inline-block px-8 py-4 bg-primary text-white text-xs font-bold uppercase tracking-widest border border-[#18181b] shadow-[4px_4px_0px_#18181b] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all"
                     >
                         Neem Contact Op
                     </a>

@@ -1,26 +1,23 @@
 "use client";
 
 import React, { useRef } from "react";
-import { Heart } from "lucide-react";
 import { useWishlist } from "@/lib/context/wishlist-context";
 import { Product } from "@/types";
 import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
 
 interface WishlistButtonProps {
     product: Product;
     className?: string;
-    iconSize?: number;
 }
 
-export function WishlistButton({ product, className = "", iconSize = 20 }: WishlistButtonProps) {
+export function WishlistButton({ product, className = "" }: WishlistButtonProps) {
     const { isInWishlist, addToWishlist, removeFromWishlist } = useWishlist();
     const inWishlist = isInWishlist(product.id);
-    const buttonRef = useRef<HTMLButtonElement>(null);
+    const iconRef = useRef<HTMLSpanElement>(null);
 
     const toggleWishlist = (e: React.MouseEvent) => {
-        e.preventDefault(); // Prevent linking if inside a Next.js Link
-        e.stopPropagation(); // Prevent opening product
+        e.preventDefault();
+        e.stopPropagation();
 
         if (inWishlist) {
             removeFromWishlist(product.id);
@@ -28,26 +25,25 @@ export function WishlistButton({ product, className = "", iconSize = 20 }: Wishl
             addToWishlist(product);
         }
 
-        // Small pop animation
-        if (buttonRef.current) {
-            gsap.fromTo(buttonRef.current,
-                { scale: 0.8 },
-                { scale: 1, duration: 0.4, ease: "back.out(2)" }
+        if (iconRef.current) {
+            gsap.fromTo(iconRef.current,
+                { scale: 1 },
+                { scale: 1.4, duration: 0.15, yoyo: true, repeat: 1, ease: "power2.out" }
             );
         }
     };
 
     return (
         <button
-            ref={buttonRef}
             onClick={toggleWishlist}
-            className={`flex items-center justify-center rounded-full bg-white/80 backdrop-blur-sm border border-zinc-950/10 hover:bg-white transition-all shadow-sm ${className}`}
-            aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
+            className={`flex items-center justify-center bg-white border border-[#18181b] shadow-[4px_4px_0px_#18181b] hover:bg-[#ffe4e6] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all ${className}`}
+            aria-label={inWishlist ? "Verwijder van verlanglijst" : "Toevoegen aan verlanglijst"}
         >
-            <Heart
-                size={iconSize}
-                className={`transition-colors duration-300 ${inWishlist ? "fill-primary text-primary" : "text-zinc-950/60 hover:text-primary"}`}
-            />
+            <span
+                ref={iconRef}
+                className="material-symbols-outlined !text-[20px] text-[#18181b]"
+                style={inWishlist ? { fontVariationSettings: "'FILL' 1", color: "#f4258c" } : undefined}
+            >favorite</span>
         </button>
     );
 }

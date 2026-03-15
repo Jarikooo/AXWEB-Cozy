@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { MapPin } from "lucide-react";
+
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(useGSAP);
@@ -103,12 +103,12 @@ function EditorialTypewriter() {
     return (
         <div className="h-full flex flex-col justify-between pt-4">
             <div className="flex items-center gap-2 mb-6">
-                <div className="w-2 h-2 rounded-full bg-mint animate-ping" />
-                <span className="text-xs uppercase tracking-widest font-semibold text-mint">In Store</span>
+                <div className="w-2 h-2 bg-primary animate-ping" />
+                <span className="text-xs uppercase tracking-widest font-semibold text-primary">In de Winkel</span>
             </div>
 
             <div className="flex-1 flex items-center">
-                <h3 className="font-serif italic text-2xl md:text-3xl text-zinc-950">
+                <h3 className="text-xl md:text-2xl font-extrabold tracking-tight text-zinc-950">
                     {text}
                     <span className="inline-block w-[3px] h-6 bg-primary ml-1 -mb-1 animate-pulse" />
                 </h3>
@@ -116,8 +116,8 @@ function EditorialTypewriter() {
 
             <div className="mt-8">
                 <a href="/over-ons" className="flex items-center gap-3 text-sm font-semibold uppercase tracking-widest hover:text-primary transition-colors group">
-                    <span className="w-8 h-8 rounded-full bg-zinc-950 text-background-light flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <MapPin size={12} className="ml-0.5" fill="currentColor" />
+                    <span className="w-8 h-8 bg-zinc-950 text-background-light flex items-center justify-center group-hover:scale-110 transition-transform border border-[#18181b]">
+                        <span className="material-symbols-outlined !text-[14px]">location_on</span>
                     </span>
                     Plan je bezoek
                 </a>

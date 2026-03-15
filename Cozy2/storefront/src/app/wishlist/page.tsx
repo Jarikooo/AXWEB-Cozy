@@ -85,24 +85,22 @@ export default function WishlistPage() {
                     </div>
                 ) : (
                     <div className="flex flex-col gap-12">
-                        {/* Free Shipping Banner */}
-                        <div className="w-full bg-mint border border-[#18181b] p-5 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-[4px_4px_0px_rgba(9,9,11,0.05)]">
-                            <div className="flex items-center gap-3">
-                                <span className="material-symbols-outlined !text-[20px] text-zinc-950">local_shipping</span>
-                                {amountToFreeShipping > 0 ? (
-                                    <p className="text-xs font-bold text-zinc-950">
-                                        Nog <span className="text-primary">{formatPrice(amountToFreeShipping)}</span> tot gratis verzending!
-                                    </p>
-                                ) : (
-                                    <p className="text-xs font-bold text-zinc-950">
-                                        Je komt in aanmerking voor <span className="text-primary">gratis verzending</span>!
-                                    </p>
-                                )}
-                            </div>
+                        {/* Free Shipping Hint */}
+                        <div className="w-full flex items-center gap-3 px-1">
+                            <span className="material-symbols-outlined !text-[16px] text-[#18181b]/30">local_shipping</span>
+                            {amountToFreeShipping > 0 ? (
+                                <p className="text-xs text-[#18181b]/50">
+                                    Nog {formatPrice(amountToFreeShipping)} tot gratis verzending
+                                </p>
+                            ) : (
+                                <p className="text-xs text-[#18181b]/50">
+                                    Gratis verzending van toepassing
+                                </p>
+                            )}
                             {amountToFreeShipping > 0 && (
-                                <div className="w-full sm:w-48 h-2 bg-white border border-[#18181b] overflow-hidden">
+                                <div className="flex-1 max-w-[120px] h-1 bg-[#18181b]/10 overflow-hidden">
                                     <div
-                                        className="h-full bg-primary transition-all duration-500"
+                                        className="h-full bg-[#18181b]/20 transition-all duration-500"
                                         style={{ width: `${Math.min(100, (totalValue / freeShippingThreshold) * 100)}%` }}
                                     />
                                 </div>
@@ -129,7 +127,7 @@ export default function WishlistPage() {
 
                                         {/* New badge */}
                                         {product.isNew && (
-                                            <div className="absolute top-2 left-2 z-10 bg-[#f9a8d4] text-[#18181b] text-[10px] font-bold uppercase tracking-wider px-2 py-1 border border-[#18181b]">New</div>
+                                            <div className="absolute top-2 left-2 z-10 bg-mint text-[#18181b] text-[10px] font-bold uppercase tracking-wider px-2 py-1 border border-[#18181b]">Nieuw</div>
                                         )}
 
                                         {/* Remove button — top right, overlapping */}
@@ -152,8 +150,8 @@ export default function WishlistPage() {
                                                     "Toevoegen..."
                                                 ) : (
                                                     <>
-                                                        <span className="material-symbols-outlined !text-[18px]">shopping_cart</span>
-                                                        In wagen
+                                                        <span className="material-symbols-outlined !text-[18px]">add_shopping_cart</span>
+                                                        Toevoegen
                                                     </>
                                                 )}
                                             </button>

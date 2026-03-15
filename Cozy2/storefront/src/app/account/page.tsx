@@ -83,46 +83,36 @@ export default async function AccountPage() {
                     </Link>
                 </div>
 
-                {/* CTA Banner */}
-                <div className="mt-12 bg-[#ffe4e6] border border-[#18181b] p-8 md:p-12 shadow-[4px_4px_0px_rgba(9,9,11,0.05)] flex flex-col md:flex-row items-center justify-between gap-8">
-                    <div className="max-w-lg">
-                        <h3 className="text-2xl md:text-3xl font-extrabold tracking-tighter uppercase italic text-zinc-950 leading-[0.95] mb-3">
-                            Nieuwe collectie is binnen.
-                        </h3>
-                        <p className="text-sm text-zinc-950/60 leading-relaxed">
-                            Sharon heeft weer nieuwe pareltjes gevonden. Ontdek de laatste Copenhagen Curiosities voor je woonkamer.
+                {/* Collection Nudge */}
+                <div className="mt-12 bg-mint border border-[#18181b] p-8 md:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+                    <div>
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-950/40 mb-2">Nieuw Binnen</p>
+                        <p className="text-lg md:text-xl font-extrabold tracking-tighter text-zinc-950">
+                            Sharon heeft weer pareltjes gevonden.
                         </p>
                     </div>
                     <Link
                         href="/shop"
-                        className="shrink-0 px-8 py-4 bg-white text-[#18181b] font-bold uppercase tracking-widest text-xs border border-[#18181b] shadow-[4px_4px_0px_#18181b] hover:bg-mint-light hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all"
+                        className="shrink-0 px-8 py-4 bg-white text-[#18181b] font-bold uppercase tracking-widest text-xs border border-[#18181b] shadow-[4px_4px_0px_#18181b] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all flex items-center gap-2"
                     >
-                        Ontdek de Shop
+                        Bekijk de Collectie
+                        <span className="material-symbols-outlined !text-[14px]">arrow_forward</span>
                     </Link>
                 </div>
 
-                {/* Quick Actions Row */}
-                <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-6">
-                    <Link href="/contact" className="group flex items-center gap-4 p-6 border border-[#18181b] bg-white hover:bg-mint-light transition-colors">
-                        <span className="material-symbols-outlined !text-[20px] text-[#18181b]">help</span>
-                        <div>
-                            <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-950 group-hover:text-primary transition-colors">Hulp Nodig?</h4>
-                            <p className="text-[10px] text-zinc-950/50 mt-0.5">Neem contact op</p>
-                        </div>
+                {/* Support Links */}
+                <div className="mt-8 pt-8 border-t border-[#18181b]/10 flex flex-wrap items-center gap-x-8 gap-y-3">
+                    <Link href="/contact" className="text-xs font-bold uppercase tracking-widest text-zinc-950/30 hover:text-primary transition-colors flex items-center gap-2">
+                        <span className="material-symbols-outlined !text-[14px]">help</span>
+                        Hulp nodig?
                     </Link>
-                    <Link href="/retourbeleid" className="group flex items-center gap-4 p-6 border border-[#18181b] bg-white hover:bg-mint-light transition-colors">
-                        <span className="material-symbols-outlined !text-[20px] text-[#18181b]">undo</span>
-                        <div>
-                            <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-950 group-hover:text-primary transition-colors">Retourneren</h4>
-                            <p className="text-[10px] text-zinc-950/50 mt-0.5">30 dagen bedenktijd</p>
-                        </div>
+                    <Link href="/retourbeleid" className="text-xs font-bold uppercase tracking-widest text-zinc-950/30 hover:text-primary transition-colors flex items-center gap-2">
+                        <span className="material-symbols-outlined !text-[14px]">undo</span>
+                        Retourneren
                     </Link>
-                    <Link href="/veelgestelde-vragen" className="group flex items-center gap-4 p-6 border border-[#18181b] bg-white hover:bg-mint-light transition-colors">
-                        <span className="material-symbols-outlined !text-[20px] text-[#18181b]">quiz</span>
-                        <div>
-                            <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-950 group-hover:text-primary transition-colors">Veelgestelde Vragen</h4>
-                            <p className="text-[10px] text-zinc-950/50 mt-0.5">Antwoorden op je vragen</p>
-                        </div>
+                    <Link href="/veelgestelde-vragen" className="text-xs font-bold uppercase tracking-widest text-zinc-950/30 hover:text-primary transition-colors flex items-center gap-2">
+                        <span className="material-symbols-outlined !text-[14px]">quiz</span>
+                        Veelgestelde vragen
                     </Link>
                 </div>
             </div>

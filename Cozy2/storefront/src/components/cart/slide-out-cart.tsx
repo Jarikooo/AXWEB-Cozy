@@ -46,7 +46,7 @@ export function SlideOutCart() {
     // Ensure cart doesn't prevent hydration by formatting numbers safely
     const formatPrice = (amount?: number) => {
         if (amount === undefined) return "";
-        return new Intl.NumberFormat("en-US", {
+        return new Intl.NumberFormat("nl-NL", {
             style: "currency",
             currency: cart?.currency_code || "eur",
             minimumFractionDigits: 2,
@@ -58,7 +58,7 @@ export function SlideOutCart() {
             <div
                 ref={overlayRef}
                 onClick={() => setIsCartOpen(false)}
-                className="fixed inset-0 bg-zinc-950/20 backdrop-blur-sm z-[200] opacity-0 pointer-events-none"
+                className="fixed inset-0 bg-zinc-950/30 z-[200] opacity-0 pointer-events-none"
             />
 
             <div
@@ -68,7 +68,7 @@ export function SlideOutCart() {
                 <div className="flex items-center justify-between p-6 border-b border-zinc-950 ">
                     <div className="flex items-center gap-2 text-zinc-950 ">
                         <span className="material-symbols-outlined">shopping_bag</span>
-                        <h2 className="text-xl font-bold tracking-tight uppercase">Your Cart</h2>
+                        <h2 className="text-xl font-bold tracking-tight uppercase">Winkelwagen</h2>
                     </div>
                     <button
                         onClick={() => setIsCartOpen(false)}
@@ -82,17 +82,17 @@ export function SlideOutCart() {
                     {!cart || !cart.items || cart.items.length === 0 ? (
                         <div className="flex-1 flex flex-col items-center justify-center text-center gap-12 py-12 p-6">
                             <div className="flex flex-col items-center gap-6 text-zinc-950/60 ">
-                                <span className="text-2xl font-bold italic uppercase tracking-widest text-zinc-950 ">Your cart is empty.</span>
+                                <span className="text-2xl font-bold italic uppercase tracking-widest text-zinc-950 ">Je winkelwagen is leeg.</span>
                                 <button
                                     onClick={() => setIsCartOpen(false)}
                                     className="px-8 py-4 bg-primary text-white font-bold uppercase tracking-widest transition-colors hover:bg-primary/90 shadow-xl"
                                 >
-                                    Continue Shopping
+                                    Verder Winkelen
                                 </button>
                             </div>
 
                             <div className="w-full mt-8 text-left">
-                                <FeaturedGrid title="Trending Now" limit={2} />
+                                <FeaturedGrid title="Trending Nu" limit={2} />
                             </div>
                         </div>
                     ) : (
@@ -125,7 +125,7 @@ export function SlideOutCart() {
                                             <button
                                                 onClick={() => removeItem(item.id)}
                                                 className="text-zinc-400 hover:text-primary transition-colors shrink-0"
-                                                aria-label="Remove item"
+                                                aria-label="Verwijder item"
                                             >
                                                 <span className="material-symbols-outlined text-sm">delete</span>
                                             </button>
@@ -174,12 +174,12 @@ export function SlideOutCart() {
                     <div className="p-6 space-y-6 bg-white  border-t border-zinc-950  mt-auto flex-shrink-0">
                         <div className="space-y-2">
                             <div className="flex justify-between text-sm uppercase tracking-widest font-medium text-zinc-950 ">
-                                <span>Subtotal</span>
+                                <span>Subtotaal</span>
                                 <span>{formatPrice(cart.subtotal)}</span>
                             </div>
                             <div className="flex justify-between text-sm uppercase tracking-widest font-medium text-zinc-400">
-                                <span>Shipping</span>
-                                <span>Calculated later</span>
+                                <span>Verzending</span>
+                                <span>Berekend bij afrekenen</span>
                             </div>
                         </div>
 
@@ -188,11 +188,11 @@ export function SlideOutCart() {
                             onClick={() => setIsCartOpen(false)}
                             className="bg-primary text-white py-5 text-sm font-bold uppercase tracking-widest hover:opacity-90 active:scale-[0.98] transition-transform sharp-shadow border border-zinc-950 flex justify-center w-full"
                         >
-                            Proceed to Checkout
+                            Afrekenen
                         </Link>
                         <p className="text-[10px] text-center text-zinc-400 uppercase tracking-widest leading-relaxed">
-                            Secure checkout powered by Cozy2. <br />
-                            Taxes included in final calculation.
+                            Veilig afrekenen bij Cozy Mssls. <br />
+                            BTW inbegrepen in de eindprijs.
                         </p>
                     </div>
                 )}

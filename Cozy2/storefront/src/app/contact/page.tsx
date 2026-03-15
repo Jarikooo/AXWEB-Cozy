@@ -6,14 +6,40 @@ import Link from "next/link";
 export default function ContactPage() {
     const [submitting, setSubmitting] = useState(false);
     const [submitted, setSubmitted] = useState(false);
+    const [error, setError] = useState("");
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setSubmitting(true);
-        setTimeout(() => {
+        setError("");
+
+        const form = e.currentTarget;
+        const data = {
+            firstName: (form.elements.namedItem("firstName") as HTMLInputElement).value,
+            lastName: (form.elements.namedItem("lastName") as HTMLInputElement).value,
+            email: (form.elements.namedItem("email") as HTMLInputElement).value,
+            subject: (form.elements.namedItem("subject") as HTMLInputElement).value,
+            message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
+        };
+
+        try {
+            const res = await fetch("/api/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+
+            if (res.ok) {
+                setSubmitted(true);
+            } else {
+                const result = await res.json();
+                setError(result.error || "Er is iets misgegaan.");
+            }
+        } catch {
+            setError("Kan geen verbinding maken. Probeer het later opnieuw.");
+        } finally {
             setSubmitting(false);
-            setSubmitted(true);
-        }, 1200);
+        }
     };
 
     return (
@@ -105,30 +131,35 @@ export default function ContactPage() {
                                 </div>
                             ) : (
                                 <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+                                    {error && (
+                                        <div className="p-4 bg-[#ffe4e6] text-[#18181b] border border-[#18181b] text-sm font-bold">
+                                            {error}
+                                        </div>
+                                    )}
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div className="flex flex-col gap-2">
                                             <label htmlFor="firstName" className="text-xs font-bold uppercase tracking-widest text-[#18181b]">Voornaam</label>
-                                            <input type="text" id="firstName" required className="w-full bg-white border border-[#18181b] px-5 py-4 text-[#18181b] text-sm focus:outline-none focus:ring-1 focus:ring-primary transition-all placeholder:text-[#18181b]/30" placeholder="Jan" />
+                                            <input type="text" id="firstName" name="firstName" required className="w-full bg-white border border-[#18181b] px-5 py-4 text-[#18181b] text-sm focus:outline-none focus:ring-1 focus:ring-primary transition-all placeholder:text-[#18181b]/30" placeholder="Jan" />
                                         </div>
                                         <div className="flex flex-col gap-2">
                                             <label htmlFor="lastName" className="text-xs font-bold uppercase tracking-widest text-[#18181b]">Achternaam</label>
-                                            <input type="text" id="lastName" required className="w-full bg-white border border-[#18181b] px-5 py-4 text-[#18181b] text-sm focus:outline-none focus:ring-1 focus:ring-primary transition-all placeholder:text-[#18181b]/30" placeholder="Jansen" />
+                                            <input type="text" id="lastName" name="lastName" required className="w-full bg-white border border-[#18181b] px-5 py-4 text-[#18181b] text-sm focus:outline-none focus:ring-1 focus:ring-primary transition-all placeholder:text-[#18181b]/30" placeholder="Jansen" />
                                         </div>
                                     </div>
 
                                     <div className="flex flex-col gap-2">
                                         <label htmlFor="email" className="text-xs font-bold uppercase tracking-widest text-[#18181b]">E-mailadres</label>
-                                        <input type="email" id="email" required className="w-full bg-white border border-[#18181b] px-5 py-4 text-[#18181b] text-sm focus:outline-none focus:ring-1 focus:ring-primary transition-all placeholder:text-[#18181b]/30" placeholder="jan@voorbeeld.nl" />
+                                        <input type="email" id="email" name="email" required className="w-full bg-white border border-[#18181b] px-5 py-4 text-[#18181b] text-sm focus:outline-none focus:ring-1 focus:ring-primary transition-all placeholder:text-[#18181b]/30" placeholder="jan@voorbeeld.nl" />
                                     </div>
 
                                     <div className="flex flex-col gap-2">
                                         <label htmlFor="subject" className="text-xs font-bold uppercase tracking-widest text-[#18181b]">Onderwerp</label>
-                                        <input type="text" id="subject" required className="w-full bg-white border border-[#18181b] px-5 py-4 text-[#18181b] text-sm focus:outline-none focus:ring-1 focus:ring-primary transition-all placeholder:text-[#18181b]/30" placeholder="Waar gaat het over?" />
+                                        <input type="text" id="subject" name="subject" required className="w-full bg-white border border-[#18181b] px-5 py-4 text-[#18181b] text-sm focus:outline-none focus:ring-1 focus:ring-primary transition-all placeholder:text-[#18181b]/30" placeholder="Waar gaat het over?" />
                                     </div>
 
                                     <div className="flex flex-col gap-2">
                                         <label htmlFor="message" className="text-xs font-bold uppercase tracking-widest text-[#18181b]">Bericht</label>
-                                        <textarea id="message" rows={5} required className="w-full bg-white border border-[#18181b] px-5 py-4 text-[#18181b] text-sm focus:outline-none focus:ring-1 focus:ring-primary transition-all placeholder:text-[#18181b]/30 resize-none" placeholder="Typ hier je bericht..." />
+                                        <textarea id="message" name="message" rows={5} required className="w-full bg-white border border-[#18181b] px-5 py-4 text-[#18181b] text-sm focus:outline-none focus:ring-1 focus:ring-primary transition-all placeholder:text-[#18181b]/30 resize-none" placeholder="Typ hier je bericht..." />
                                     </div>
 
                                     <button

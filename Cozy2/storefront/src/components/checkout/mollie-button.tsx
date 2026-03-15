@@ -61,12 +61,12 @@ export function MolliePaymentButton({ cart, notReady }: { cart: StoreCart | null
             <button
                 disabled={notReady || submitting}
                 onClick={handlePayment}
-                className="w-full flex items-center justify-center py-4 bg-mollie-blue hover:bg-mollie-blue/90 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl font-sans text-xs font-bold uppercase tracking-widest transition-all duration-300 shadow-md active:scale-[0.98] bg-blue-600"
+                className="w-full flex items-center justify-center py-4 bg-[#18181b] text-white text-xs font-bold uppercase tracking-widest border border-[#18181b] shadow-[4px_4px_0px_#18181b] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
             >
-                {submitting ? "Redirecting to Mollie..." : "Pay with Mollie (iDeal / Klarna)"}
+                {submitting ? "Doorsturen naar Mollie..." : "Betaal met Mollie (iDeal / Klarna)"}
             </button>
             {errorMessage && (
-                <span className="text-red-500 font-sans text-xs mt-2 text-center">{errorMessage}</span>
+                <div className="p-3 bg-[#ffe4e6] text-[#18181b] border border-[#18181b] text-xs font-bold text-center">{errorMessage}</div>
             )}
         </div>
     );

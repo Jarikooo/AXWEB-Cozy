@@ -8,14 +8,14 @@ export function CuratedCollections() {
             <div className="grid grid-cols-1 md:grid-cols-2 w-full border-t border-zinc-950">
 
                 {/* Trending */}
-                <Link href="/shop" className="group block relative border-b md:border-b-0 md:border-r border-zinc-950 overflow-hidden">
+                <Link href="/shop?sort=nieuw" className="group block relative border-b md:border-b-0 md:border-r border-zinc-950 overflow-hidden">
                     <div className="aspect-square md:aspect-[4/5] relative w-full h-full p-8 md:p-12 flex flex-col justify-between z-10">
-                        <h2 className="text-zinc-950 text-3xl md:text-5xl font-extrabold leading-[0.9] tracking-tighter uppercase italic drop-shadow-md bg-white/40 backdrop-blur-sm self-start p-2 border border-zinc-950">
+                        <h2 className="text-zinc-950 text-3xl md:text-5xl font-extrabold leading-[0.9] tracking-tighter uppercase italic bg-white self-start p-3 border border-zinc-950 shadow-[4px_4px_0px_#09090b]">
                             Trending
                         </h2>
                         <div className="self-end mt-auto opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
                             <div className="inline-block bg-primary text-white font-bold uppercase tracking-widest text-xs px-6 py-3 border border-zinc-950 shadow-[4px_4px_0px_#09090b]">
-                                Shop Now
+                                Bekijk Meer
                             </div>
                         </div>
                     </div>
@@ -29,14 +29,14 @@ export function CuratedCollections() {
                 </Link>
 
                 {/* Sharon's Favorites */}
-                <Link href="/shop" className="group block relative border-zinc-950 overflow-hidden">
+                <Link href="/shop?category=sharons-favorieten" className="group block relative border-zinc-950 overflow-hidden">
                     <div className="aspect-square md:aspect-[4/5] relative w-full h-full p-8 md:p-12 flex flex-col justify-between z-10">
-                        <h2 className="text-zinc-950 text-3xl md:text-5xl font-extrabold leading-[0.9] tracking-tighter uppercase italic drop-shadow-md bg-white/40 backdrop-blur-sm self-start p-2 border border-zinc-950">
-                            Sharon's Favorites
+                        <h2 className="text-zinc-950 text-3xl md:text-5xl font-extrabold leading-[0.9] tracking-tighter uppercase italic bg-white self-start p-3 border border-zinc-950 shadow-[4px_4px_0px_#09090b]">
+                            Sharon's Favorieten
                         </h2>
                         <div className="self-end mt-auto opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
                             <div className="inline-block bg-primary text-white font-bold uppercase tracking-widest text-xs px-6 py-3 border border-zinc-950 shadow-[4px_4px_0px_#09090b]">
-                                Shop Now
+                                Bekijk Meer
                             </div>
                         </div>
                     </div>

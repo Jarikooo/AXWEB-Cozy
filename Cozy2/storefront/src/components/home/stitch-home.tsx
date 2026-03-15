@@ -15,13 +15,13 @@ export function StitchHome() {
 
     const handleSubscribe = async (e: React.FormEvent) => {
         e.preventDefault();
-        setStatus("Subscribing...");
+        setStatus("Bezig...");
         try {
             const res = await fetch('/api/newsletter', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
-            if (res.ok) { setStatus("Subscribed!"); setEmail(""); }
-            else { setStatus("Error"); }
+            if (res.ok) { setStatus("Ingeschreven!"); setEmail(""); }
+            else { setStatus("Fout"); }
         } catch {
-            setStatus("Error");
+            setStatus("Fout");
         }
     };
 
@@ -40,18 +40,18 @@ export function StitchHome() {
                             priority
                         />
                         <div className="absolute top-4 left-4 bg-primary text-white text-[10px] font-bold uppercase tracking-widest px-2 py-1">
-                            New Drop
+                            Nieuw Binnen
                         </div>
                     </div>
                     <div className="space-y-4 md:flex-1">
                         <h1 className="text-zinc-950  text-4xl sm:text-6xl md:text-7xl font-extrabold leading-[0.9] tracking-tighter uppercase italic">
-                            Copenhagen <br />Curiosities
+                            Vrolijke<br />Blijmakers
                         </h1>
                         <p className="text-zinc-950/70  text-sm md:text-base leading-relaxed max-w-[80%]">
-                            A structured collection of playful home objects for the modern minimalist.
+                            Van Scandinavisch design tot Nederlandse pareltjes. Ontdek onze collectie vol echte blijmakers.
                         </p>
                         <Link href="/shop" className="inline-block bg-primary text-white font-bold uppercase tracking-widest text-xs md:text-sm px-8 py-4 border border-zinc-950 hover:bg-primary/90 transition-colors">
-                            Explore Collection
+                            Ontdek de Collectie
                         </Link>
                     </div>
                 </div>
@@ -69,8 +69,8 @@ export function StitchHome() {
             {/* Newsletter Section */}
             <section className="bg-mint  p-8 md:p-16 border-b border-zinc-950">
                 <div className="space-y-6 text-center max-w-md mx-auto">
-                    <h2 className="text-2xl md:text-4xl font-extrabold uppercase tracking-tighter italic">Join the Club</h2>
-                    <p className="text-sm text-zinc-950/70 ">10% off your first curation of curiosities.</p>
+                    <h2 className="text-2xl md:text-4xl font-extrabold uppercase tracking-tighter italic">Word Lid</h2>
+                    <p className="text-sm text-zinc-950/70 ">10% korting op je eerste bestelling.</p>
                     <form onSubmit={handleSubscribe} className="flex flex-col gap-2">
                         <input
                             value={email}
@@ -83,9 +83,9 @@ export function StitchHome() {
                         <button
                             type="submit"
                             className="bg-zinc-950 text-white font-bold uppercase tracking-widest text-xs py-4 border border-zinc-950 active:bg-zinc-800 transition-colors disabled:opacity-50"
-                            disabled={!!status && status !== "Error"}
+                            disabled={!!status && status !== "Fout"}
                         >
-                            {status || "Sign Me Up"}
+                            {status || "Schrijf Me In"}
                         </button>
                     </form>
                 </div>

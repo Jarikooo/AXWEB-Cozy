@@ -25,7 +25,7 @@ export default function ReturnPolicyPage() {
                     </h2>
                 </div>
 
-                <div className="prose prose-lg prose-headings:font-serif prose-headings:text-zinc-950 prose-headings:font-medium prose-p:font-sans prose-p:text-zinc-950/80 prose-li:font-sans prose-li:text-zinc-950/80 prose-a:text-zinc-950 prose-a:underline hover:prose-a:text-zinc-950/70 max-w-none">
+                <div className="prose prose-lg prose-headings:font-display prose-headings:text-zinc-950 prose-headings:font-bold prose-p:font-sans prose-p:text-zinc-950/80 prose-li:font-sans prose-li:text-zinc-950/80 prose-a:text-zinc-950 prose-a:underline hover:prose-a:text-zinc-950/70 max-w-none">
 
                     <h3>14 Dagen Bedenktijd (Herroepingsrecht)</h3>
                     <p>
@@ -72,7 +72,7 @@ export default function ReturnPolicyPage() {
                         <p className="font-sans text-zinc-950/70 mb-6">Ons klantenserviceteam staat klaar om je te helpen.</p>
                         <Link
                             href="/contact"
-                            className="inline-block px-8 py-3 bg-primary text-white font-sans text-xs font-bold uppercase tracking-widest transition-all duration-300 border border-zinc-950 hover:bg-primary/90 no-underline"
+                            className="inline-block px-8 py-3 bg-primary text-white text-xs font-bold uppercase tracking-widest border border-[#18181b] shadow-[4px_4px_0px_#18181b] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all no-underline"
                         >
                             Neem Contact Op
                         </Link>

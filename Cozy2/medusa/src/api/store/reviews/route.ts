@@ -51,11 +51,11 @@ export async function POST(req: AuthenticatedMedusaRequest, res: MedusaResponse)
         // Use core remote linking to securely attach the review to the product
         const remoteLink = req.scope.resolve(ContainerRegistrationKeys.REMOTE_LINK);
         await remoteLink.create({
-            [REVIEWS_MODULE]: {
-                id: review.id,
-            },
             [Modules.PRODUCT]: {
-                id: product_id,
+                product_id: product_id,
+            },
+            [REVIEWS_MODULE]: {
+                review_id: review.id,
             },
         });
 

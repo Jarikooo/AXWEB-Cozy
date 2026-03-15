@@ -99,7 +99,7 @@ export function FeaturedGrid({ title, limit = 4, className = "" }: FeaturedGridP
                             )}
 
                             {product.isNew && (
-                                <div className="absolute top-2 left-2 z-10 bg-[#f9a8d4] text-[#18181b] text-[10px] font-bold uppercase tracking-wider px-2 py-1 border border-[#18181b]">New</div>
+                                <div className="absolute top-2 left-2 z-10 bg-mint text-[#18181b] text-[10px] font-bold uppercase tracking-wider px-2 py-1 border border-[#18181b]">Nieuw</div>
                             )}
 
                             <Link href={`/products/${product.handle || product.id}`} className="absolute inset-0 z-10" />

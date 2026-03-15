@@ -147,7 +147,7 @@ export default function ProductDetailsPage() {
                             {/* Badges */}
                             {product.isNew && (
                                 <div className="absolute top-4 left-4 bg-[#f9a8d4] text-zinc-950 text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 border border-[#18181b]">
-                                    New
+                                    Nieuw
                                 </div>
                             )}
 
@@ -198,7 +198,7 @@ export default function ProductDetailsPage() {
                         {/* Category Tag */}
                         <div className="mb-4">
                             <span className="inline-block text-[10px] font-bold uppercase tracking-widest text-zinc-950/60 border border-zinc-950/20 px-3 py-1.5">
-                                {product.category || "Object"} — Copenhagen Edition
+                                {product.category || "Object"} — Cozy Collectie
                             </span>
                         </div>
 
@@ -214,7 +214,7 @@ export default function ProductDetailsPage() {
 
                         {/* Description (visible by default on desktop) */}
                         <p className="text-sm text-zinc-950/70 leading-relaxed mb-10 max-w-lg">
-                            {product.description || "Designed with minimal lines and playful colors, this object embodies the Copenhagen spirit."}
+                            {product.description || "Ontworpen met minimalistische lijnen en speelse kleuren. Een echte blijmaker voor in huis."}
                         </p>
 
                         {/* Color Selector */}

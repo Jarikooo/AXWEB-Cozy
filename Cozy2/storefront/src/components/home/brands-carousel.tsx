@@ -3,7 +3,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const BRANDS = [
@@ -21,7 +20,6 @@ export function BrandsCarousel() {
             loop: true,
             align: "center",
             skipSnaps: false,
-            // Add dragFree for smoother scrolling without forced snapping jumps
             dragFree: true,
         },
         [
@@ -59,7 +57,7 @@ export function BrandsCarousel() {
         <section className="relative w-full py-16 md:py-24 overflow-hidden bg-background border-b border-zinc-950">
             <div className="container mx-auto px-4 text-center mb-10">
                 <h2 className="text-zinc-950 text-2xl sm:text-3xl md:text-4xl font-extrabold uppercase tracking-widest">
-                    Explore Our Collections
+                    Ontdek Onze Merken
                 </h2>
             </div>
 
@@ -67,23 +65,20 @@ export function BrandsCarousel() {
                 {/* Navigation Buttons */}
                 <button
                     onClick={scrollPrev}
-                    className="absolute left-4 z-10 hidden sm:flex h-12 w-12 items-center justify-center border border-zinc-950 bg-white text-zinc-950 hover:bg-zinc-100 hover:scale-105 transition-all focus:outline-none"
-                    aria-label="Previous brand"
+                    className="absolute left-4 z-10 hidden sm:flex h-12 w-12 items-center justify-center border border-zinc-950 bg-white text-zinc-950 hover:bg-[#ffe4e6] hover:scale-105 transition-all focus:outline-none"
+                    aria-label="Vorig merk"
                 >
-                    <ChevronLeft className="h-6 w-6" />
+                    <span className="material-symbols-outlined !text-[24px]">chevron_left</span>
                 </button>
 
                 {/* Embla Viewport */}
                 <div className="overflow-hidden w-full px-4" ref={emblaRef}>
-                    {/* Added negative margin to offset child padding, creating the gap */}
                     <div className="flex -ml-4 touch-pan-y h-full py-8 items-center cursor-grab active:cursor-grabbing">
                         {BRANDS.map((brand, index) => {
                             const isActive = index === selectedIndex;
                             return (
                                 <div
                                     key={brand.id}
-                                    // Make sure each slide has padding-left to create the gap between slides
-                                    // min-w-0 is crucial for flexbox sizing
                                     className="relative flex-none pl-4 min-w-0 w-[60vw] sm:w-[40vw] md:w-[30vw] lg:w-[25vw] transition-all duration-500 ease-out"
                                     style={{
                                         transform: isActive ? "scale(1.05)" : "scale(0.9)",
@@ -103,10 +98,10 @@ export function BrandsCarousel() {
 
                 <button
                     onClick={scrollNext}
-                    className="absolute right-4 z-10 hidden sm:flex h-12 w-12 items-center justify-center border border-zinc-950 bg-white text-zinc-950 hover:bg-zinc-100 hover:scale-105 transition-all focus:outline-none"
-                    aria-label="Next brand"
+                    className="absolute right-4 z-10 hidden sm:flex h-12 w-12 items-center justify-center border border-zinc-950 bg-white text-zinc-950 hover:bg-[#ffe4e6] hover:scale-105 transition-all focus:outline-none"
+                    aria-label="Volgend merk"
                 >
-                    <ChevronRight className="h-6 w-6" />
+                    <span className="material-symbols-outlined !text-[24px]">chevron_right</span>
                 </button>
             </div>
 
@@ -115,13 +110,13 @@ export function BrandsCarousel() {
                     onClick={scrollPrev}
                     className="h-10 w-10 flex items-center justify-center border border-zinc-950 bg-white text-zinc-950"
                 >
-                    <ChevronLeft className="h-5 w-5" />
+                    <span className="material-symbols-outlined !text-[20px]">chevron_left</span>
                 </button>
                 <button
                     onClick={scrollNext}
                     className="h-10 w-10 flex items-center justify-center border border-zinc-950 bg-white text-zinc-950"
                 >
-                    <ChevronRight className="h-5 w-5" />
+                    <span className="material-symbols-outlined !text-[20px]">chevron_right</span>
                 </button>
             </div>
         </section>

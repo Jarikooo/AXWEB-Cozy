@@ -31,25 +31,25 @@ export function CookieConsent() {
 
     return (
         <div className="fixed bottom-0 left-0 right-0 z-[100] p-4 sm:p-6 md:p-8 pointer-events-none">
-            <div className="max-w-2xl mx-auto bg-background-light/95 backdrop-blur-xl border border-zinc-950/10 rounded-3xl p-6 sm:p-8 shadow-2xl pointer-events-auto flex flex-col sm:flex-row gap-6 items-start sm:items-center animate-fade-in-up">
+            <div className="max-w-2xl mx-auto bg-white border border-[#18181b] shadow-[4px_4px_0px_#18181b] p-6 sm:p-8 pointer-events-auto flex flex-col sm:flex-row gap-6 items-start sm:items-center">
 
                 <div className="flex-1 space-y-3">
-                    <h3 className="font-serif text-2xl text-zinc-950 font-medium">Jouw privacy, jouw keuze.</h3>
-                    <p className="font-sans text-sm text-zinc-950/70 leading-relaxed">
-                        Wij gebruiken functionele cookies om de website goed te laten werken (bijvoorbeeld om te onthouden wat er in je mandje zit). Daarnaast willen we graag analytische cookies plaatsen om je winkelervaring te verbeteren. Meer weten? Lees ons <Link href="/privacybeleid" className="underline hover:text-zinc-950">Privacybeleid</Link>.
+                    <h3 className="text-lg font-extrabold tracking-tighter uppercase italic text-[#18181b]">Jouw privacy, jouw keuze.</h3>
+                    <p className="text-sm text-[#18181b]/70 leading-relaxed">
+                        Wij gebruiken functionele cookies om de website goed te laten werken (bijvoorbeeld om te onthouden wat er in je mandje zit). Daarnaast willen we graag analytische cookies plaatsen om je winkelervaring te verbeteren. Meer weten? Lees ons <Link href="/privacybeleid" className="underline font-bold hover:text-primary transition-colors">Privacybeleid</Link>.
                     </p>
                 </div>
 
                 <div className="flex flex-col gap-3 w-full sm:w-auto shrink-0">
                     <button
                         onClick={handleAccept}
-                        className="w-full sm:w-auto px-6 py-3 bg-zinc-950 text-background-light rounded-full font-sans text-xs font-bold uppercase tracking-widest transition-all duration-300 shadow-md hover:shadow-lg hover:bg-black active:scale-[0.98]"
+                        className="w-full sm:w-auto px-6 py-3 bg-primary text-white font-bold text-xs uppercase tracking-widest border border-[#18181b] shadow-[4px_4px_0px_#18181b] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all"
                     >
                         Accepteer Alles
                     </button>
                     <button
                         onClick={handleDecline}
-                        className="w-full sm:w-auto px-6 py-3 bg-white/50 text-zinc-950 border border-zinc-950/10 rounded-full font-sans text-xs font-bold uppercase tracking-widest transition-all duration-300 hover:bg-white active:scale-[0.98]"
+                        className="w-full sm:w-auto px-6 py-3 bg-white text-[#18181b] border border-[#18181b] font-bold text-xs uppercase tracking-widest shadow-[4px_4px_0px_#18181b] hover:bg-[#ffe4e6] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all"
                     >
                         Alleen Functioneel
                     </button>

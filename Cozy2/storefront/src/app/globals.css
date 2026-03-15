@@ -63,4 +63,12 @@
   .sharp-shadow {
     box-shadow: 4px 4px 0px 0px rgba(9, 9, 11, 0.05);
   }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 }

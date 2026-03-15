@@ -40,7 +40,10 @@
       "Bash(powershell -Command \"Get-Process python* -ErrorAction SilentlyContinue | Stop-Process -Force\" 2>/dev/null; rm -rf \"C:\\\\Users\\\\aagul\\\\AppData\\\\Local\\\\Packages\\\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\\\LocalCache\\\\local-packages\\\\Python313\\\\site-packages\\\\cognee\\\\.cognee_system\\\\databases\\\\cognee_graph_kuzu\" 2>/dev/null; echo \"Cleaned up\")",
       "Bash(unzip:*)",
       "mcp__github__get_file_contents",
-      "Bash(cd:*)"
+      "Bash(cd:*)",
+      "mcp__github__search_code",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__query-docs"
     ]
   }
 }

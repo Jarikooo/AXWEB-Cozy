@@ -25,7 +25,7 @@ export default function NotFound() {
                         src="https://images.unsplash.com/photo-1596484552834-6a848a604f5e?q=80&w=2664&auto=format&fit=crop"
                         alt="Broken Vase"
                         fill
-                        className="object-cover rounded-full mix-blend-multiply opacity-80"
+                        className="object-cover mix-blend-multiply opacity-80"
                         priority
                     />
                 </div>
@@ -44,13 +44,13 @@ export default function NotFound() {
                     <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
                         <Link
                             href="/shop"
-                            className="w-full sm:w-auto px-8 py-4 bg-primary text-white font-sans text-xs font-bold uppercase tracking-widest transition-all duration-300 border border-zinc-950 hover:bg-primary/90"
+                            className="w-full sm:w-auto px-8 py-4 bg-primary text-white text-xs font-bold uppercase tracking-widest border border-[#18181b] shadow-[4px_4px_0px_#18181b] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all"
                         >
                             Verder Winkelen
                         </Link>
                         <Link
                             href="/"
-                            className="w-full sm:w-auto px-8 py-4 bg-white text-zinc-950 border border-zinc-950 font-sans text-xs font-bold uppercase tracking-widest transition-all duration-300 hover:bg-mint-light"
+                            className="w-full sm:w-auto px-8 py-4 bg-white text-zinc-950 border border-[#18181b] text-xs font-bold uppercase tracking-widest shadow-[4px_4px_0px_#18181b] hover:bg-[#ffe4e6] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all"
                         >
                             Terug naar Home
                         </Link>

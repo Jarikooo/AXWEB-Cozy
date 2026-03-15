@@ -25,7 +25,7 @@ export default function TermsAndConditionsPage() {
                     <p className="font-sans text-zinc-950/50 mt-4">Laatst bijgewerkt: {new Date().toLocaleDateString('nl-NL')}</p>
                 </div>
 
-                <div className="prose prose-lg prose-headings:font-serif prose-headings:text-zinc-950 prose-headings:font-medium prose-p:font-sans prose-p:text-zinc-950/80 prose-li:font-sans prose-li:text-zinc-950/80 prose-a:text-zinc-950 prose-a:underline hover:prose-a:text-zinc-950/70 max-w-none">
+                <div className="prose prose-lg prose-headings:font-display prose-headings:text-zinc-950 prose-headings:font-bold prose-p:font-sans prose-p:text-zinc-950/80 prose-li:font-sans prose-li:text-zinc-950/80 prose-a:text-zinc-950 prose-a:underline hover:prose-a:text-zinc-950/70 max-w-none">
 
                     <h3>Artikel 1 - Definities</h3>
                     <p>In deze algemene voorwaarden wordt verstaan onder:</p>
@@ -40,7 +40,7 @@ export default function TermsAndConditionsPage() {
                     <p>
                         Cozy Mssls<br />
                         Straatnaam 123<br />
-                        1234 AB, Amsterdam<br />
+                        1234 AB, Maassluis<br />
                         Nederland<br /><br />
                         E-mailadres: info@cozymssls.nl<br />
                         Telefoonnummer: +31 (0)6 12 34 56 78<br />

@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 export function StitchFooter() {
     return (
@@ -12,38 +11,38 @@ export function StitchFooter() {
                 <div className="md:col-span-2 flex flex-col items-start gap-4">
                     <Link href="/" className="inline-block">
                         <h2 className="text-zinc-950 text-3xl font-extrabold leading-tight tracking-tighter uppercase">
-                            COZY2
+                            Cozy Mssls.
                         </h2>
                     </Link>
                     <p className="text-xs font-bold text-zinc-950/60 uppercase tracking-widest max-w-xs leading-relaxed">
-                        A structured collection of playful home objects for the modern minimalist.
+                        Een vrolijke conceptstore vol echte blijmakers voor jouw thuis.
                     </p>
                 </div>
 
                 {/* Navigation Links */}
                 <div className="flex flex-col items-start gap-4">
-                    <h3 className="text-sm font-extrabold uppercase tracking-widest text-zinc-950 mb-2">Explore</h3>
-                    <Link href="/shop" className="text-xs font-bold uppercase tracking-widest text-zinc-950/60 hover:text-primary transition-colors">Shop All</Link>
-                    <Link href="/wishlist" className="text-xs font-bold uppercase tracking-widest text-zinc-950/60 hover:text-primary transition-colors">Wishlist</Link>
-                    <Link href="/account" className="text-xs font-bold uppercase tracking-widest text-zinc-950/60 hover:text-primary transition-colors">My Account</Link>
-                    <Link href="/over-ons" className="text-xs font-bold uppercase tracking-widest text-zinc-950/60 hover:text-primary transition-colors">About Us</Link>
+                    <h3 className="text-sm font-extrabold uppercase tracking-widest text-zinc-950 mb-2">Ontdek</h3>
+                    <Link href="/shop" className="text-xs font-bold uppercase tracking-widest text-zinc-950/60 hover:text-primary transition-colors">Alle Producten</Link>
+                    <Link href="/wishlist" className="text-xs font-bold uppercase tracking-widest text-zinc-950/60 hover:text-primary transition-colors">Verlanglijst</Link>
+                    <Link href="/account" className="text-xs font-bold uppercase tracking-widest text-zinc-950/60 hover:text-primary transition-colors">Mijn Account</Link>
+                    <Link href="/over-ons" className="text-xs font-bold uppercase tracking-widest text-zinc-950/60 hover:text-primary transition-colors">Over Ons</Link>
                     <Link href="/contact" className="text-xs font-bold uppercase tracking-widest text-zinc-950/60 hover:text-primary transition-colors">Contact</Link>
                 </div>
 
                 {/* Legal & Info */}
                 <div className="flex flex-col items-start gap-4">
-                    <h3 className="text-sm font-extrabold uppercase tracking-widest text-zinc-950 mb-2">Legal</h3>
-                    <Link href="/veelgestelde-vragen" className="text-xs font-bold uppercase tracking-widest text-zinc-950/60 hover:text-primary transition-colors">FAQ</Link>
-                    <Link href="/privacybeleid" className="text-xs font-bold uppercase tracking-widest text-zinc-950/60 hover:text-primary transition-colors">Privacy Policy</Link>
-                    <Link href="/algemene-voorwaarden" className="text-xs font-bold uppercase tracking-widest text-zinc-950/60 hover:text-primary transition-colors">Terms of Service</Link>
-                    <Link href="/retourbeleid" className="text-xs font-bold uppercase tracking-widest text-zinc-950/60 hover:text-primary transition-colors">Returns</Link>
+                    <h3 className="text-sm font-extrabold uppercase tracking-widest text-zinc-950 mb-2">Juridisch</h3>
+                    <Link href="/veelgestelde-vragen" className="text-xs font-bold uppercase tracking-widest text-zinc-950/60 hover:text-primary transition-colors">Veelgestelde Vragen</Link>
+                    <Link href="/privacybeleid" className="text-xs font-bold uppercase tracking-widest text-zinc-950/60 hover:text-primary transition-colors">Privacybeleid</Link>
+                    <Link href="/algemene-voorwaarden" className="text-xs font-bold uppercase tracking-widest text-zinc-950/60 hover:text-primary transition-colors">Algemene Voorwaarden</Link>
+                    <Link href="/retourbeleid" className="text-xs font-bold uppercase tracking-widest text-zinc-950/60 hover:text-primary transition-colors">Retourbeleid</Link>
                 </div>
 
             </div>
 
             <div className="w-full max-w-[1400px] mx-auto border-t border-zinc-950/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
                 <p className="text-[10px] uppercase font-bold tracking-widest text-zinc-950/40">
-                    &copy; {new Date().getFullYear()} Cozy2. All rights reserved.
+                    &copy; {new Date().getFullYear()} Cozy Mssls. Alle rechten voorbehouden.
                 </p>
                 <div className="flex items-center gap-6">
                     <a href="#" className="text-[10px] uppercase font-bold tracking-widest text-zinc-950/40 hover:text-primary transition-colors">Instagram</a>

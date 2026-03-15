@@ -194,7 +194,7 @@ export function StitchHeader() {
             <div
                 ref={searchOverlayRef}
                 onClick={handleSearchClose}
-                className="fixed inset-0 bg-[#18181b]/10 backdrop-blur-sm z-[59] opacity-0 pointer-events-none"
+                className="fixed inset-0 bg-[#18181b]/20 z-[59] opacity-0 pointer-events-none"
             />
 
             {/* Search Bar */}
