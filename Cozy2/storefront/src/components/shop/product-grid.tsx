@@ -6,17 +6,39 @@ import { fetchMedusaProducts } from "@/lib/medusa";
 import { Product } from "@/types";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
+import { useWishlist } from "@/lib/context/wishlist-context";
+import { useCart } from "@/lib/context/cart-context";
 
 export function ProductGrid() {
     const searchParams = useSearchParams();
     const router = useRouter();
     const pathname = usePathname();
-    
+    const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+    const { addItem } = useCart();
+
     const [cachedProducts, setCachedProducts] = useState<Record<number, Product[]>>({});
     const [loading, setLoading] = useState(true);
     const [totalCount, setTotalCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
-    
+    const [addingToCartId, setAddingToCartId] = useState<string | null>(null);
+    const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+
+    // Newsletter state
+    const [email, setEmail] = useState("");
+    const [status, setStatus] = useState("");
+
+    const handleSubscribe = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setStatus("Subscribing...");
+        try {
+            const res = await fetch('/api/newsletter', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
+            if (res.ok) { setStatus("Subscribed!"); setEmail(""); }
+            else { setStatus("Error"); }
+        } catch {
+            setStatus("Error");
+        }
+    };
+
     // Sort state
     const [sortBy, setSortBy] = useState("Featured");
     const [isSortOpen, setIsSortOpen] = useState(false);
@@ -196,7 +218,7 @@ export function ProductGrid() {
     return (
         <div className="flex-1 w-full flex flex-col min-h-screen bg-white">
             {/* Hero Image Section */}
-            <div className="w-full h-[300px] md:h-[400px] relative bg-[#d1f4e5] flex items-center justify-center overflow-hidden border-b border-[#18181b]">
+            <div className="w-full h-[300px] md:h-[400px] pt-16 md:pt-0 relative bg-mint flex items-center justify-center overflow-hidden border-b border-[#18181b]">
                 {/* Random imagery for the mint background */}
                 <Image src="https://picsum.photos/seed/cozyshop1/1920/1080" alt="Shop Hero" fill className="object-cover opacity-80 mix-blend-multiply" />
                 <div className="relative z-10 text-center">
@@ -301,6 +323,74 @@ export function ProductGrid() {
                 </div>
             </aside>
 
+            {/* Mobile Filter Drawer */}
+            {isMobileFilterOpen && (
+                <div className="fixed inset-0 z-[100] md:hidden">
+                    <div className="absolute inset-0 bg-[#18181b]/20 backdrop-blur-sm" onClick={() => setIsMobileFilterOpen(false)} />
+                    <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-[#18181b] max-h-[75vh] overflow-y-auto p-6">
+                        <div className="flex items-center justify-between mb-6">
+                            <h3 className="text-sm font-bold uppercase tracking-widest text-[#18181b]">Filters</h3>
+                            <button onClick={() => setIsMobileFilterOpen(false)} className="size-10 bg-white border border-[#18181b] flex items-center justify-center shadow-[3px_3px_0px_#18181b]">
+                                <span className="material-symbols-outlined !text-[18px] text-[#18181b]">close</span>
+                            </button>
+                        </div>
+                        <div className="space-y-8">
+                            {/* Categories */}
+                            <div>
+                                <h4 className="text-xs font-bold uppercase tracking-widest text-[#18181b] mb-4">Categorie</h4>
+                                <div className="flex flex-wrap gap-2">
+                                    {availableCategories.map((cat) => (
+                                        <button
+                                            key={cat.id}
+                                            onClick={() => { updateCategory(cat.id); setIsMobileFilterOpen(false); }}
+                                            className={`font-bold text-xs tracking-widest uppercase border border-[#18181b] px-4 py-3 shadow-[3px_3px_0px_#18181b] transition-all ${
+                                                categoryId === cat.id ? "bg-[#ffe4e6]" : "bg-white"
+                                            }`}
+                                        >
+                                            {cat.label}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                            {/* Price */}
+                            <div>
+                                <h4 className="text-xs font-bold uppercase tracking-widest text-[#18181b] mb-4">Max Prijs: €{priceRange}</h4>
+                                <input type="range" min="0" max={maxPriceAvailable} value={priceRange} onChange={(e) => setPriceRange(Number(e.target.value))} className="w-full h-2 bg-slate-200 appearance-none cursor-pointer accent-[#18181b]" />
+                                <div className="flex justify-between text-xs font-bold text-[#18181b] mt-2"><span>€0</span><span>€{maxPriceAvailable}</span></div>
+                            </div>
+                            {/* Colors */}
+                            {availableColors.length > 0 && (
+                                <div>
+                                    <h4 className="text-xs font-bold uppercase tracking-widest text-[#18181b] mb-4">Kleur</h4>
+                                    <div className="flex flex-wrap gap-3">
+                                        {availableColors.map(color => (
+                                            <button key={color} onClick={() => setSelectedColor(selectedColor === color ? null : color)}
+                                                className={`size-10 border-[#18181b] shadow-[3px_3px_0px_#18181b] transition-all ${selectedColor === color ? "border-2 -translate-y-[2px] -translate-x-[2px] shadow-[5px_5px_0px_#18181b]" : "border"}`}
+                                                style={{ backgroundColor: color, borderStyle: 'solid' }} title={color} />
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                            {/* Sizes */}
+                            {availableSizes.length > 0 && (
+                                <div>
+                                    <h4 className="text-xs font-bold uppercase tracking-widest text-[#18181b] mb-4">Maat</h4>
+                                    <div className="flex flex-wrap gap-2">
+                                        {availableSizes.map(size => (
+                                            <button key={size} onClick={() => setSelectedSize(selectedSize === size ? null : size)}
+                                                className={`px-4 py-3 text-xs font-bold border border-[#18181b] shadow-[3px_3px_0px_#18181b] transition-all ${selectedSize === size ? "bg-[#ffe4e6]" : "bg-white"}`}>{size}</button>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                        <button onClick={() => setIsMobileFilterOpen(false)} className="w-full mt-6 py-4 bg-primary text-white font-bold uppercase tracking-widest text-xs border border-[#18181b] shadow-[4px_4px_0px_#18181b] transition-all">
+                            Resultaten Bekijken
+                        </button>
+                    </div>
+                </div>
+            )}
+
             {/* Product Grid Area */}
             <div className="bg-[#fdf4ff] p-6 md:p-8 lg:p-12 w-full flex-1">
                 {/* Breadcrumbs & Header */}
@@ -312,9 +402,18 @@ export function ProductGrid() {
                             <span className="text-[#18181b]">Shop</span>
                         </div>
                     </div>
-                    <div className="flex items-center gap-4">
-                        <span className="text-sm text-[#18181b] font-bold hidden sm:inline">Showing {Math.max(0, categoryId !== "all" ? allFetchedProducts.length : totalCount)} items</span>
-                        
+                    <div className="flex items-center gap-3">
+                        <span className="text-sm text-[#18181b] font-bold hidden sm:inline">{Math.max(0, categoryId !== "all" ? allFetchedProducts.length : totalCount)} items</span>
+
+                        {/* Mobile Filter Button */}
+                        <button
+                            onClick={() => setIsMobileFilterOpen(true)}
+                            className="md:hidden flex items-center gap-2 text-xs font-bold text-[#18181b] bg-white px-4 py-2 border border-[#18181b] shadow-[3px_3px_0px_#18181b] transition-all"
+                        >
+                            <span className="material-symbols-outlined !text-[16px]">tune</span>
+                            Filters
+                        </button>
+
                         <div className="relative group">
                             <button 
                                 onClick={() => setIsSortOpen(!isSortOpen)}
@@ -372,14 +471,46 @@ export function ProductGrid() {
                                         )}
                                         
                                         {/* Wishlist Button (overlapping top right) */}
-                                        <button className="absolute -top-3 -right-3 z-20 size-10 bg-white border border-[#18181b] shadow-[4px_4px_0px_#18181b] flex items-center justify-center hover:bg-[#ffe4e6] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all">
-                                            <span className="material-symbols-outlined !text-[20px] text-[#18181b]">favorite</span>
+                                        <button
+                                            onClick={() => {
+                                                if (isInWishlist(product.id)) {
+                                                    removeFromWishlist(product.id);
+                                                } else {
+                                                    addToWishlist(product);
+                                                }
+                                            }}
+                                            className="absolute -top-3 -right-3 z-20 size-10 bg-white border border-[#18181b] shadow-[4px_4px_0px_#18181b] flex items-center justify-center hover:bg-[#ffe4e6] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all"
+                                            aria-label={isInWishlist(product.id) ? "Verwijder van verlanglijst" : "Toevoegen aan verlanglijst"}
+                                        >
+                                            <span
+                                                className="material-symbols-outlined !text-[20px] text-[#18181b]"
+                                                style={isInWishlist(product.id) ? { fontVariationSettings: "'FILL' 1", color: "#f4258c" } : undefined}
+                                            >favorite</span>
                                         </button>
-                                        
+
                                         {/* Add to Cart Button (overlapping bottom center) */}
                                         <div className="absolute -bottom-5 inset-x-0 z-20 flex justify-center pointer-events-none">
-                                            <button className="pointer-events-auto w-3/4 max-w-[200px] h-12 bg-white border border-[#18181b] shadow-[4px_4px_0px_#18181b] flex items-center justify-center gap-2 hover:bg-[#ffe4e6] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all">
-                                                <span className="material-symbols-outlined !text-[20px] text-[#18181b]">shopping_cart</span>
+                                            <button
+                                                onClick={async () => {
+                                                    if (!product.variantId) return;
+                                                    setAddingToCartId(product.id);
+                                                    try {
+                                                        await addItem(product.variantId, 1);
+                                                    } finally {
+                                                        setAddingToCartId(null);
+                                                    }
+                                                }}
+                                                disabled={!product.variantId || addingToCartId === product.id}
+                                                className="pointer-events-auto w-3/4 max-w-[200px] h-12 bg-white border border-[#18181b] shadow-[4px_4px_0px_#18181b] flex items-center justify-center gap-2 hover:bg-[#ffe4e6] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none text-[10px] font-bold uppercase tracking-widest text-[#18181b]"
+                                            >
+                                                {addingToCartId === product.id ? (
+                                                    "Toevoegen..."
+                                                ) : (
+                                                    <>
+                                                        <span className="material-symbols-outlined !text-[20px] text-[#18181b]">shopping_cart</span>
+                                                        In Wagen
+                                                    </>
+                                                )}
                                             </button>
                                         </div>
                                         
@@ -457,6 +588,31 @@ export function ProductGrid() {
                 )}
             </div>
         </div>
+
+        {/* Newsletter Section */}
+        <section className="bg-mint p-8 md:p-16 border-t border-[#18181b]">
+            <div className="space-y-6 text-center max-w-md mx-auto">
+                <h2 className="text-2xl md:text-3xl font-extrabold uppercase tracking-widest text-[#18181b] italic">Join the Club</h2>
+                <p className="text-sm text-[#18181b] font-bold tracking-wide">10% off your first curation of curiosities.</p>
+                <form onSubmit={handleSubscribe} className="flex flex-col gap-4">
+                    <input
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                        className="bg-white border border-[#18181b] px-4 py-4 text-xs font-bold uppercase tracking-widest shadow-[4px_4px_0px_#18181b] focus:outline-none focus:translate-x-[2px] focus:translate-y-[2px] focus:shadow-[2px_2px_0px_#18181b] transition-all placeholder:text-[#18181b]/40"
+                        placeholder="YOUR@EMAIL.COM"
+                        type="email"
+                        required
+                    />
+                    <button
+                        type="submit"
+                        className="bg-white text-[#18181b] font-bold uppercase tracking-widest text-xs py-4 border border-[#18181b] shadow-[4px_4px_0px_#18181b] hover:bg-[#ffe4e6] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all disabled:opacity-50 disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:hover:bg-white disabled:hover:shadow-[4px_4px_0px_#18181b]"
+                        disabled={!!status && status !== "Error"}
+                    >
+                        {status || "Sign Me Up"}
+                    </button>
+                </form>
+            </div>
+        </section>
         </div>
     );
 }

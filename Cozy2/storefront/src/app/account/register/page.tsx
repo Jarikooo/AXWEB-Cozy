@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { registerCustomer } from "@/app/actions/auth";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 export default function RegisterPage() {
     const router = useRouter();
@@ -18,7 +17,6 @@ export default function RegisterPage() {
 
         const formData = new FormData(e.currentTarget);
 
-        // Basic Client Validation
         if (formData.get("password") !== formData.get("confirmPassword")) {
             setError("Wachtwoorden komen niet overeen.");
             setLoading(false);
@@ -32,7 +30,7 @@ export default function RegisterPage() {
             setLoading(false);
         } else {
             router.push("/account");
-            router.refresh(); // Update session state globally
+            router.refresh();
         }
     };
 
@@ -40,117 +38,152 @@ export default function RegisterPage() {
     React.useEffect(() => { setCartId(localStorage.getItem("cart_id")); }, []);
 
     return (
-        <div className="min-h-[100dvh] bg-[#f9fafb] text-zinc-950 font-sans p-4 md:p-8 flex flex-col justify-center items-center py-32 relative overflow-hidden">
+        <div className="min-h-screen bg-white flex flex-col">
+            <div className="flex-1 grid grid-cols-1 md:grid-cols-2 min-h-screen">
+                {/* Left: Register Form */}
+                <div className="flex flex-col justify-center px-6 md:px-16 lg:px-24 pt-28 md:pt-16 pb-16">
+                    <div className="max-w-md w-full mx-auto">
+                        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tighter uppercase italic text-zinc-950 leading-[0.9] mb-3">
+                            Word lid<br />van de Club.
+                        </h1>
+                        <p className="text-sm text-zinc-950/60 mb-10">
+                            Maak een account en ontvang 10% korting op je eerste bestelling.
+                        </p>
 
-            {/* Subtle background noise/texture */}
-            <div className="fixed inset-0 z-0 opacity-[0.03] pointer-events-none mix-blend-overlay" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/noisy-texture.png")' }}></div>
+                        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+                            {error && (
+                                <div className="p-4 bg-[#ffe4e6] text-zinc-950 border border-[#18181b] text-sm font-bold">
+                                    {error}
+                                </div>
+                            )}
 
-            <div className="w-full max-w-lg relative z-10 flex flex-col items-center">
-                <button
-                    onClick={() => router.back()}
-                    className="flex items-center gap-2 text-zinc-500 hover:text-primary transition-colors font-sans text-xs font-medium uppercase tracking-widest animate-fade-in-up group mb-12 self-start"
-                >
-                    <ArrowLeftIcon className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-                    Terug naar inloggen
-                </button>
+                            {cartId && <input type="hidden" name="cartId" value={cartId} />}
 
-                <div className="w-full bg-white/70 backdrop-blur-xl rounded-[2.5rem] p-8 md:p-12 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] border border-white/50 animate-fade-in-up">
-                    <div className="text-center mb-10">
-                        <h1 className="font-serif italic text-4xl text-zinc-950 mb-3">Maak een account</h1>
-                        <p className="text-zinc-500 text-sm font-medium tracking-wide">
-                            Word lid van de Cozy club en sla je favorieten op.
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="flex flex-col gap-2">
+                                    <label className="text-xs font-bold uppercase tracking-widest text-zinc-950">
+                                        Voornaam
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="firstName"
+                                        required
+                                        className="w-full bg-white border border-[#18181b] px-5 py-4 text-zinc-950 text-sm focus:outline-none focus:ring-1 focus:ring-primary transition-all placeholder:text-zinc-950/30"
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-2">
+                                    <label className="text-xs font-bold uppercase tracking-widest text-zinc-950">
+                                        Achternaam
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="lastName"
+                                        required
+                                        className="w-full bg-white border border-[#18181b] px-5 py-4 text-zinc-950 text-sm focus:outline-none focus:ring-1 focus:ring-primary transition-all placeholder:text-zinc-950/30"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col gap-2">
+                                <label className="text-xs font-bold uppercase tracking-widest text-zinc-950">
+                                    E-mailadres
+                                </label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    required
+                                    className="w-full bg-white border border-[#18181b] px-5 py-4 text-zinc-950 text-sm focus:outline-none focus:ring-1 focus:ring-primary transition-all placeholder:text-zinc-950/30"
+                                    placeholder="jouw@email.nl"
+                                />
+                            </div>
+
+                            <div className="flex flex-col gap-2">
+                                <label className="text-xs font-bold uppercase tracking-widest text-zinc-950">
+                                    Wachtwoord
+                                </label>
+                                <input
+                                    type="password"
+                                    name="password"
+                                    required
+                                    minLength={8}
+                                    className="w-full bg-white border border-[#18181b] px-5 py-4 text-zinc-950 text-sm focus:outline-none focus:ring-1 focus:ring-primary transition-all placeholder:text-zinc-950/30"
+                                    placeholder="Minimaal 8 tekens"
+                                />
+                            </div>
+
+                            <div className="flex flex-col gap-2">
+                                <label className="text-xs font-bold uppercase tracking-widest text-zinc-950">
+                                    Bevestig Wachtwoord
+                                </label>
+                                <input
+                                    type="password"
+                                    name="confirmPassword"
+                                    required
+                                    minLength={8}
+                                    className="w-full bg-white border border-[#18181b] px-5 py-4 text-zinc-950 text-sm focus:outline-none focus:ring-1 focus:ring-primary transition-all placeholder:text-zinc-950/30"
+                                    placeholder="Herhaal je wachtwoord"
+                                />
+                            </div>
+
+                            <button
+                                type="submit"
+                                disabled={loading}
+                                className="w-full mt-4 bg-primary text-white py-5 text-xs font-bold uppercase tracking-widest border border-[#18181b] shadow-[4px_4px_0px_#18181b] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
+                            >
+                                {loading ? "Bezig..." : "Account Aanmaken"}
+                            </button>
+                        </form>
+
+                        <div className="mt-8 pt-8 border-t border-[#18181b]">
+                            <p className="text-sm text-zinc-950/60">
+                                Heb je al een account?{" "}
+                                <Link href="/account/login" className="font-bold text-primary hover:underline underline-offset-4">
+                                    Log in
+                                </Link>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Right: Promo Panel */}
+                <div className="hidden md:flex flex-col justify-between bg-[#ffe4e6] border-l border-[#18181b] p-12 lg:p-16">
+                    <div>
+                        <h2 className="text-3xl lg:text-4xl font-extrabold tracking-tighter uppercase italic text-zinc-950 leading-[0.95] mb-6">
+                            10% Korting<br />op je eerste<br />bestelling.
+                        </h2>
+                        <p className="text-sm text-zinc-950/60 leading-relaxed max-w-sm">
+                            Als dankjewel voor het aanmelden ontvang je direct 10% korting. Sharon selecteert elke maand nieuwe favorieten speciaal voor jou.
                         </p>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-                        {error && (
-                            <div className="p-4 bg-primary/10 text-primary rounded-xl text-sm font-medium border border-primary/20 text-center">
-                                {error}
+                    <div className="space-y-6">
+                        <div className="flex items-start gap-4">
+                            <div className="size-10 bg-white border border-[#18181b] flex items-center justify-center shrink-0 shadow-[3px_3px_0px_rgba(9,9,11,0.05)]">
+                                <span className="material-symbols-outlined !text-[18px] text-[#18181b]">redeem</span>
                             </div>
-                        )}
-
-                        {cartId && <input type="hidden" name="cartId" value={cartId} />}
-
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="flex flex-col gap-2">
-                                <label className="text-[10px] font-bold uppercase tracking-widest text-zinc-950/70 ml-1">
-                                    Voornaam
-                                </label>
-                                <input
-                                    type="text"
-                                    name="firstName"
-                                    required
-                                    className="w-full bg-white/50 border border-zinc-200 rounded-2xl px-5 py-4 text-zinc-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all font-medium text-sm"
-                                />
-                            </div>
-                            <div className="flex flex-col gap-2">
-                                <label className="text-[10px] font-bold uppercase tracking-widest text-zinc-950/70 ml-1">
-                                    Achternaam
-                                </label>
-                                <input
-                                    type="text"
-                                    name="lastName"
-                                    required
-                                    className="w-full bg-white/50 border border-zinc-200 rounded-2xl px-5 py-4 text-zinc-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all font-medium text-sm"
-                                />
+                            <div>
+                                <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-950 mb-1">Welkomstkorting</h4>
+                                <p className="text-xs text-zinc-950/50">10% op je eerste bestelling, automatisch.</p>
                             </div>
                         </div>
-
-                        <div className="flex flex-col gap-2">
-                            <label className="text-[10px] font-bold uppercase tracking-widest text-zinc-950/70 ml-1">
-                                E-mailadres
-                            </label>
-                            <input
-                                type="email"
-                                name="email"
-                                required
-                                className="w-full bg-white/50 border border-zinc-200 rounded-2xl px-5 py-4 text-zinc-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all font-medium text-sm"
-                            />
+                        <div className="flex items-start gap-4">
+                            <div className="size-10 bg-white border border-[#18181b] flex items-center justify-center shrink-0 shadow-[3px_3px_0px_rgba(9,9,11,0.05)]">
+                                <span className="material-symbols-outlined !text-[18px] text-[#18181b]">mail</span>
+                            </div>
+                            <div>
+                                <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-950 mb-1">Exclusieve Updates</h4>
+                                <p className="text-xs text-zinc-950/50">Als eerste toegang tot nieuwe drops.</p>
+                            </div>
                         </div>
-
-                        <div className="flex flex-col gap-2">
-                            <label className="text-[10px] font-bold uppercase tracking-widest text-zinc-950/70 ml-1">
-                                Wachtwoord
-                            </label>
-                            <input
-                                type="password"
-                                name="password"
-                                required
-                                minLength={8}
-                                className="w-full bg-white/50 border border-zinc-200 rounded-2xl px-5 py-4 text-zinc-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all font-medium text-sm"
-                            />
+                        <div className="flex items-start gap-4">
+                            <div className="size-10 bg-white border border-[#18181b] flex items-center justify-center shrink-0 shadow-[3px_3px_0px_rgba(9,9,11,0.05)]">
+                                <span className="material-symbols-outlined !text-[18px] text-[#18181b]">sync</span>
+                            </div>
+                            <div>
+                                <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-950 mb-1">Verlanglijst Sync</h4>
+                                <p className="text-xs text-zinc-950/50">Je favorieten altijd overal beschikbaar.</p>
+                            </div>
                         </div>
-
-                        <div className="flex flex-col gap-2">
-                            <label className="text-[10px] font-bold uppercase tracking-widest text-zinc-950/70 ml-1">
-                                Bevestig Wachtwoord
-                            </label>
-                            <input
-                                type="password"
-                                name="confirmPassword"
-                                required
-                                minLength={8}
-                                className="w-full bg-white/50 border border-zinc-200 rounded-2xl px-5 py-4 text-zinc-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all font-medium text-sm"
-                            />
-                        </div>
-
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="w-full mt-6 bg-zinc-950 text-background-light rounded-2xl py-4 font-sans text-xs font-bold uppercase tracking-widest hover:bg-primary hover:text-white transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed group relative overflow-hidden"
-                        >
-                            <span className="relative z-10">{loading ? "Bezig..." : "Registreren"}</span>
-                            <div className="absolute inset-0 bg-white/20 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300 ease-in-out z-0"></div>
-                        </button>
-                    </form>
-
-                    <div className="mt-8 text-center border-t border-zinc-100 pt-8">
-                        <p className="text-sm text-zinc-500">
-                            Heb je al een account?{" "}
-                            <Link href="/account/login" className="font-bold text-primary hover:underline underline-offset-4">
-                                Log in
-                            </Link>
-                        </p>
                     </div>
                 </div>
             </div>

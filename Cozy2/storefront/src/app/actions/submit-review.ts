@@ -1,12 +1,20 @@
 "use server"
 
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { sdk } from "@/lib/medusa";
+import { submitLimiter } from "@/lib/rate-limit";
 
 export async function submitReview(
     _currentState: Record<string, unknown>,
     formData: FormData
 ) {
+    const headerStore = await headers();
+    const ip = headerStore.get("x-forwarded-for")?.split(",")[0].trim() || "unknown";
+    const rateCheck = submitLimiter(ip);
+    if (!rateCheck.allowed) {
+        return { error: "You're submitting reviews too quickly. Please wait a few minutes." };
+    }
+
     const productId = formData.get("product_id") as string;
     const rating = Number(formData.get("rating"));
     const title = formData.get("title") as string;

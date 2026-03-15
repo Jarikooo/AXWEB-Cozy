@@ -1,9 +1,10 @@
 "use server";
 
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import Medusa from "@medusajs/js-sdk";
 import { sdk as globalSdk } from "@/lib/medusa";
 import { redirect } from "next/navigation";
+import { authLimiter } from "@/lib/rate-limit";
 
 const getIsolatedSdk = () => new Medusa({
     baseUrl: process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || "http://127.0.0.1:9000",
@@ -14,6 +15,13 @@ const getIsolatedSdk = () => new Medusa({
  * Server Action for Customer Login
  */
 export async function loginCustomer(formData: FormData) {
+    const headerStore = await headers();
+    const ip = headerStore.get("x-forwarded-for")?.split(",")[0].trim() || "unknown";
+    const rateCheck = authLimiter(ip);
+    if (!rateCheck.allowed) {
+        return { error: "Too many login attempts. Please try again in a few minutes." };
+    }
+
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
     const cartId = formData.get("cartId") as string | null;
@@ -74,6 +82,13 @@ export async function loginCustomer(formData: FormData) {
  * Server Action for Customer Registration
  */
 export async function registerCustomer(formData: FormData) {
+    const headerStore = await headers();
+    const ip = headerStore.get("x-forwarded-for")?.split(",")[0].trim() || "unknown";
+    const rateCheck = authLimiter(ip);
+    if (!rateCheck.allowed) {
+        return { error: "Too many attempts. Please try again in a few minutes." };
+    }
+
     const firstName = formData.get("firstName") as string;
     const lastName = formData.get("lastName") as string;
     const email = formData.get("email") as string;

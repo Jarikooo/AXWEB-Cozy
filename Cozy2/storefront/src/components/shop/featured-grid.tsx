@@ -38,7 +38,6 @@ export function FeaturedGrid({ title, limit = 4, className = "" }: FeaturedGridP
         };
     }, [limit]);
 
-    // Parent animation variant for staggered children
     const containerVariants: Variants = {
         hidden: { opacity: 0 },
         show: {
@@ -56,11 +55,11 @@ export function FeaturedGrid({ title, limit = 4, className = "" }: FeaturedGridP
 
     if (loading) {
         return (
-            <div className={`mt-8 w-full ${className}`}>
-                <h3 className="font-serif italic text-xl text-zinc-950 mb-4">{title}</h3>
-                <div className={`grid grid-cols-2 ${limit > 2 ? 'md:grid-cols-4' : ''} gap-4`}>
+            <div className={`w-full ${className}`}>
+                <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-950/40 mb-8">{title}</h3>
+                <div className={`grid grid-cols-2 ${limit > 2 ? 'md:grid-cols-4' : ''} gap-x-6 gap-y-14`}>
                     {Array.from({ length: limit }).map((_, i) => (
-                        <div key={i} className="aspect-[3/4] rounded-2xl bg-zinc-950/5 animate-pulse" />
+                        <div key={i} className="aspect-square bg-zinc-950/5 animate-pulse border border-zinc-950/10" />
                     ))}
                 </div>
             </div>
@@ -69,53 +68,54 @@ export function FeaturedGrid({ title, limit = 4, className = "" }: FeaturedGridP
 
     if (products.length === 0) return null;
 
+    const formatPrice = (price: number) =>
+        new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR", minimumFractionDigits: 2 }).format(price);
+
     return (
-        <div className={`mt-8 w-full ${className}`}>
-            <h3 className="font-serif italic text-xl text-zinc-950 mb-4 leading-none">
+        <div className={`w-full ${className}`}>
+            <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-950/40 mb-8">
                 {title}
             </h3>
             <motion.div
-                className={`grid grid-cols-2 ${limit > 2 ? 'md:grid-cols-4' : ''} gap-4`}
+                className={`grid grid-cols-2 ${limit > 2 ? 'md:grid-cols-4' : ''} gap-x-6 gap-y-14`}
                 variants={containerVariants}
                 initial="hidden"
                 animate="show"
             >
-                {products.map((product) => {
-                    const priceFormatted = new Intl.NumberFormat("en-US", {
-                        style: "currency",
-                        currency: "eur",
-                        minimumFractionDigits: 2,
-                    }).format(product.price);
+                {products.map((product) => (
+                    <motion.div key={product.id} variants={itemVariants} className="group flex flex-col relative">
+                        {/* Image Box */}
+                        <div className="relative aspect-square w-full bg-white border border-[#18181b]">
+                            {product.image ? (
+                                <Image
+                                    src={product.image}
+                                    alt={product.name}
+                                    fill
+                                    sizes="(max-width: 768px) 50vw, 25vw"
+                                    className="object-cover"
+                                />
+                            ) : (
+                                <div className="w-full h-full bg-zinc-100" />
+                            )}
 
-                    return (
-                        <motion.div key={product.id} variants={itemVariants}>
-                            <Link href={`/products/${product.handle || product.id}`} className="group flex flex-col h-full">
-                                <div className="relative w-full aspect-[3/4] bg-background-light/50 rounded-2xl overflow-hidden mb-3 border border-zinc-950/5 shadow-sm">
-                                    <Image
-                                        src={product.image}
-                                        alt={product.name}
-                                        fill
-                                        className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out z-0"
-                                    />
-                                    {/* Glassmorphism Quick view overlay */}
-                                    <div className="absolute inset-x-2 bottom-2 z-20 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-                                        <div className="w-full py-2 bg-white/80 backdrop-blur-md text-zinc-950 rounded-xl font-sans text-[10px] font-bold uppercase tracking-widest text-center shadow-lg border border-white/20">
-                                            View
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="flex flex-col mt-auto">
-                                    <h4 className="font-serif italic text-sm text-zinc-950 line-clamp-1 group-hover:text-primary transition-colors">
-                                        {product.name}
-                                    </h4>
-                                    <span className="font-sans text-xs font-medium text-zinc-950/60">
-                                        {product.price > 0 ? priceFormatted : "POA"}
-                                    </span>
-                                </div>
+                            {product.isNew && (
+                                <div className="absolute top-2 left-2 z-10 bg-[#f9a8d4] text-[#18181b] text-[10px] font-bold uppercase tracking-wider px-2 py-1 border border-[#18181b]">New</div>
+                            )}
+
+                            <Link href={`/products/${product.handle || product.id}`} className="absolute inset-0 z-10" />
+                        </div>
+
+                        {/* Product Info */}
+                        <div className="pt-4 flex flex-col items-center text-center">
+                            <Link href={`/products/${product.handle || product.id}`}>
+                                <h4 className="text-sm font-bold text-[#18181b] mb-1 hover:underline line-clamp-1">{product.name}</h4>
                             </Link>
-                        </motion.div>
-                    );
-                })}
+                            <span className="font-bold text-[#18181b] text-sm">
+                                {product.price > 0 ? formatPrice(product.price) : "Op aanvraag"}
+                            </span>
+                        </div>
+                    </motion.div>
+                ))}
             </motion.div>
         </div>
     );

@@ -2,8 +2,6 @@ import React from "react";
 import { getCustomer, logoutCustomer } from "@/app/actions/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
-import { Heart, Package, LogOut, User as UserIcon } from "lucide-react";
 
 export default async function AccountPage() {
     const customer = await getCustomer();
@@ -13,72 +11,117 @@ export default async function AccountPage() {
     }
 
     return (
-        <div className="min-h-[100dvh] bg-[#f9fafb] text-zinc-950 font-sans p-4 md:p-8 flex flex-col pt-32 pb-32">
-
-            <div className="max-w-6xl w-full mx-auto mb-16 border-b border-zinc-200 pb-8">
-                <Link
-                    href="/shop"
-                    className="flex items-center gap-2 text-zinc-500 hover:text-primary transition-colors font-sans text-sm font-medium animate-fade-in-up group w-fit mb-6"
-                >
-                    <ArrowLeftIcon className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-                    Terug naar de winkel
-                </Link>
-                <div className="flex justify-between items-end">
-                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-medium tracking-tight text-zinc-950 flex items-center gap-4">
-                        Mijn Account
-                    </h1>
-                    <form action={logoutCustomer}>
-                        <button
-                            type="submit"
-                            className="text-xs font-semibold uppercase tracking-widest text-zinc-400 hover:text-primary transition-colors flex items-center gap-2"
-                        >
-                            <LogOut size={16} /> Uitloggen
-                        </button>
-                    </form>
+        <div className="min-h-screen bg-white flex flex-col">
+            {/* Header */}
+            <div className="w-full border-b border-[#18181b] bg-mint">
+                <div className="max-w-7xl mx-auto px-6 md:px-12 pt-20 md:pt-28 pb-10 md:pb-14">
+                    <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                        <div>
+                            <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-950/40 mb-3">Mijn Account</p>
+                            <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter uppercase italic text-zinc-950 leading-[0.9]">
+                                Hallo, {customer.first_name}.
+                            </h1>
+                        </div>
+                        <form action={logoutCustomer}>
+                            <button
+                                type="submit"
+                                className="text-[10px] font-bold uppercase tracking-widest text-zinc-950/40 hover:text-zinc-950 transition-colors flex items-center gap-2"
+                            >
+                                <span className="material-symbols-outlined !text-[16px]">logout</span>
+                                Uitloggen
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
 
-            <div className="max-w-6xl w-full mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-                {/* Profile Card */}
-                <div className="md:col-span-1 bg-white p-8 rounded-3xl border border-zinc-100 shadow-sm flex flex-col gap-6">
-                    <div className="w-16 h-16 rounded-full bg-zinc-950/5 flex items-center justify-center text-zinc-950">
-                        <UserIcon size={24} />
-                    </div>
-                    <div>
-                        <h2 className="font-serif italic text-2xl text-zinc-950 mb-1">
-                            {customer.first_name} {customer.last_name}
-                        </h2>
-                        <p className="text-zinc-500 text-sm font-medium">{customer.email}</p>
-                    </div>
-                    <div className="pt-6 border-t border-zinc-100 mt-2">
-                        <Link
-                            href="/account/settings"
-                            className="text-xs font-bold uppercase tracking-widest text-zinc-950 hover:text-primary transition-colors"
-                        >
-                            Bewerk Profiel
-                        </Link>
-                    </div>
-                </div>
-
-                {/* Quick Links */}
-                <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-8">
-                    <Link href="/wishlist" className="bg-white p-8 rounded-3xl border border-zinc-100 shadow-sm hover:shadow-md transition-shadow group flex flex-col justify-between">
-                        <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-8 group-hover:scale-110 transition-transform">
-                            <Heart size={24} className="fill-primary/20" />
+            {/* Main Content */}
+            <div className="max-w-7xl w-full mx-auto px-6 md:px-12 py-12 md:py-16 flex-1">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                    {/* Profile Card */}
+                    <div className="bg-white p-8 border border-[#18181b] shadow-[4px_4px_0px_rgba(9,9,11,0.05)] flex flex-col gap-6">
+                        <div className="size-16 bg-mint border border-[#18181b] flex items-center justify-center">
+                            <span className="material-symbols-outlined !text-[24px] text-[#18181b]">person</span>
                         </div>
                         <div>
-                            <h3 className="font-serif italic text-xl text-zinc-950 mb-2">Verlanglijst</h3>
-                            <p className="text-zinc-500 text-sm">Bekijk je opgeslagen items die nu gesynchroniseerd zijn.</p>
+                            <h2 className="text-xl font-bold text-zinc-950 uppercase tracking-tight mb-1">
+                                {customer.first_name} {customer.last_name}
+                            </h2>
+                            <p className="text-sm text-zinc-950/50">{customer.email}</p>
+                        </div>
+                        <div className="pt-6 border-t border-[#18181b] mt-auto">
+                            <Link
+                                href="/account/settings"
+                                className="text-xs font-bold uppercase tracking-widest text-zinc-950 hover:text-primary transition-colors flex items-center gap-2"
+                            >
+                                <span className="material-symbols-outlined !text-[14px]">edit</span>
+                                Bewerk Profiel
+                            </Link>
+                        </div>
+                    </div>
+
+                    {/* Wishlist Card */}
+                    <Link href="/wishlist" className="group bg-white p-8 border border-[#18181b] shadow-[4px_4px_0px_rgba(9,9,11,0.05)] hover:shadow-[6px_6px_0px_rgba(9,9,11,0.08)] hover:-translate-y-[2px] transition-all flex flex-col justify-between">
+                        <div className="size-12 bg-[#ffe4e6] border border-[#18181b] flex items-center justify-center mb-8 shadow-[3px_3px_0px_rgba(9,9,11,0.05)]">
+                            <span className="material-symbols-outlined !text-[20px] text-[#18181b]" style={{ fontVariationSettings: "'FILL' 1" }}>favorite</span>
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-bold text-zinc-950 uppercase tracking-tight mb-2 group-hover:text-primary transition-colors">Verlanglijst</h3>
+                            <p className="text-sm text-zinc-950/50">Bekijk je opgeslagen favorieten.</p>
                         </div>
                     </Link>
 
-                    <Link href="/account/orders" className="bg-white p-8 rounded-3xl border border-zinc-100 shadow-sm hover:shadow-md transition-shadow group flex flex-col justify-between">
-                        <div className="w-12 h-12 rounded-2xl bg-zinc-950/10 flex items-center justify-center text-zinc-950 mb-8 group-hover:scale-110 transition-transform">
-                            <Package size={24} />
+                    {/* Orders Card */}
+                    <Link href="/account/orders" className="group bg-white p-8 border border-[#18181b] shadow-[4px_4px_0px_rgba(9,9,11,0.05)] hover:shadow-[6px_6px_0px_rgba(9,9,11,0.08)] hover:-translate-y-[2px] transition-all flex flex-col justify-between">
+                        <div className="size-12 bg-mint border border-[#18181b] flex items-center justify-center mb-8 shadow-[3px_3px_0px_rgba(9,9,11,0.05)]">
+                            <span className="material-symbols-outlined !text-[20px] text-[#18181b]">package_2</span>
                         </div>
                         <div>
-                            <h3 className="font-serif italic text-xl text-zinc-950 mb-2">Bestellingen</h3>
-                            <p className="text-zinc-500 text-sm">Volg de status van je recente aankopen.</p>
+                            <h3 className="text-lg font-bold text-zinc-950 uppercase tracking-tight mb-2 group-hover:text-primary transition-colors">Bestellingen</h3>
+                            <p className="text-sm text-zinc-950/50">Volg de status van je aankopen.</p>
+                        </div>
+                    </Link>
+                </div>
+
+                {/* CTA Banner */}
+                <div className="mt-12 bg-[#ffe4e6] border border-[#18181b] p-8 md:p-12 shadow-[4px_4px_0px_rgba(9,9,11,0.05)] flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div className="max-w-lg">
+                        <h3 className="text-2xl md:text-3xl font-extrabold tracking-tighter uppercase italic text-zinc-950 leading-[0.95] mb-3">
+                            Nieuwe collectie is binnen.
+                        </h3>
+                        <p className="text-sm text-zinc-950/60 leading-relaxed">
+                            Sharon heeft weer nieuwe pareltjes gevonden. Ontdek de laatste Copenhagen Curiosities voor je woonkamer.
+                        </p>
+                    </div>
+                    <Link
+                        href="/shop"
+                        className="shrink-0 px-8 py-4 bg-white text-[#18181b] font-bold uppercase tracking-widest text-xs border border-[#18181b] shadow-[4px_4px_0px_#18181b] hover:bg-mint-light hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all"
+                    >
+                        Ontdek de Shop
+                    </Link>
+                </div>
+
+                {/* Quick Actions Row */}
+                <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <Link href="/contact" className="group flex items-center gap-4 p-6 border border-[#18181b] bg-white hover:bg-mint-light transition-colors">
+                        <span className="material-symbols-outlined !text-[20px] text-[#18181b]">help</span>
+                        <div>
+                            <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-950 group-hover:text-primary transition-colors">Hulp Nodig?</h4>
+                            <p className="text-[10px] text-zinc-950/50 mt-0.5">Neem contact op</p>
+                        </div>
+                    </Link>
+                    <Link href="/retourbeleid" className="group flex items-center gap-4 p-6 border border-[#18181b] bg-white hover:bg-mint-light transition-colors">
+                        <span className="material-symbols-outlined !text-[20px] text-[#18181b]">undo</span>
+                        <div>
+                            <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-950 group-hover:text-primary transition-colors">Retourneren</h4>
+                            <p className="text-[10px] text-zinc-950/50 mt-0.5">30 dagen bedenktijd</p>
+                        </div>
+                    </Link>
+                    <Link href="/veelgestelde-vragen" className="group flex items-center gap-4 p-6 border border-[#18181b] bg-white hover:bg-mint-light transition-colors">
+                        <span className="material-symbols-outlined !text-[20px] text-[#18181b]">quiz</span>
+                        <div>
+                            <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-950 group-hover:text-primary transition-colors">Veelgestelde Vragen</h4>
+                            <p className="text-[10px] text-zinc-950/50 mt-0.5">Antwoorden op je vragen</p>
                         </div>
                     </Link>
                 </div>

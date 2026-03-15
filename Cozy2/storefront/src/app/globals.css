@@ -4,7 +4,8 @@
   --color-primary: #f4258c;
   --color-background-light: #f8f5f7;
   --color-background-dark: #221019;
-  --color-mint: #e8f4f1;
+  --color-mint: #d1f4e5;
+  --color-mint-light: #e8f4f1;
   --color-zinc-950: #09090b;
 
   --color-background: var(--color-background-light);

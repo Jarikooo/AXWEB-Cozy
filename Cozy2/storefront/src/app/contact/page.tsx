@@ -2,18 +2,14 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 export default function ContactPage() {
-    const router = useRouter();
     const [submitting, setSubmitting] = useState(false);
     const [submitted, setSubmitted] = useState(false);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setSubmitting(true);
-        // Simulate API call for the mockup
         setTimeout(() => {
             setSubmitting(false);
             setSubmitted(true);
@@ -21,156 +17,134 @@ export default function ContactPage() {
     };
 
     return (
-        <main className="min-h-screen pt-32 pb-24 px-6 md:px-12 bg-background-light">
-            <div className="max-w-7xl mx-auto">
-                <button
-                    onClick={() => router.back()}
-                    className="flex items-center gap-2 text-zinc-950/60 hover:text-zinc-950 transition-colors font-sans text-sm font-medium mb-12 animate-fade-in-up group"
-                >
-                    <ArrowLeftIcon className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-                    Terug
-                </button>
-                <div className="grid lg:grid-cols-12 gap-12 lg:gap-24">
+        <main className="min-h-screen bg-white flex flex-col">
+            {/* Header */}
+            <div className="w-full border-b border-[#18181b] bg-mint">
+                <div className="max-w-7xl mx-auto px-6 md:px-12 pt-24 md:pt-32 pb-10 md:pb-14">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-[#18181b]/40 mb-3">Contact</p>
+                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter uppercase italic text-[#18181b] leading-[0.9] mb-4">
+                        Laten we<br />praten.
+                    </h1>
+                    <p className="text-sm text-[#18181b]/60 max-w-md leading-relaxed">
+                        Heb je vragen over een product, je bestelling, of wil je gewoon hallo zeggen? We horen graag van je.
+                    </p>
+                </div>
+            </div>
 
-                    {/* Left Column: Info & Details */}
-                    <div className="lg:col-span-5 space-y-12 animate-fade-in-up">
-                        <div>
-                            <h1 className="font-sans text-xs font-bold uppercase tracking-widest text-zinc-950/60 mb-4">
-                                Contact
-                            </h1>
-                            <h2 className="font-serif text-5xl text-zinc-950 font-medium tracking-tight mb-6">
-                                Laten we praten.
-                            </h2>
-                            <p className="font-sans text-zinc-950/70 leading-relaxed max-w-md">
-                                Heb je vragen over een product, je bestelling, of wil je gewoon hallo zeggen? Vul het formulier in en we nemen zo snel mogelijk contact met je op.
-                            </p>
+            {/* Main Content */}
+            <div className="max-w-7xl w-full mx-auto px-6 md:px-12 py-12 md:py-20 flex-1">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
+
+                    {/* Left: Contact Info */}
+                    <div className="space-y-8 order-2 lg:order-1">
+                        <div className="bg-white p-6 md:p-8 border border-[#18181b] shadow-[4px_4px_0px_rgba(9,9,11,0.05)]">
+                            <div className="flex items-start gap-4 mb-6">
+                                <div className="size-12 bg-mint border border-[#18181b] flex items-center justify-center shrink-0 shadow-[3px_3px_0px_rgba(9,9,11,0.05)]">
+                                    <span className="material-symbols-outlined !text-[20px] text-[#18181b]">mail</span>
+                                </div>
+                                <div>
+                                    <h3 className="text-xs font-bold uppercase tracking-widest text-[#18181b] mb-1">E-mail</h3>
+                                    <a href="mailto:info@cozymssls.nl" className="text-sm text-[#18181b]/70 hover:text-primary transition-colors">
+                                        info@cozymssls.nl
+                                    </a>
+                                </div>
+                            </div>
+                            <div className="flex items-start gap-4 mb-6">
+                                <div className="size-12 bg-[#ffe4e6] border border-[#18181b] flex items-center justify-center shrink-0 shadow-[3px_3px_0px_rgba(9,9,11,0.05)]">
+                                    <span className="material-symbols-outlined !text-[20px] text-[#18181b]">call</span>
+                                </div>
+                                <div>
+                                    <h3 className="text-xs font-bold uppercase tracking-widest text-[#18181b] mb-1">Telefoon</h3>
+                                    <a href="tel:+31612345678" className="text-sm text-[#18181b]/70 hover:text-primary transition-colors">
+                                        +31 (0)6 12 34 56 78
+                                    </a>
+                                </div>
+                            </div>
+                            <div className="flex items-start gap-4">
+                                <div className="size-12 bg-mint border border-[#18181b] flex items-center justify-center shrink-0 shadow-[3px_3px_0px_rgba(9,9,11,0.05)]">
+                                    <span className="material-symbols-outlined !text-[20px] text-[#18181b]">location_on</span>
+                                </div>
+                                <div>
+                                    <h3 className="text-xs font-bold uppercase tracking-widest text-[#18181b] mb-1">Adres</h3>
+                                    <p className="text-sm text-[#18181b]/70">Maassluis, Nederland</p>
+                                </div>
+                            </div>
                         </div>
 
-                        <div className="space-y-8">
-                            <div>
-                                <h3 className="font-sans text-sm font-bold uppercase tracking-widest text-zinc-950 mb-2">E-mail</h3>
-                                <a href="mailto:info@cozymssls.nl" className="font-serif text-xl text-zinc-950/80 hover:text-zinc-950 transition-colors">
-                                    info@cozymssls.nl
-                                </a>
-                            </div>
-
-                            <div>
-                                <h3 className="font-sans text-sm font-bold uppercase tracking-widest text-zinc-950 mb-2">Telefoon</h3>
-                                <a href="tel:+31612345678" className="font-serif text-xl text-zinc-950/80 hover:text-zinc-950 transition-colors">
-                                    +31 (0)6 12 34 56 78
-                                </a>
-                            </div>
-
-                            <div className="pt-8 border-t border-zinc-950/10">
-                                <h3 className="font-sans text-sm font-bold uppercase tracking-widest text-zinc-950 mb-4">Bedrijfsgegevens</h3>
-                                <ul className="space-y-2 font-sans text-sm text-zinc-950/70">
-                                    <li><strong className="font-medium text-zinc-950">Cozy Mssls B.V.</strong></li>
-                                    <li>Straatnaam 123</li>
-                                    <li>1234 AB, Amsterdam</li>
-                                    <li>Nederland</li>
-                                    <li className="pt-2">KVK: 12345678</li>
-                                    <li>BTW: NL123456789B01</li>
-                                </ul>
-                            </div>
+                        <div className="p-6 md:p-8 border border-[#18181b] shadow-[4px_4px_0px_rgba(9,9,11,0.05)]">
+                            <h3 className="text-xs font-bold uppercase tracking-widest text-[#18181b] mb-4">Bedrijfsgegevens</h3>
+                            <ul className="space-y-2 text-sm text-[#18181b]/60">
+                                <li><strong className="text-[#18181b]">Cozy Mssls B.V.</strong></li>
+                                <li>Straatnaam 123</li>
+                                <li>1234 AB, Maassluis</li>
+                                <li>Nederland</li>
+                                <li className="pt-2">KVK: 12345678</li>
+                                <li>BTW: NL123456789B01</li>
+                            </ul>
                         </div>
                     </div>
 
-                    {/* Right Column: Contact Form */}
-                    <div className="lg:col-span-7 animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
-                        <div className="bg-white/50 backdrop-blur-md rounded-4xl p-8 md:p-12 shadow-sm border border-white/40">
+                    {/* Right: Contact Form */}
+                    <div className="order-1 lg:order-2">
+                        <div className="bg-white p-6 md:p-10 border border-[#18181b] shadow-[4px_4px_0px_rgba(9,9,11,0.05)]">
                             {submitted ? (
-                                <div className="h-full flex flex-col items-center justify-center text-center space-y-4 py-12">
-                                    <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-4">
-                                        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                        </svg>
+                                <div className="flex flex-col items-center justify-center text-center gap-4 py-12">
+                                    <div className="size-16 bg-mint border border-[#18181b] flex items-center justify-center shadow-[3px_3px_0px_rgba(9,9,11,0.05)] mb-4">
+                                        <span className="material-symbols-outlined !text-[28px] text-[#18181b]">check</span>
                                     </div>
-                                    <h3 className="font-serif text-2xl text-zinc-950">Bericht verzonden</h3>
-                                    <p className="font-sans text-zinc-950/70">
+                                    <h3 className="text-2xl font-extrabold tracking-tighter uppercase italic text-[#18181b]">Bericht verzonden</h3>
+                                    <p className="text-sm text-[#18181b]/60">
                                         Bedankt voor je bericht. We streven ernaar om binnen 24 uur te reageren.
                                     </p>
                                     <button
                                         onClick={() => setSubmitted(false)}
-                                        className="mt-6 px-8 py-3 bg-zinc-100 hover:bg-zinc-200 text-zinc-950 rounded-full font-sans text-xs uppercase tracking-widest font-bold transition-colors"
+                                        className="mt-4 px-8 py-3 bg-white text-[#18181b] font-bold uppercase tracking-widest text-xs border border-[#18181b] shadow-[4px_4px_0px_#18181b] hover:bg-mint-light hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all"
                                     >
                                         Nieuw bericht sturen
                                     </button>
                                 </div>
                             ) : (
-                                <form onSubmit={handleSubmit} className="space-y-6">
-                                    <div className="grid md:grid-cols-2 gap-6">
-                                        <div className="space-y-2">
-                                            <label htmlFor="firstName" className="font-sans text-xs font-bold uppercase tracking-widest text-zinc-950/70 ml-2">Voornaam</label>
-                                            <input
-                                                type="text"
-                                                id="firstName"
-                                                required
-                                                className="w-full bg-zinc-50 border-none rounded-2xl px-6 py-4 focus:ring-1 focus:ring-zinc-950 font-sans placeholder:text-zinc-950/30 outline-none transition-all"
-                                                placeholder="Jan"
-                                            />
+                                <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <div className="flex flex-col gap-2">
+                                            <label htmlFor="firstName" className="text-xs font-bold uppercase tracking-widest text-[#18181b]">Voornaam</label>
+                                            <input type="text" id="firstName" required className="w-full bg-white border border-[#18181b] px-5 py-4 text-[#18181b] text-sm focus:outline-none focus:ring-1 focus:ring-primary transition-all placeholder:text-[#18181b]/30" placeholder="Jan" />
                                         </div>
-                                        <div className="space-y-2">
-                                            <label htmlFor="lastName" className="font-sans text-xs font-bold uppercase tracking-widest text-zinc-950/70 ml-2">Achternaam</label>
-                                            <input
-                                                type="text"
-                                                id="lastName"
-                                                required
-                                                className="w-full bg-zinc-50 border-none rounded-2xl px-6 py-4 focus:ring-1 focus:ring-zinc-950 font-sans placeholder:text-zinc-950/30 outline-none transition-all"
-                                                placeholder="Jansen"
-                                            />
+                                        <div className="flex flex-col gap-2">
+                                            <label htmlFor="lastName" className="text-xs font-bold uppercase tracking-widest text-[#18181b]">Achternaam</label>
+                                            <input type="text" id="lastName" required className="w-full bg-white border border-[#18181b] px-5 py-4 text-[#18181b] text-sm focus:outline-none focus:ring-1 focus:ring-primary transition-all placeholder:text-[#18181b]/30" placeholder="Jansen" />
                                         </div>
                                     </div>
 
-                                    <div className="space-y-2">
-                                        <label htmlFor="email" className="font-sans text-xs font-bold uppercase tracking-widest text-zinc-950/70 ml-2">E-mailadres</label>
-                                        <input
-                                            type="email"
-                                            id="email"
-                                            required
-                                            className="w-full bg-zinc-50 border-none rounded-2xl px-6 py-4 focus:ring-1 focus:ring-zinc-950 font-sans placeholder:text-zinc-950/30 outline-none transition-all"
-                                            placeholder="jan@voorbeeld.nl"
-                                        />
+                                    <div className="flex flex-col gap-2">
+                                        <label htmlFor="email" className="text-xs font-bold uppercase tracking-widest text-[#18181b]">E-mailadres</label>
+                                        <input type="email" id="email" required className="w-full bg-white border border-[#18181b] px-5 py-4 text-[#18181b] text-sm focus:outline-none focus:ring-1 focus:ring-primary transition-all placeholder:text-[#18181b]/30" placeholder="jan@voorbeeld.nl" />
                                     </div>
 
-                                    <div className="space-y-2">
-                                        <label htmlFor="subject" className="font-sans text-xs font-bold uppercase tracking-widest text-zinc-950/70 ml-2">Onderwerp</label>
-                                        <input
-                                            type="text"
-                                            id="subject"
-                                            required
-                                            className="w-full bg-zinc-50 border-none rounded-2xl px-6 py-4 focus:ring-1 focus:ring-zinc-950 font-sans placeholder:text-zinc-950/30 outline-none transition-all"
-                                            placeholder="Waar gaat het over?"
-                                        />
+                                    <div className="flex flex-col gap-2">
+                                        <label htmlFor="subject" className="text-xs font-bold uppercase tracking-widest text-[#18181b]">Onderwerp</label>
+                                        <input type="text" id="subject" required className="w-full bg-white border border-[#18181b] px-5 py-4 text-[#18181b] text-sm focus:outline-none focus:ring-1 focus:ring-primary transition-all placeholder:text-[#18181b]/30" placeholder="Waar gaat het over?" />
                                     </div>
 
-                                    <div className="space-y-2">
-                                        <label htmlFor="message" className="font-sans text-xs font-bold uppercase tracking-widest text-zinc-950/70 ml-2">Bericht</label>
-                                        <textarea
-                                            id="message"
-                                            rows={5}
-                                            required
-                                            className="w-full bg-zinc-50 border-none rounded-2xl px-6 py-4 focus:ring-1 focus:ring-zinc-950 font-sans placeholder:text-zinc-950/30 outline-none transition-all resize-none"
-                                            placeholder="Typ hier je bericht..."
-                                        />
+                                    <div className="flex flex-col gap-2">
+                                        <label htmlFor="message" className="text-xs font-bold uppercase tracking-widest text-[#18181b]">Bericht</label>
+                                        <textarea id="message" rows={5} required className="w-full bg-white border border-[#18181b] px-5 py-4 text-[#18181b] text-sm focus:outline-none focus:ring-1 focus:ring-primary transition-all placeholder:text-[#18181b]/30 resize-none" placeholder="Typ hier je bericht..." />
                                     </div>
 
-                                    <div className="pt-4">
-                                        <button
-                                            type="submit"
-                                            disabled={submitting}
-                                            className="w-full py-4 bg-zinc-950 text-background-light rounded-2xl font-sans text-xs font-bold uppercase tracking-widest transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed active:scale-[0.98]"
-                                        >
-                                            {submitting ? "Verzenden..." : "Verstuur Bericht"}
-                                        </button>
-                                    </div>
-                                    <p className="text-center font-sans text-xs text-zinc-950/50">
-                                        Door dit formulier te verzenden ga je akkoord met ons <Link href="/privacybeleid" className="underline hover:text-zinc-950">privacybeleid</Link>.
+                                    <button
+                                        type="submit"
+                                        disabled={submitting}
+                                        className="w-full mt-2 py-5 bg-primary text-white font-bold uppercase tracking-widest text-xs border border-[#18181b] shadow-[4px_4px_0px_#18181b] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
+                                    >
+                                        {submitting ? "Verzenden..." : "Verstuur Bericht"}
+                                    </button>
+                                    <p className="text-center text-xs text-[#18181b]/40">
+                                        Door dit formulier te verzenden ga je akkoord met ons <Link href="/privacybeleid" className="underline hover:text-[#18181b]">privacybeleid</Link>.
                                     </p>
                                 </form>
                             )}
                         </div>
                     </div>
-
                 </div>
             </div>
         </main>

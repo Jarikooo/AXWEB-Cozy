@@ -166,10 +166,10 @@ export function Brands() {
                                 <div
                                     key={brand.name} // IMPORTANT: Keeps DOM nodes identical, relying on CSS for movement
                                     className={`
-                                        absolute left-1/2 top-4 md:top-0 h-[450px] md:h-full w-[85%] md:w-[32%] max-w-[400px] overflow-hidden rounded-[2rem]
+                                        absolute left-1/2 top-4 md:top-0 h-[450px] md:h-full w-[85%] md:w-[32%] max-w-[400px] overflow-hidden
                                         ${isPop
-                                            ? 'bg-background-light shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15)] border border-zinc-950/15'
-                                            : 'bg-white shadow-sm border border-zinc-950/5'
+                                            ? 'bg-white shadow-[6px_6px_0px_rgba(9,9,11,0.1)] border border-[#18181b]'
+                                            : 'bg-white shadow-[4px_4px_0px_rgba(9,9,11,0.05)] border border-[#18181b]/30'
                                         }
                                         flex flex-col group transition-all duration-[1200ms] ease-[cubic-bezier(0.25,1,0.5,1)] origin-center
                                     `}

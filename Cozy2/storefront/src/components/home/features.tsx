@@ -53,10 +53,10 @@ function CeramicsShuffler() {
             {cards.map((card, i) => (
                 <div
                     key={card.id}
-                    className={`shuffler-card absolute w-64 h-40 ${card.color} rounded-2xl shadow-lg flex items-center justify-center p-6 border border-white/20 backdrop-blur-sm`}
+                    className={`shuffler-card absolute w-64 h-40 ${card.color} shadow-[4px_4px_0px_rgba(9,9,11,0.1)] flex items-center justify-center p-6 border border-[#18181b]`}
                     style={{ transformOrigin: "top center" }}
                 >
-                    <span className="font-serif italic text-zinc-950 text-lg text-center leading-tight">
+                    <span className="font-extrabold text-[#18181b] text-sm uppercase tracking-widest text-center leading-tight">
                         {card.title}
                     </span>
                 </div>
@@ -191,19 +191,19 @@ function WishlistScheduler() {
                         key={i}
                         ref={i === 4 ? boxReff : null}
                         className={`
-              w-full aspect-square border-2 border-zinc-950/10 rounded-xl 
+              w-full aspect-square border border-[#18181b]/10
               flex items-center justify-center transition-colors
               ${i === 4 ? 'relative' : ''}
             `}
                     >
-                        {i === 4 && <div className="absolute inset-0 bg-primary/20 rounded-xl mix-blend-multiply" />}
+                        {i === 4 && <div className="absolute inset-0 bg-primary/20 mix-blend-multiply" />}
                     </div>
                 ))}
             </div>
 
             <button
                 ref={btnRef}
-                className="px-6 py-3 bg-zinc-950 text-background-light rounded-full text-xs uppercase tracking-widest font-semibold w-[80%]"
+                className="px-6 py-3 bg-[#18181b] text-white text-xs uppercase tracking-widest font-bold w-[80%] border border-[#18181b] shadow-[3px_3px_0px_rgba(9,9,11,0.2)]"
             >
                 Cadeaus Bekijken
             </button>
@@ -224,43 +224,43 @@ export function Features() {
         <section className="py-24 px-6 md:px-12 bg-background-light text-zinc-950 w-full">
             <div className="max-w-7xl mx-auto">
                 <div className="mb-16">
-                    <h2 className="font-sans text-sm uppercase tracking-[0.2em] font-medium mb-4 text-primary">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-primary mb-4">
                         Boutique Uitgelicht
-                    </h2>
-                    <p className="font-serif italic text-3xl md:text-5xl max-w-2xl leading-tight">
-                        Wij verkopen niet zomaar producten. We creëren momenten van rust.
                     </p>
+                    <h2 className="text-3xl md:text-5xl font-extrabold tracking-tighter uppercase italic text-[#18181b] leading-[0.95] max-w-2xl">
+                        Wij verkopen niet zomaar producten. We creëren momenten van rust.
+                    </h2>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
                     {/* Card 1 */}
-                    <div className="bg-white rounded-[2rem] p-8 min-h-[400px] flex flex-col border border-zinc-950/5 shadow-sm overflow-hidden group">
-                        <h3 className="font-sans font-semibold mb-2">Nieuw Binnen</h3>
-                        <p className="text-sm text-zinc-950/60 mb-8">Ontdek de nieuwste items</p>
+                    <div className="bg-white p-8 min-h-[350px] md:min-h-[400px] flex flex-col border border-[#18181b] shadow-[4px_4px_0px_rgba(9,9,11,0.05)] overflow-hidden group">
+                        <h3 className="text-sm font-bold uppercase tracking-widest text-[#18181b] mb-1">Nieuw Binnen</h3>
+                        <p className="text-xs text-[#18181b]/50 mb-8">Ontdek de nieuwste items</p>
                         <div className="flex-1 flex items-center justify-center">
                             <CeramicsShuffler />
                         </div>
                     </div>
 
                     {/* Card 2 */}
-                    <div className="bg-[#EAE4DC] rounded-[2rem] p-8 min-h-[400px] flex flex-col border border-zinc-950/5 shadow-sm overflow-hidden">
-                        <h3 className="font-sans font-semibold mb-2">Bezoek onze Boutique</h3>
-                        <p className="text-sm text-zinc-950/60">Gezellig winkelen in Maassluis</p>
+                    <div className="bg-mint p-8 min-h-[350px] md:min-h-[400px] flex flex-col border border-[#18181b] shadow-[4px_4px_0px_rgba(9,9,11,0.05)] overflow-hidden">
+                        <h3 className="text-sm font-bold uppercase tracking-widest text-[#18181b] mb-1">Bezoek onze Boutique</h3>
+                        <p className="text-xs text-[#18181b]/50">Gezellig winkelen in Maassluis</p>
                         <div className="flex-1 mt-6">
                             <EditorialTypewriter />
                         </div>
                     </div>
 
                     {/* Card 3 */}
-                    <div className="bg-white rounded-[2rem] p-8 min-h-[400px] flex flex-col border border-zinc-950/5 shadow-sm overflow-hidden">
+                    <div className="bg-white p-8 min-h-[350px] md:min-h-[400px] flex flex-col border border-[#18181b] shadow-[4px_4px_0px_rgba(9,9,11,0.05)] overflow-hidden">
                         <div className="flex justify-between items-start mb-6">
                             <div>
-                                <h3 className="font-sans font-semibold mb-2">Unieke Cadeaus</h3>
-                                <p className="text-sm text-zinc-950/60">Vind het perfecte cadeau</p>
+                                <h3 className="text-sm font-bold uppercase tracking-widest text-[#18181b] mb-1">Unieke Cadeaus</h3>
+                                <p className="text-xs text-[#18181b]/50">Vind het perfecte cadeau</p>
                             </div>
                         </div>
-                        <div className="flex-1 bg-background-light/50 rounded-2xl relative">
+                        <div className="flex-1 relative">
                             <WishlistScheduler />
                         </div>
                     </div>

@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { loginCustomer } from "@/app/actions/auth";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -24,7 +23,6 @@ export default function LoginPage() {
             setLoading(false);
         } else {
             router.push("/account");
-            // Hard refresh to update Navbar/Wishlist global state
             router.refresh();
         }
     };
@@ -33,82 +31,117 @@ export default function LoginPage() {
     React.useEffect(() => { setCartId(localStorage.getItem("cart_id")); }, []);
 
     return (
-        <div className="min-h-[100dvh] bg-[#f9fafb] text-zinc-950 font-sans p-4 md:p-8 flex flex-col justify-center items-center py-32 relative overflow-hidden">
-
-            {/* Subtle background noise/texture */}
-            <div className="fixed inset-0 z-0 opacity-[0.03] pointer-events-none mix-blend-overlay" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/noisy-texture.png")' }}></div>
-
-            <div className="w-full max-w-md relative z-10 flex flex-col items-center">
-                <button
-                    onClick={() => router.push('/shop')}
-                    className="flex items-center gap-2 text-zinc-500 hover:text-primary transition-colors font-sans text-xs font-medium uppercase tracking-widest animate-fade-in-up group mb-12 self-start"
-                >
-                    <ArrowLeftIcon className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-                    Terug naar de winkel
-                </button>
-
-                <div className="w-full bg-white/70 backdrop-blur-xl rounded-[2.5rem] p-10 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] border border-white/50 animate-fade-in-up">
-                    <div className="text-center mb-10">
-                        <h1 className="font-serif italic text-4xl text-zinc-950 mb-3">Welkom terug</h1>
-                        <p className="text-zinc-500 text-sm font-medium tracking-wide">
+        <div className="min-h-screen bg-white flex flex-col">
+            {/* Split layout: form left, promo right */}
+            <div className="flex-1 grid grid-cols-1 md:grid-cols-2 min-h-screen">
+                {/* Left: Login Form */}
+                <div className="flex flex-col justify-center px-6 md:px-16 lg:px-24 pt-28 md:pt-16 pb-16">
+                    <div className="max-w-md w-full mx-auto">
+                        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tighter uppercase italic text-zinc-950 leading-[0.9] mb-3">
+                            Welkom<br />Terug.
+                        </h1>
+                        <p className="text-sm text-zinc-950/60 mb-10">
                             Log in om je verlanglijst en bestellingen te bekijken.
+                        </p>
+
+                        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+                            {error && (
+                                <div className="p-4 bg-[#ffe4e6] text-zinc-950 border border-[#18181b] text-sm font-bold">
+                                    {error}
+                                </div>
+                            )}
+                            {cartId && <input type="hidden" name="cartId" value={cartId} />}
+
+                            <div className="flex flex-col gap-2">
+                                <label className="text-xs font-bold uppercase tracking-widest text-zinc-950">
+                                    E-mailadres
+                                </label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    required
+                                    className="w-full bg-white border border-[#18181b] px-5 py-4 text-zinc-950 text-sm focus:outline-none focus:ring-1 focus:ring-primary transition-all placeholder:text-zinc-950/30"
+                                    placeholder="jouw@email.nl"
+                                />
+                            </div>
+
+                            <div className="flex flex-col gap-2">
+                                <div className="flex justify-between items-end">
+                                    <label className="text-xs font-bold uppercase tracking-widest text-zinc-950">
+                                        Wachtwoord
+                                    </label>
+                                    <span className="text-[10px] uppercase font-bold text-zinc-950/40 hover:text-primary cursor-pointer transition-colors">
+                                        Vergeten?
+                                    </span>
+                                </div>
+                                <input
+                                    type="password"
+                                    name="password"
+                                    required
+                                    className="w-full bg-white border border-[#18181b] px-5 py-4 text-zinc-950 text-sm focus:outline-none focus:ring-1 focus:ring-primary transition-all placeholder:text-zinc-950/30"
+                                    placeholder="••••••••"
+                                />
+                            </div>
+
+                            <button
+                                type="submit"
+                                disabled={loading}
+                                className="w-full mt-4 bg-zinc-950 text-white py-5 text-xs font-bold uppercase tracking-widest border border-[#18181b] shadow-[4px_4px_0px_#18181b] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
+                            >
+                                {loading ? "Bezig met inloggen..." : "Inloggen"}
+                            </button>
+                        </form>
+
+                        <div className="mt-8 pt-8 border-t border-[#18181b]">
+                            <p className="text-sm text-zinc-950/60">
+                                Nog geen account?{" "}
+                                <Link href="/account/register" className="font-bold text-primary hover:underline underline-offset-4">
+                                    Maak er één aan
+                                </Link>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Right: Promo Panel */}
+                <div className="hidden md:flex flex-col justify-between bg-mint border-l border-[#18181b] p-12 lg:p-16">
+                    <div>
+                        <h2 className="text-3xl lg:text-4xl font-extrabold tracking-tighter uppercase italic text-zinc-950 leading-[0.95] mb-6">
+                            Jouw persoonlijke<br />Cozy ruimte.
+                        </h2>
+                        <p className="text-sm text-zinc-950/60 leading-relaxed max-w-sm">
+                            Met een account bewaar je je favorieten, volg je je bestellingen en ontvang je als eerste exclusieve aanbiedingen.
                         </p>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-                        {error && (
-                            <div className="p-4 bg-primary/10 text-primary rounded-xl text-sm font-medium border border-primary/20 text-center">
-                                {error}
+                    <div className="space-y-6">
+                        <div className="flex items-start gap-4">
+                            <div className="size-10 bg-white border border-[#18181b] flex items-center justify-center shrink-0 shadow-[3px_3px_0px_rgba(9,9,11,0.05)]">
+                                <span className="material-symbols-outlined !text-[18px] text-[#18181b]">favorite</span>
                             </div>
-                        )}
-                        {cartId && <input type="hidden" name="cartId" value={cartId} />}
-                        <div className="flex flex-col gap-2">
-                            <label className="text-xs font-bold uppercase tracking-widest text-zinc-950/70 ml-1">
-                                E-mailadres
-                            </label>
-                            <input
-                                type="email"
-                                name="email"
-                                required
-                                className="w-full bg-white/50 border border-zinc-200 rounded-2xl px-5 py-4 text-zinc-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all font-medium"
-                                placeholder="jouw@email.nl"
-                            />
-                        </div>
-                        <div className="flex flex-col gap-2">
-                            <div className="flex justify-between items-end">
-                                <label className="text-xs font-bold uppercase tracking-widest text-zinc-950/70 ml-1">
-                                    Wachtwoord
-                                </label>
-                                <span className="text-[10px] uppercase font-bold text-zinc-400 hover:text-primary cursor-pointer transition-colors">
-                                    Vergeten?
-                                </span>
+                            <div>
+                                <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-950 mb-1">Verlanglijst</h4>
+                                <p className="text-xs text-zinc-950/50">Bewaar producten en synchroniseer overal.</p>
                             </div>
-                            <input
-                                type="password"
-                                name="password"
-                                required
-                                className="w-full bg-white/50 border border-zinc-200 rounded-2xl px-5 py-4 text-zinc-950 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all font-medium"
-                                placeholder="••••••••"
-                            />
                         </div>
-
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="w-full mt-4 bg-zinc-950 text-background-light rounded-2xl py-4 font-sans text-xs font-bold uppercase tracking-widest hover:bg-primary hover:text-white transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed group relative overflow-hidden"
-                        >
-                            <span className="relative z-10">{loading ? "Bezig met inloggen..." : "Inloggen"}</span>
-                            <div className="absolute inset-0 bg-white/20 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300 ease-in-out z-0"></div>
-                        </button>
-                    </form>
-
-                    <div className="mt-8 text-center">
-                        <p className="text-sm text-zinc-500">
-                            Nog geen account?{" "}
-                            <Link href="/account/register" className="font-bold text-primary hover:underline underline-offset-4">
-                                Maak er één aan
-                            </Link>
-                        </p>
+                        <div className="flex items-start gap-4">
+                            <div className="size-10 bg-white border border-[#18181b] flex items-center justify-center shrink-0 shadow-[3px_3px_0px_rgba(9,9,11,0.05)]">
+                                <span className="material-symbols-outlined !text-[18px] text-[#18181b]">local_shipping</span>
+                            </div>
+                            <div>
+                                <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-950 mb-1">Gratis Verzending</h4>
+                                <p className="text-xs text-zinc-950/50">Vanaf €150 altijd gratis thuisbezorgd.</p>
+                            </div>
+                        </div>
+                        <div className="flex items-start gap-4">
+                            <div className="size-10 bg-white border border-[#18181b] flex items-center justify-center shrink-0 shadow-[3px_3px_0px_rgba(9,9,11,0.05)]">
+                                <span className="material-symbols-outlined !text-[18px] text-[#18181b]">verified</span>
+                            </div>
+                            <div>
+                                <h4 className="text-xs font-bold uppercase tracking-widest text-zinc-950 mb-1">30 Dagen Bedenktijd</h4>
+                                <p className="text-xs text-zinc-950/50">Niet tevreden? Retourneer eenvoudig.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
