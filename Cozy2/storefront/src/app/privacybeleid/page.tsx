@@ -2,7 +2,6 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 export default function PrivacyPolicyPage() {
     const router = useRouter();
@@ -13,14 +12,14 @@ export default function PrivacyPolicyPage() {
                     onClick={() => router.back()}
                     className="flex items-center gap-2 text-zinc-950/60 hover:text-zinc-950 transition-colors font-sans text-sm font-medium animate-fade-in-up group"
                 >
-                    <ArrowLeftIcon className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                    <span className="material-symbols-outlined text-base group-hover:-translate-x-1 transition-transform">arrow_back</span>
                     Terug
                 </button>
                 <div className="text-center border-b border-zinc-950/10 pb-12 mb-12">
                     <h1 className="font-sans text-xs font-bold uppercase tracking-widest text-zinc-950/60 mb-4">
                         Juridisch
                     </h1>
-                    <h2 className="font-serif text-4xl md:text-5xl text-zinc-950 font-medium tracking-tight">
+                    <h2 className="text-4xl md:text-5xl text-zinc-950 font-extrabold tracking-tighter uppercase italic">
                         Privacybeleid
                     </h2>
                     <p className="font-sans text-zinc-950/50 mt-4">Laatst bijgewerkt: {new Date().toLocaleDateString('nl-NL')}</p>

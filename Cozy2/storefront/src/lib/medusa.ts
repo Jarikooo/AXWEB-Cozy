@@ -8,13 +8,12 @@ if (process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL) {
 
 export const sdk = new Medusa({
     baseUrl: MEDUSA_BACKEND_URL,
-    debug: true,
+    debug: process.env.NODE_ENV === "development",
     publishableKey: process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
 })
 
 export const fetchMedusaProducts = async (filters: any = {}): Promise<{ products: Product[], count: number }> => {
     try {
-        console.log("[Medusa SDK] Fetching products with filters:", filters);
         const queryParams: any = {
             fields: "id,title,handle,description,thumbnail,images.url,variants.id,variants.title,variants.calculated_price,variants.options.value,variants.options.option.title,categories.name,categories.handle,categories.parent_category_id,metadata",
             limit: 12,
@@ -79,7 +78,6 @@ export const fetchMedusaProducts = async (filters: any = {}): Promise<{ products
 
 export const fetchMedusaCategories = async (): Promise<CategoryNode[]> => {
     try {
-        console.log("[Medusa SDK] Fetching categories...");
         const response = await sdk.store.category.list({
             fields: "id,name,handle,parent_category_id,category_children.id,category_children.name,category_children.handle"
         })

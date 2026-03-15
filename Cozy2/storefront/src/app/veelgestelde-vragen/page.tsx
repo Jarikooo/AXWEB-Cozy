@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { ChevronDownIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 
 // Helper Component for Accordion Item
@@ -14,11 +13,11 @@ function FAQItem({ question, answer }: { question: string, answer: React.ReactNo
                 className="w-full py-6 flex justify-between items-center text-left focus:outline-none group"
                 onClick={() => setIsOpen(!isOpen)}
             >
-                <span className="font-serif text-xl sm:text-2xl text-zinc-950 group-hover:text-zinc-950/70 transition-colors">
+                <span className="text-lg sm:text-xl text-zinc-950 font-bold group-hover:text-zinc-950/70 transition-colors">
                     {question}
                 </span>
                 <span className={`ml-6 flex-shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180' : 'rotate-0'}`}>
-                    <ChevronDownIcon className="w-6 h-6 text-zinc-950/50" />
+                    <span className="material-symbols-outlined text-2xl text-zinc-950/50">expand_more</span>
                 </span>
             </button>
             <div
@@ -91,14 +90,14 @@ export default function FAQPage() {
                     onClick={() => router.back()}
                     className="flex items-center gap-2 text-zinc-950/60 hover:text-zinc-950 transition-colors font-sans text-sm font-medium mb-12 animate-fade-in-up group"
                 >
-                    <ArrowLeftIcon className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                    <span className="material-symbols-outlined text-base group-hover:-translate-x-1 transition-transform">arrow_back</span>
                     Terug
                 </button>
-                <div className="text-center mb-16 animate-fade-in-up">
+                <div className="text-center mb-16">
                     <h1 className="font-sans text-xs font-bold uppercase tracking-widest text-zinc-950/60 mb-4">
                         Hulp Nodig?
                     </h1>
-                    <h2 className="font-serif text-4xl md:text-6xl text-zinc-950 font-medium tracking-tight mb-6">
+                    <h2 className="text-4xl md:text-6xl text-zinc-950 font-extrabold tracking-tighter uppercase italic mb-6">
                         Veelgestelde Vragen
                     </h2>
                     <p className="font-sans text-zinc-950/70 max-w-lg mx-auto">
@@ -108,7 +107,7 @@ export default function FAQPage() {
 
                 <div className="space-y-16 animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
                     {faqs.map((section, index) => (
-                        <div key={index} className="bg-white/40 backdrop-blur-sm rounded-4xl p-8 md:p-12 shadow-sm border border-white/40">
+                        <div key={index} className="bg-white p-8 md:p-12 border border-[#18181b] shadow-[4px_4px_0px_#18181b]">
                             <h3 className="font-sans text-xs font-bold uppercase tracking-widest text-zinc-950/50 mb-6">
                                 {section.category}
                             </h3>
@@ -122,10 +121,10 @@ export default function FAQPage() {
                 </div>
 
                 <div className="mt-16 text-center animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
-                    <p className="font-serif text-xl text-zinc-950 mb-6">Niet gevonden wat je zocht?</p>
+                    <p className="text-xl text-zinc-950 font-extrabold uppercase tracking-tighter italic mb-6">Niet gevonden wat je zocht?</p>
                     <a
                         href="/contact"
-                        className="inline-block px-8 py-4 bg-zinc-950 text-background-light rounded-full font-sans text-xs font-bold uppercase tracking-widest transition-all duration-300 shadow-md hover:shadow-lg hover:bg-black"
+                        className="inline-block px-8 py-4 bg-primary text-white font-sans text-xs font-bold uppercase tracking-widest transition-all duration-300 border border-zinc-950 hover:bg-primary/90"
                     >
                         Neem Contact Op
                     </a>

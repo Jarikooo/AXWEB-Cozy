@@ -4,7 +4,6 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 export default function NotFound() {
     const router = useRouter();
@@ -15,7 +14,7 @@ export default function NotFound() {
                     onClick={() => router.back()}
                     className="flex items-center gap-2 text-zinc-950/60 hover:text-zinc-950 transition-colors font-sans text-sm font-medium animate-fade-in-up group"
                 >
-                    <ArrowLeftIcon className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                    <span className="material-symbols-outlined text-base group-hover:-translate-x-1 transition-transform">arrow_back</span>
                     Terug
                 </button>
             </div>
@@ -32,7 +31,7 @@ export default function NotFound() {
                 </div>
 
                 <div className="animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
-                    <h1 className="font-serif text-6xl md:text-8xl text-zinc-950 font-medium tracking-tight mb-4">
+                    <h1 className="text-6xl md:text-8xl text-zinc-950 font-extrabold tracking-tighter uppercase italic mb-4">
                         404
                     </h1>
                     <h2 className="font-sans text-xl md:text-2xl text-zinc-950/80 font-light mb-8">
@@ -45,13 +44,13 @@ export default function NotFound() {
                     <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
                         <Link
                             href="/shop"
-                            className="w-full sm:w-auto px-8 py-4 bg-zinc-950 text-background-light rounded-full font-sans text-xs font-bold uppercase tracking-widest transition-all duration-300 shadow-md hover:shadow-lg hover:bg-black"
+                            className="w-full sm:w-auto px-8 py-4 bg-primary text-white font-sans text-xs font-bold uppercase tracking-widest transition-all duration-300 border border-zinc-950 hover:bg-primary/90"
                         >
                             Verder Winkelen
                         </Link>
                         <Link
                             href="/"
-                            className="w-full sm:w-auto px-8 py-4 bg-white/50 backdrop-blur-sm text-zinc-950 border border-zinc-950/10 rounded-full font-sans text-xs font-bold uppercase tracking-widest transition-all duration-300 hover:bg-white"
+                            className="w-full sm:w-auto px-8 py-4 bg-white text-zinc-950 border border-zinc-950 font-sans text-xs font-bold uppercase tracking-widest transition-all duration-300 hover:bg-mint-light"
                         >
                             Terug naar Home
                         </Link>

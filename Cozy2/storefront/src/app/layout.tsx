@@ -15,8 +15,11 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Cozy2",
-  description: "Copenhagen Curiosities.",
+  title: {
+    default: "Cozy Maassluis — Copenhagen Curiosities",
+    template: "%s | Cozy Maassluis",
+  },
+  description: "Vrolijke conceptstore vol échte blijmakers. Van Scandinavisch design tot Nederlandse pareltjes.",
 };
 
 export default function RootLayout({
@@ -25,10 +28,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="nl">
       <head>
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet" />
       </head>
       <body
         className={`${manrope.variable} antialiased`}

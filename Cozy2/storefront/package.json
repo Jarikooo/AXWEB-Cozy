@@ -10,8 +10,7 @@
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
-    "@heroicons/react": "^2.2.0",
-    "@medusajs/js-sdk": "^2.13.1",
+"@medusajs/js-sdk": "^2.13.1",
     "@medusajs/types": "^2.13.1",
     "@radix-ui/react-avatar": "^1.1.11",
     "clsx": "^2.1.1",

@@ -31,7 +31,14 @@ export function StitchHome() {
             <section className="bg-mint border-b border-zinc-950 p-6 pt-24 md:p-12 md:pt-32">
                 <div className="flex flex-col md:flex-row gap-6 md:gap-12 max-w-5xl mx-auto items-center">
                     <div className="border border-zinc-950 bg-white aspect-[4/5] md:aspect-square md:flex-1 overflow-hidden relative sharp-shadow w-full">
-                        <img alt="Minimalist interior with colorful ceramic vases" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvKQlLTlZRFj4GGTyU-9EwyaYJ_FGzquUAN5HnNPE_s0I5etHcPsoSlNLXbNj8rkDziclemsY1FTnGTTjYrIzmyxHkTy9Gdh36F2Fy9I5atRtSTSLXhCruAmmwoXNhRU78X-kq3FRksPc3Rl8F19I6SiQe7qIlhADuaoV1tvruSGeQw3k7EGIcJbI0fxpu4Mz1E6aU81kB_vrfWdmOPLtjQDP06t1z6BO0YYCtF7zR2caUhrOrZvgNJqOc5Hdjfh9vGTgTJH_ZosU" />
+                        <Image
+                            alt="Minimalist interior with colorful ceramic vases"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvKQlLTlZRFj4GGTyU-9EwyaYJ_FGzquUAN5HnNPE_s0I5etHcPsoSlNLXbNj8rkDziclemsY1FTnGTTjYrIzmyxHkTy9Gdh36F2Fy9I5atRtSTSLXhCruAmmwoXNhRU78X-kq3FRksPc3Rl8F19I6SiQe7qIlhADuaoV1tvruSGeQw3k7EGIcJbI0fxpu4Mz1E6aU81kB_vrfWdmOPLtjQDP06t1z6BO0YYCtF7zR2caUhrOrZvgNJqOc5Hdjfh9vGTgTJH_ZosU"
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                            priority
+                        />
                         <div className="absolute top-4 left-4 bg-primary text-white text-[10px] font-bold uppercase tracking-widest px-2 py-1">
                             New Drop
                         </div>

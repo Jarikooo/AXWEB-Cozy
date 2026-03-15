@@ -3,7 +3,6 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 export default function ReturnPolicyPage() {
     const router = useRouter();
@@ -14,14 +13,14 @@ export default function ReturnPolicyPage() {
                     onClick={() => router.back()}
                     className="flex items-center gap-2 text-zinc-950/60 hover:text-zinc-950 transition-colors font-sans text-sm font-medium animate-fade-in-up group"
                 >
-                    <ArrowLeftIcon className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                    <span className="material-symbols-outlined text-base group-hover:-translate-x-1 transition-transform">arrow_back</span>
                     Terug
                 </button>
                 <div className="text-center border-b border-zinc-950/10 pb-12 mb-12">
                     <h1 className="font-sans text-xs font-bold uppercase tracking-widest text-zinc-950/60 mb-4">
                         Klantenservice
                     </h1>
-                    <h2 className="font-serif text-4xl md:text-5xl text-zinc-950 font-medium tracking-tight">
+                    <h2 className="text-4xl md:text-5xl text-zinc-950 font-extrabold tracking-tighter uppercase italic">
                         Retourbeleid
                     </h2>
                 </div>
@@ -68,12 +67,12 @@ export default function ReturnPolicyPage() {
                         <li>Gepersonaliseerde of op maat gemaakte artikelen.</li>
                     </ul>
 
-                    <div className="mt-12 p-8 bg-zinc-50 rounded-4xl border border-zinc-950/10 text-center">
-                        <h4 className="font-serif text-2xl text-zinc-950 mt-0">Heb je vragen over je retour?</h4>
+                    <div className="mt-12 p-8 bg-mint border border-[#18181b] shadow-[4px_4px_0px_#18181b] text-center">
+                        <h4 className="text-2xl text-zinc-950 font-extrabold uppercase tracking-tighter italic mt-0">Heb je vragen over je retour?</h4>
                         <p className="font-sans text-zinc-950/70 mb-6">Ons klantenserviceteam staat klaar om je te helpen.</p>
                         <Link
                             href="/contact"
-                            className="inline-block px-8 py-3 bg-zinc-950 text-background-light rounded-full font-sans text-xs font-bold uppercase tracking-widest transition-all duration-300 shadow-md hover:bg-black no-underline"
+                            className="inline-block px-8 py-3 bg-primary text-white font-sans text-xs font-bold uppercase tracking-widest transition-all duration-300 border border-zinc-950 hover:bg-primary/90 no-underline"
                         >
                             Neem Contact Op
                         </Link>
