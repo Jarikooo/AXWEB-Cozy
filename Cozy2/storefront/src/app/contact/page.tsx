@@ -77,13 +77,11 @@ export default function ContactPage() {
                             </div>
                             <div className="flex items-start gap-4 mb-6">
                                 <div className="size-12 bg-[#ffe4e6] border border-[#18181b] flex items-center justify-center shrink-0 shadow-[3px_3px_0px_rgba(9,9,11,0.05)]">
-                                    <span className="material-symbols-outlined !text-[20px] text-[#18181b]">call</span>
+                                    <span className="material-symbols-outlined !text-[20px] text-[#18181b]">schedule</span>
                                 </div>
                                 <div>
-                                    <h3 className="text-xs font-bold uppercase tracking-widest text-[#18181b] mb-1">Telefoon</h3>
-                                    <a href="tel:+31612345678" className="text-sm text-[#18181b]/70 hover:text-primary transition-colors">
-                                        +31 (0)6 12 34 56 78
-                                    </a>
+                                    <h3 className="text-xs font-bold uppercase tracking-widest text-[#18181b] mb-1">Reactietijd</h3>
+                                    <p className="text-sm text-[#18181b]/70">Binnen 24 uur via e-mail</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-4">

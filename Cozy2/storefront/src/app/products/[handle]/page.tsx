@@ -35,7 +35,7 @@ export default function ProductDetailsPage() {
     const [isAdding, setIsAdding] = useState(false);
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
-    const [openAccordion, setOpenAccordion] = useState<string | null>(null);
+    const [openAccordion, setOpenAccordion] = useState<string | null>("desc");
 
     const containerRef = useRef<HTMLDivElement>(null);
     const imageRef = useRef<HTMLDivElement>(null);
@@ -146,7 +146,7 @@ export default function ProductDetailsPage() {
 
                             {/* Badges */}
                             {product.isNew && (
-                                <div className="absolute top-4 left-4 bg-[#f9a8d4] text-zinc-950 text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 border border-[#18181b]">
+                                <div className="absolute top-4 left-4 bg-mint text-zinc-950 text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 border border-[#18181b]">
                                     Nieuw
                                 </div>
                             )}
@@ -210,11 +210,6 @@ export default function ProductDetailsPage() {
                         {/* Price */}
                         <p className="text-zinc-950 text-2xl md:text-3xl font-bold tracking-tight mb-8">
                             {priceFormatted}
-                        </p>
-
-                        {/* Description (visible by default on desktop) */}
-                        <p className="text-sm text-zinc-950/70 leading-relaxed mb-10 max-w-lg">
-                            {product.description || "Ontworpen met minimalistische lijnen en speelse kleuren. Een echte blijmaker voor in huis."}
                         </p>
 
                         {/* Color Selector */}
@@ -291,7 +286,7 @@ export default function ProductDetailsPage() {
                             disabled={!activeVariantId || isAdding}
                             className="w-full bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-5 text-center uppercase tracking-widest transition-all border border-zinc-950 shadow-[4px_4px_0px_#18181b] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[2px_2px_0px_#18181b] mb-10"
                         >
-                            {isAdding ? "Toevoegen..." : "In Winkelwagen"}
+                            {isAdding ? "Toevoegen..." : "Toevoegen"}
                         </button>
 
                         {/* Accordions */}
@@ -348,16 +343,18 @@ export default function ProductDetailsPage() {
                             {relatedProducts.map(rp => (
                                 <div className="flex flex-col group" key={rp.id}>
                                     <Link href={`/products/${rp.handle || rp.id}`} className="block">
-                                        <div className="relative aspect-square w-full bg-white border border-zinc-950 overflow-hidden mb-3">
-                                            {rp.image ? (
-                                                <Image
-                                                    alt={rp.name}
-                                                    fill
-                                                    sizes="(max-width: 768px) 50vw, 25vw"
-                                                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                                                    src={rp.image}
-                                                />
-                                            ) : <div className="w-full h-full bg-zinc-100" />}
+                                        <div className="relative aspect-square w-full bg-white border border-zinc-950 mb-3">
+                                            <div className="absolute inset-0 overflow-hidden">
+                                                {rp.image ? (
+                                                    <Image
+                                                        alt={rp.name}
+                                                        fill
+                                                        sizes="(max-width: 768px) 50vw, 25vw"
+                                                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                                                        src={rp.image}
+                                                    />
+                                                ) : <div className="w-full h-full bg-zinc-100" />}
+                                            </div>
                                         </div>
                                         <h4 className="text-sm font-bold text-zinc-950 truncate group-hover:text-primary transition-colors">{rp.name}</h4>
                                         <span className="text-sm text-zinc-950/60 mt-0.5 block">{new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR" }).format(rp.price)}</span>

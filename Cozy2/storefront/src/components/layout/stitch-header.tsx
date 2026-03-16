@@ -129,28 +129,24 @@ export function StitchHeader() {
     return (
         <>
             <header className="fixed top-4 w-full z-50 flex justify-center px-4 md:px-8 pointer-events-none">
-                <div className="flex items-center justify-between py-4 px-4 md:px-8 h-14 w-full max-w-[1151px] bg-[#FDFDFD66] border border-solid border-[#09090B1A] outline outline-1 outline-[#000000] backdrop-blur-md pointer-events-auto transition-colors">
+                <div className="flex items-center justify-between py-4 px-4 md:px-8 h-14 w-full max-w-[1151px] bg-white border border-[#18181b] pointer-events-auto transition-colors">
                     
                     {/* Left: Hamburger & Shop */}
                     <div className="flex items-center gap-4 md:gap-6">
-                        <button onClick={() => setIsMenuOpen(true)} className="flex items-center justify-center bg-transparent shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="cursor-pointer hover:opacity-70 transition-opacity">
-                                <line x1="4" x2="20" y1="12" y2="12" />
-                                <line x1="4" x2="20" y1="6" y2="6" />
-                                <line x1="4" x2="20" y1="18" y2="18" />
-                            </svg>
+                        <button onClick={() => setIsMenuOpen(true)} className="flex items-center justify-center bg-transparent shrink-0 hover:opacity-70 transition-opacity">
+                            <span className="material-symbols-outlined !text-[20px] text-[#18181b]">menu</span>
                         </button>
-                        <Link href="/shop" className="hidden sm:inline-block text-[14px] [letter-spacing:0.05em] uppercase text-[#09090B] font-sans font-semibold leading-[18px] hover:text-[#F655A6] transition-colors">
+                        <Link href="/shop" className="hidden sm:inline-block text-xs font-bold uppercase tracking-widest text-[#18181b] hover:text-primary transition-colors">
                             Shop
                         </Link>
                     </div>
 
                     {/* Center: Over Ons + Logo */}
                     <div className="flex items-center relative flex-1 justify-start sm:ml-6 h-full">
-                        <Link href="/over-ons" className="hidden md:inline-block text-[14px] [letter-spacing:0.05em] uppercase text-[#09090B] font-sans font-semibold leading-[18px] hover:text-[#F655A6] transition-colors">
+                        <Link href="/over-ons" className="hidden md:inline-block text-xs font-bold uppercase tracking-widest text-[#18181b] hover:text-primary transition-colors">
                             Over Ons
                         </Link>
-                        <Link href="/" className="absolute left-[50%] top-1/2 -translate-y-1/2 -translate-x-[50%] text-[20px] md:text-[24px] [letter-spacing:-0.05em] text-[#09090B] font-serif font-semibold leading-[30px] hover:opacity-80 transition-opacity whitespace-nowrap">
+                        <Link href="/" className="absolute left-[50%] top-1/2 -translate-y-1/2 -translate-x-[50%] text-[20px] md:text-[24px] [letter-spacing:-0.05em] text-[#18181b] font-extrabold leading-[30px] hover:opacity-80 transition-opacity whitespace-nowrap">
                             Cozy Mssls.
                         </Link>
                     </div>
@@ -158,30 +154,18 @@ export function StitchHeader() {
                     {/* Right: Icons */}
                     <div className="flex items-center gap-4 md:gap-6">
                         <Link href="/wishlist" className="hover:opacity-70 transition-opacity shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-                            </svg>
+                            <span className="material-symbols-outlined !text-[20px] text-[#18181b]">favorite</span>
                         </Link>
                         <Link href="/account" className="hidden sm:block hover:opacity-70 transition-opacity shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-                                <circle cx="12" cy="7" r="4" />
-                            </svg>
+                            <span className="material-symbols-outlined !text-[20px] text-[#18181b]">person</span>
                         </Link>
                         <button onClick={handleSearchOpen} className="hover:opacity-70 transition-opacity shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <circle cx="11" cy="11" r="8" />
-                                <path d="m21 21-4.3-4.3" />
-                            </svg>
+                            <span className="material-symbols-outlined !text-[20px] text-[#18181b]">search</span>
                         </button>
                         <button onClick={() => setIsCartOpen(true)} className="hover:opacity-70 transition-opacity relative shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
-                                <path d="M3 6h18" />
-                                <path d="M16 10a4 4 0 0 1-8 0" />
-                            </svg>
+                            <span className="material-symbols-outlined !text-[20px] text-[#18181b]">shopping_bag</span>
                             {itemCount > 0 && (
-                                <span className="absolute -top-[6px] -right-[6px] bg-[#F655A6] text-white text-[9px] font-bold w-[16px] h-[16px] flex items-center justify-center rounded-full leading-none z-10">
+                                <span className="absolute -top-[6px] -right-[6px] bg-primary text-white text-[9px] font-bold w-[16px] h-[16px] flex items-center justify-center leading-none z-10">
                                     {itemCount}
                                 </span>
                             )}
@@ -234,7 +218,7 @@ export function StitchHeader() {
             <div
                 ref={overlayRef}
                 onClick={() => setIsMenuOpen(false)}
-                className="fixed inset-0 bg-zinc-950/20 backdrop-blur-sm z-[200] opacity-0 pointer-events-none"
+                className="fixed inset-0 bg-zinc-950/30 z-[200] opacity-0 pointer-events-none"
             />
 
             <div
@@ -246,7 +230,7 @@ export function StitchHeader() {
                     <button onClick={() => setIsMenuOpen(false)} className="size-10 bg-white border border-[#18181b] flex items-center justify-center shadow-[3px_3px_0px_#18181b] hover:bg-[#ffe4e6] hover:-translate-y-[1px] hover:-translate-x-[1px] hover:shadow-[4px_4px_0px_#18181b] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[2px_2px_0px_#18181b] transition-all">
                         <span className="material-symbols-outlined !text-[18px] text-[#18181b]">close</span>
                     </button>
-                    <Link href="/" onClick={() => setIsMenuOpen(false)} className="text-[20px] [letter-spacing:-0.05em] text-[#18181b] font-serif font-semibold leading-[30px] hover:opacity-80 transition-opacity">
+                    <Link href="/" onClick={() => setIsMenuOpen(false)} className="text-[20px] [letter-spacing:-0.05em] text-[#18181b] font-extrabold leading-[30px] hover:opacity-80 transition-opacity">
                         Cozy Mssls.
                     </Link>
                     <div className="w-10" />

@@ -70,9 +70,6 @@ export default function LoginPage() {
                                     <label className="text-xs font-bold uppercase tracking-widest text-zinc-950">
                                         Wachtwoord
                                     </label>
-                                    <span className="text-[10px] uppercase font-bold text-zinc-950/40 hover:text-primary cursor-pointer transition-colors">
-                                        Vergeten?
-                                    </span>
                                 </div>
                                 <input
                                     type="password"

@@ -1,31 +1,28 @@
-"use client";
-
 import React from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function PrivacyPolicyPage() {
-    const router = useRouter();
     return (
         <main className="min-h-screen pt-32 pb-24 px-6 md:px-12 bg-background-light">
-            <div className="max-w-4xl mx-auto space-y-12 animate-fade-in-up">
-                <button
-                    onClick={() => router.back()}
-                    className="flex items-center gap-2 text-zinc-950/60 hover:text-zinc-950 transition-colors font-sans text-sm font-medium animate-fade-in-up group"
+            <div className="max-w-4xl mx-auto space-y-12">
+                <Link
+                    href="/"
+                    className="flex items-center gap-2 text-zinc-950/60 hover:text-zinc-950 transition-colors text-sm font-bold uppercase tracking-widest group"
                 >
                     <span className="material-symbols-outlined text-base group-hover:-translate-x-1 transition-transform">arrow_back</span>
                     Terug
-                </button>
+                </Link>
                 <div className="text-center border-b border-zinc-950/10 pb-12 mb-12">
-                    <h1 className="font-sans text-xs font-bold uppercase tracking-widest text-zinc-950/60 mb-4">
+                    <h1 className="text-xs font-bold uppercase tracking-widest text-zinc-950/60 mb-4">
                         Juridisch
                     </h1>
                     <h2 className="text-4xl md:text-5xl text-zinc-950 font-extrabold tracking-tighter uppercase italic">
                         Privacybeleid
                     </h2>
-                    <p className="font-sans text-zinc-950/50 mt-4">Laatst bijgewerkt: {new Date().toLocaleDateString('nl-NL')}</p>
+                    <p className="text-zinc-950/50 text-sm mt-4">Laatst bijgewerkt: maart 2026</p>
                 </div>
 
-                <div className="prose prose-lg prose-headings:font-display prose-headings:text-zinc-950 prose-headings:font-bold prose-p:font-sans prose-p:text-zinc-950/80 prose-li:font-sans prose-li:text-zinc-950/80 prose-a:text-zinc-950 prose-a:underline hover:prose-a:text-zinc-950/70 max-w-none">
+                <div className="prose prose-lg prose-headings:text-zinc-950 prose-headings:font-bold prose-p:text-zinc-950/80 prose-li:text-zinc-950/80 prose-a:text-zinc-950 prose-a:underline hover:prose-a:text-zinc-950/70 max-w-none">
 
                     <h3>1. Inleiding</h3>
                     <p>

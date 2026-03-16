@@ -1,23 +1,19 @@
-"use client";
-
 import React from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 export default function ReturnPolicyPage() {
-    const router = useRouter();
     return (
         <main className="min-h-screen pt-32 pb-24 px-6 md:px-12 bg-background-light">
-            <div className="max-w-4xl mx-auto space-y-12 animate-fade-in-up">
-                <button
-                    onClick={() => router.back()}
-                    className="flex items-center gap-2 text-zinc-950/60 hover:text-zinc-950 transition-colors font-sans text-sm font-medium animate-fade-in-up group"
+            <div className="max-w-4xl mx-auto space-y-12">
+                <Link
+                    href="/"
+                    className="flex items-center gap-2 text-zinc-950/60 hover:text-zinc-950 transition-colors text-sm font-bold uppercase tracking-widest group"
                 >
                     <span className="material-symbols-outlined text-base group-hover:-translate-x-1 transition-transform">arrow_back</span>
                     Terug
-                </button>
+                </Link>
                 <div className="text-center border-b border-zinc-950/10 pb-12 mb-12">
-                    <h1 className="font-sans text-xs font-bold uppercase tracking-widest text-zinc-950/60 mb-4">
+                    <h1 className="text-xs font-bold uppercase tracking-widest text-zinc-950/60 mb-4">
                         Klantenservice
                     </h1>
                     <h2 className="text-4xl md:text-5xl text-zinc-950 font-extrabold tracking-tighter uppercase italic">
@@ -25,7 +21,7 @@ export default function ReturnPolicyPage() {
                     </h2>
                 </div>
 
-                <div className="prose prose-lg prose-headings:font-display prose-headings:text-zinc-950 prose-headings:font-bold prose-p:font-sans prose-p:text-zinc-950/80 prose-li:font-sans prose-li:text-zinc-950/80 prose-a:text-zinc-950 prose-a:underline hover:prose-a:text-zinc-950/70 max-w-none">
+                <div className="prose prose-lg prose-headings:text-zinc-950 prose-headings:font-bold prose-p:text-zinc-950/80 prose-li:text-zinc-950/80 prose-a:text-zinc-950 prose-a:underline hover:prose-a:text-zinc-950/70 max-w-none">
 
                     <h3>14 Dagen Bedenktijd (Herroepingsrecht)</h3>
                     <p>
@@ -43,7 +39,7 @@ export default function ReturnPolicyPage() {
                         <li>Eventueel meegeleverde accessoires dienen ook geretourneerd te worden.</li>
                     </ul>
                     <p>
-                        Indien je gebruik maakt van je herroepingsrecht, zal het product met alle geleverde toebehoren en in de originele staat en verpakking aan de ondernemer geretourneerd worden. Wijze waarop je het wil retourneren is jouw verantwoordelijkheid (wij raden altijd aan om te verzenden inclusief Track & Trace).
+                        Indien je gebruik maakt van je herroepingsrecht, zal het product met alle geleverde toebehoren en in de originele staat en verpakking aan de ondernemer geretourneerd worden. Wijze waarop je het wil retourneren is jouw verantwoordelijkheid (wij raden altijd aan om te verzenden inclusief Track &amp; Trace).
                     </p>
 
                     <h3>Hoe meld ik een retour aan?</h3>
@@ -67,9 +63,9 @@ export default function ReturnPolicyPage() {
                         <li>Gepersonaliseerde of op maat gemaakte artikelen.</li>
                     </ul>
 
-                    <div className="mt-12 p-8 bg-mint border border-[#18181b] shadow-[4px_4px_0px_#18181b] text-center">
-                        <h4 className="text-2xl text-zinc-950 font-extrabold uppercase tracking-tighter italic mt-0">Heb je vragen over je retour?</h4>
-                        <p className="font-sans text-zinc-950/70 mb-6">Ons klantenserviceteam staat klaar om je te helpen.</p>
+                    <div className="mt-12 p-8 bg-mint border border-[#18181b] shadow-[4px_4px_0px_#18181b] text-center not-prose">
+                        <h4 className="text-2xl text-zinc-950 font-extrabold uppercase tracking-tighter italic">Heb je vragen over je retour?</h4>
+                        <p className="text-zinc-950/70 text-sm mb-6 mt-2">Ons klantenserviceteam staat klaar om je te helpen.</p>
                         <Link
                             href="/contact"
                             className="inline-block px-8 py-3 bg-primary text-white text-xs font-bold uppercase tracking-widest border border-[#18181b] shadow-[4px_4px_0px_#18181b] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all no-underline"

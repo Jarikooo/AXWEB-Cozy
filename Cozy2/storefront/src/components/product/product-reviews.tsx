@@ -1,15 +1,12 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import { motion, useInView, AnimatePresence, Variants } from "framer-motion";
-import * as Avatar from "@radix-ui/react-avatar";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { submitReview } from "@/app/actions/submit-review";
 import Link from "next/link";
-import { Star, FileText } from "lucide-react";
 
 function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -29,14 +26,37 @@ interface ProductReviewsProps {
     productId: string;
 }
 
+function StarIcon({ filled }: { filled: boolean }) {
+    return (
+        <span
+            className={`material-symbols-outlined !text-[14px] transition-colors duration-200 ${filled ? "text-primary" : "text-[#18181b]/20"}`}
+            style={{ fontVariationSettings: filled ? "'FILL' 1" : "'FILL' 0" }}
+        >
+            star
+        </span>
+    );
+}
+
+function StarRatingInput({ filled, size = 28 }: { filled: boolean; size?: number }) {
+    return (
+        <span
+            className={`material-symbols-outlined transition-colors duration-200 ${filled ? "text-primary" : "text-[#18181b]/20"}`}
+            style={{ fontSize: `${size}px`, fontVariationSettings: filled ? "'FILL' 1" : "'FILL' 0" }}
+        >
+            star
+        </span>
+    );
+}
+
 export function ProductReviews({ productId }: ProductReviewsProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const formRef = useRef<HTMLFormElement>(null);
-    const isInView = useInView(containerRef, { once: true, amount: 0.1 });
+    const cardsRef = useRef<HTMLDivElement>(null);
 
     const [reviews, setReviews] = useState<Review[]>([]);
     const [loading, setLoading] = useState(true);
     const [hasSession, setHasSession] = useState(false);
+    const [hasAnimated, setHasAnimated] = useState(false);
 
     const [showForm, setShowForm] = useState(false);
     const [rating, setRating] = useState(5);
@@ -67,6 +87,29 @@ export function ProductReviews({ productId }: ProductReviewsProps) {
                 setLoading(false);
             });
     }, [productId]);
+
+    // Stagger entrance for review cards via GSAP + IntersectionObserver
+    useEffect(() => {
+        if (loading || hasAnimated || reviews.length === 0 || !cardsRef.current) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting && cardsRef.current) {
+                    const cards = cardsRef.current.querySelectorAll("[data-review-card]");
+                    gsap.fromTo(cards,
+                        { opacity: 0, y: 30 },
+                        { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power3.out" }
+                    );
+                    setHasAnimated(true);
+                    observer.disconnect();
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        observer.observe(cardsRef.current);
+        return () => observer.disconnect();
+    }, [loading, reviews, hasAnimated]);
 
     useGSAP(() => {
         if (showForm && formRef.current) {
@@ -115,16 +158,6 @@ export function ProductReviews({ productId }: ProductReviewsProps) {
         ? (reviews.reduce((acc, curr) => acc + curr.rating, 0) / reviews.length).toFixed(1)
         : "0.0";
 
-    const containerVariants: Variants = {
-        hidden: { opacity: 0 },
-        visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.1 } },
-    };
-
-    const itemVariants: Variants = {
-        hidden: { opacity: 0, y: 30, filter: "blur(4px)" },
-        visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { type: "spring", stiffness: 100, damping: 20 } },
-    };
-
     return (
         <section className="w-full py-16 md:py-24">
             {/* Header Section */}
@@ -165,103 +198,96 @@ export function ProductReviews({ productId }: ProductReviewsProps) {
                                 onClick={() => setShowForm(true)}
                                 className="px-8 py-4 bg-zinc-950 text-white text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-all flex items-center gap-2 border border-zinc-950 shadow-[4px_4px_0px_#18181b] hover:-translate-y-[1px] hover:shadow-[5px_5px_0px_#18181b]"
                             >
-                                <FileText size={16} /> Review Schrijven
+                                <span className="material-symbols-outlined !text-[16px]">rate_review</span>
+                                Review Schrijven
                             </button>
                         )}
 
-                        <AnimatePresence>
-                            {showForm && (
-                                <form
-                                    ref={formRef}
-                                    onSubmit={handleReviewSubmit}
-                                    className="w-full bg-white border border-zinc-950 p-8 shadow-[4px_4px_0px_rgba(9,9,11,0.05)] overflow-hidden"
-                                >
-                                    <div className="flex items-center justify-between mb-8">
-                                        <h3 className="text-xl font-bold text-zinc-950 uppercase tracking-tight">Deel je ervaring</h3>
-                                        <button
-                                            type="button"
-                                            onClick={() => setShowForm(false)}
-                                            className="text-xs font-bold uppercase tracking-widest text-zinc-950/50 hover:text-zinc-950 transition-colors"
-                                        >
-                                            Annuleren
-                                        </button>
+                        {showForm && (
+                            <form
+                                ref={formRef}
+                                onSubmit={handleReviewSubmit}
+                                className="w-full bg-white border border-zinc-950 p-8 shadow-[4px_4px_0px_rgba(9,9,11,0.05)] overflow-hidden"
+                            >
+                                <div className="flex items-center justify-between mb-8">
+                                    <h3 className="text-xl font-bold text-zinc-950 uppercase tracking-tight">Deel je ervaring</h3>
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowForm(false)}
+                                        className="text-xs font-bold uppercase tracking-widest text-zinc-950/50 hover:text-zinc-950 transition-colors"
+                                    >
+                                        Annuleren
+                                    </button>
+                                </div>
+
+                                {formError && (
+                                    <div className="mb-6 p-4 bg-[#ffe4e6] text-[#18181b] border border-[#18181b] text-sm font-bold">
+                                        {formError}
+                                    </div>
+                                )}
+                                {formSuccess && (
+                                    <div className="mb-6 p-4 bg-mint text-[#18181b] border border-[#18181b] text-sm font-bold">
+                                        Je review is succesvol geplaatst.
+                                    </div>
+                                )}
+
+                                <div className="flex flex-col gap-6">
+                                    {/* Star Rating */}
+                                    <div className="flex flex-col gap-2">
+                                        <label className="text-xs font-bold uppercase tracking-widest text-zinc-950">Beoordeling</label>
+                                        <div className="flex gap-2">
+                                            {[1, 2, 3, 4, 5].map((star) => (
+                                                <button
+                                                    key={star}
+                                                    type="button"
+                                                    onMouseEnter={() => setHoveredRating(star)}
+                                                    onMouseLeave={() => setHoveredRating(0)}
+                                                    onClick={() => setRating(star)}
+                                                    className="transition-transform hover:scale-110 focus:outline-none"
+                                                >
+                                                    <StarRatingInput filled={(hoveredRating || rating) >= star} />
+                                                </button>
+                                            ))}
+                                        </div>
                                     </div>
 
-                                    {formError && (
-                                        <div className="mb-6 p-4 bg-red-50 text-red-600 border border-red-200 text-sm font-medium">
-                                            {formError}
-                                        </div>
-                                    )}
-                                    {formSuccess && (
-                                        <div className="mb-6 p-4 bg-emerald-50 text-emerald-700 border border-emerald-200 text-sm font-medium">
-                                            Je review is succesvol geplaatst.
-                                        </div>
-                                    )}
-
-                                    <div className="flex flex-col gap-6">
-                                        {/* Star Rating */}
-                                        <div className="flex flex-col gap-2">
-                                            <label className="text-xs font-bold uppercase tracking-widest text-zinc-950">Beoordeling</label>
-                                            <div className="flex gap-2">
-                                                {[1, 2, 3, 4, 5].map((star) => (
-                                                    <button
-                                                        key={star}
-                                                        type="button"
-                                                        onMouseEnter={() => setHoveredRating(star)}
-                                                        onMouseLeave={() => setHoveredRating(0)}
-                                                        onClick={() => setRating(star)}
-                                                        className="transition-transform hover:scale-110 focus:outline-none"
-                                                    >
-                                                        <Star
-                                                            size={28}
-                                                            fill={(hoveredRating || rating) >= star ? "#f4258c" : "transparent"}
-                                                            color={(hoveredRating || rating) >= star ? "#f4258c" : "#d4d4d8"}
-                                                            strokeWidth={1.5}
-                                                            className="transition-colors duration-200"
-                                                        />
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </div>
-
-                                        {/* Title */}
-                                        <div className="flex flex-col gap-2">
-                                            <label htmlFor="title" className="text-xs font-bold uppercase tracking-widest text-zinc-950">Titel</label>
-                                            <input
-                                                id="title"
-                                                name="title"
-                                                type="text"
-                                                required
-                                                autoComplete="off"
-                                                placeholder="Vat je ervaring samen..."
-                                                className="w-full bg-white border border-zinc-950 px-4 py-3 text-sm outline-none focus:ring-1 focus:ring-primary transition-all placeholder:text-zinc-950/30"
-                                            />
-                                        </div>
-
-                                        {/* Content */}
-                                        <div className="flex flex-col gap-2">
-                                            <label htmlFor="content" className="text-xs font-bold uppercase tracking-widest text-zinc-950">Details</label>
-                                            <textarea
-                                                id="content"
-                                                name="content"
-                                                required
-                                                rows={4}
-                                                placeholder="Wat vond je er goed aan? Wat kan beter? Help anderen met specifieke details."
-                                                className="w-full bg-white border border-zinc-950 px-4 py-3 text-sm outline-none focus:ring-1 focus:ring-primary transition-all resize-none placeholder:text-zinc-950/30"
-                                            ></textarea>
-                                        </div>
-
-                                        <button
-                                            type="submit"
-                                            disabled={isSubmitting || formSuccess}
-                                            className="w-full md:w-auto self-end mt-2 px-10 py-4 bg-primary text-white text-xs font-bold uppercase tracking-widest hover:bg-primary/90 disabled:opacity-50 transition-all border border-zinc-950 shadow-[4px_4px_0px_#18181b] hover:-translate-y-[1px] hover:shadow-[5px_5px_0px_#18181b]"
-                                        >
-                                            {isSubmitting ? "Verzenden..." : (formSuccess ? "Geplaatst!" : "Publiceer Review")}
-                                        </button>
+                                    {/* Title */}
+                                    <div className="flex flex-col gap-2">
+                                        <label htmlFor="title" className="text-xs font-bold uppercase tracking-widest text-zinc-950">Titel</label>
+                                        <input
+                                            id="title"
+                                            name="title"
+                                            type="text"
+                                            required
+                                            autoComplete="off"
+                                            placeholder="Vat je ervaring samen..."
+                                            className="w-full bg-white border border-zinc-950 px-4 py-3 text-sm outline-none focus:ring-1 focus:ring-primary transition-all placeholder:text-zinc-950/30"
+                                        />
                                     </div>
-                                </form>
-                            )}
-                        </AnimatePresence>
+
+                                    {/* Content */}
+                                    <div className="flex flex-col gap-2">
+                                        <label htmlFor="content" className="text-xs font-bold uppercase tracking-widest text-zinc-950">Details</label>
+                                        <textarea
+                                            id="content"
+                                            name="content"
+                                            required
+                                            rows={4}
+                                            placeholder="Wat vond je er goed aan? Wat kan beter? Help anderen met specifieke details."
+                                            className="w-full bg-white border border-zinc-950 px-4 py-3 text-sm outline-none focus:ring-1 focus:ring-primary transition-all resize-none placeholder:text-zinc-950/30"
+                                        ></textarea>
+                                    </div>
+
+                                    <button
+                                        type="submit"
+                                        disabled={isSubmitting || formSuccess}
+                                        className="w-full md:w-auto self-end mt-2 px-10 py-4 bg-primary text-white text-xs font-bold uppercase tracking-widest hover:bg-primary/90 disabled:opacity-50 transition-all border border-zinc-950 shadow-[4px_4px_0px_#18181b] hover:-translate-y-[1px] hover:shadow-[5px_5px_0px_#18181b]"
+                                    >
+                                        {isSubmitting ? "Verzenden..." : (formSuccess ? "Geplaatst!" : "Publiceer Review")}
+                                    </button>
+                                </div>
+                            </form>
+                        )}
                     </div>
                 )}
             </div>
@@ -278,18 +304,16 @@ export function ProductReviews({ productId }: ProductReviewsProps) {
                         <p className="text-sm text-zinc-950/50 mt-2">Wees de eerste die een review achterlaat.</p>
                     </div>
                 ) : (
-                    <motion.div
-                        variants={containerVariants}
-                        initial="hidden"
-                        animate={isInView ? "visible" : "hidden"}
+                    <div
+                        ref={cardsRef}
                         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
                     >
                         {reviews.map((review, index) => (
-                            <motion.div
+                            <div
                                 key={review.id}
-                                variants={itemVariants}
+                                data-review-card
                                 className={cn(
-                                    "group relative bg-white p-8 border border-zinc-950 shadow-[4px_4px_0px_rgba(9,9,11,0.05)] hover:shadow-[6px_6px_0px_rgba(9,9,11,0.08)] flex flex-col hover:-translate-y-1 transition-all duration-300 overflow-hidden",
+                                    "group relative bg-white p-8 border border-zinc-950 shadow-[4px_4px_0px_rgba(9,9,11,0.05)] hover:shadow-[6px_6px_0px_rgba(9,9,11,0.08)] flex flex-col hover:-translate-y-1 transition-all duration-300 overflow-hidden opacity-0",
                                     index % 2 === 1 ? "md:mt-8" : "",
                                     index % 3 === 2 ? "lg:mt-16" : ""
                                 )}
@@ -297,12 +321,7 @@ export function ProductReviews({ productId }: ProductReviewsProps) {
                                 {/* Stars */}
                                 <div className="flex gap-1 mb-5">
                                     {[...Array(5)].map((_, i) => (
-                                        <Star
-                                            key={i}
-                                            size={14}
-                                            fill={i < review.rating ? "#f4258c" : "transparent"}
-                                            color={i < review.rating ? "#f4258c" : "#d4d4d8"}
-                                        />
+                                        <StarIcon key={i} filled={i < review.rating} />
                                     ))}
                                 </div>
 
@@ -314,13 +333,11 @@ export function ProductReviews({ productId }: ProductReviewsProps) {
 
                                 {/* Author Info */}
                                 <div className="flex items-center gap-3 mt-auto pt-5 border-t border-zinc-950/10">
-                                    <Avatar.Root className="inline-flex items-center justify-center overflow-hidden w-10 h-10 border border-zinc-950 select-none bg-mint">
-                                        <Avatar.Fallback
-                                            className="w-full h-full flex items-center justify-center bg-transparent text-zinc-950 text-xs font-bold uppercase"
-                                        >
+                                    <div className="inline-flex items-center justify-center overflow-hidden w-10 h-10 border border-zinc-950 select-none bg-mint">
+                                        <span className="text-zinc-950 text-xs font-bold uppercase">
                                             {review.customer_id === "me" ? "JIJ" : "A"}
-                                        </Avatar.Fallback>
-                                    </Avatar.Root>
+                                        </span>
+                                    </div>
 
                                     <div className="flex flex-col">
                                         <span className="text-xs font-bold text-zinc-950 uppercase">Geverifieerd</span>
@@ -329,9 +346,9 @@ export function ProductReviews({ productId }: ProductReviewsProps) {
                                         </span>
                                     </div>
                                 </div>
-                            </motion.div>
+                            </div>
                         ))}
-                    </motion.div>
+                    </div>
                 )}
             </div>
         </section>

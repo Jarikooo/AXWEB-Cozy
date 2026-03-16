@@ -17,9 +17,8 @@ export function ProductGrid() {
     const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
     const { addItem } = useCart();
 
-    const [cachedProducts, setCachedProducts] = useState<Record<number, Product[]>>({});
+    const [allProducts, setAllProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
-    const [totalCount, setTotalCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [addingToCartId, setAddingToCartId] = useState<string | null>(null);
     const [addedToCartId, setAddedToCartId] = useState<string | null>(null);
@@ -48,111 +47,85 @@ export function ProductGrid() {
     const [sortBy, setSortBy] = useState(initialSort);
     const [isSortOpen, setIsSortOpen] = useState(false);
 
-    const ITEMS_PER_PAGE = 6;
-    const FETCH_LIMIT = 12;
+    const ITEMS_PER_PAGE = 12;
 
     const categoryId = searchParams.get("category") || "all";
     const searchQuery = searchParams.get("q") || "";
 
-    // Reset caching when filters change
+    // Fetch all products once — boutique catalog, not thousands of items
     useEffect(() => {
-        setCachedProducts({});
-        setCurrentPage(1);
-    }, [categoryId, searchQuery, sortBy]);
+        setLoading(true);
+        const filters: any = { limit: 200 };
+        if (searchQuery) filters.q = searchQuery;
 
+        fetchMedusaProducts(filters)
+            .then((response) => {
+                setAllProducts(response.products || []);
+                setLoading(false);
+            })
+            .catch((err) => {
+                console.error("[ProductGrid] Failed to fetch products:", err);
+                setLoading(false);
+            });
+    }, [searchQuery]);
+
+    // Reset page when filters change
     useEffect(() => {
-        const neededChunk = Math.floor((currentPage - 1) / (FETCH_LIMIT / ITEMS_PER_PAGE));
-        
-        if (!cachedProducts[neededChunk]) {
-            setLoading(true);
-            const filters: any = { limit: FETCH_LIMIT, offset: neededChunk * FETCH_LIMIT };
-            if (searchQuery) filters.q = searchQuery;
-            
-            // NOTE: Sorting logic inside Medusa. Assuming standard handled in frontend or backend.
-            // Using our existing fetchMedusaProducts.
-            fetchMedusaProducts(filters)
-                .then((response) => {
-                    let fetchedProds = response.products || [];
-                    
-                    if (categoryId && categoryId !== "all") {
-                        // Normally handled by API, but existing logic filtered client-side for category if not supported natively.
-                        // We will just do a client-side filter here over the fetched chunk... wait.
-                        // If we filter client-side, the chunk will have fewer items! That breaks pagination.
-                        // Medusa API doesn't filter by exactly "category" via simple query param dynamically unless we pass category_id.
-                        // Since existing logic used simple 'fetchMedusaProducts' and client filtered, we should do the same 
-                        // BUT that breaks offset pagination because offset 12 might yield 0 filtered items!
-                    }
-                    
-                    setCachedProducts(prev => ({ ...prev, [neededChunk]: fetchedProds }));
-                    setTotalCount(response.count || 0);
-                    setLoading(false);
-                })
-                .catch((err) => {
-                    console.error("[ProductGrid] Failed to fetch products:", err);
-                    setLoading(false);
-                });
-        }
-    }, [currentPage, categoryId, searchQuery, sortBy, cachedProducts]);
+        setCurrentPage(1);
+    }, [categoryId, sortBy]);
 
     // Dynamic Filter states
     const [selectedColor, setSelectedColor] = useState<string | null>(null);
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
     const [priceRange, setPriceRange] = useState<number>(500); // 500 default max
 
-    // Extract dynamic options from ALL fetched products
+    // Extract dynamic options from all products
     const availableColors = useMemo(() => {
         const colors = new Set<string>();
-        Object.values(cachedProducts).flat().forEach(p => {
+        allProducts.forEach(p => {
              if (p.colors && p.colors.length > 0) {
                  p.colors.forEach(c => c !== "Default" && colors.add(c.toLowerCase()));
              }
         });
         return Array.from(colors);
-    }, [cachedProducts]);
+    }, [allProducts]);
 
     const availableSizes = useMemo(() => {
         const sizes = new Set<string>();
-        Object.values(cachedProducts).flat().forEach(p => {
+        allProducts.forEach(p => {
              if (p.sizes && p.sizes.length > 0) {
                  p.sizes.forEach(s => s !== "Default" && sizes.add(s));
              }
         });
-        
-        // Custom sort for typical sizes (S, M, L, XL, etc.)
+
         const sizeOrder: Record<string, number> = { "OS": 0, "XS": 1, "S": 2, "M": 3, "L": 4, "XL": 5, "XXL": 6 };
         return Array.from(sizes).sort((a, b) => (sizeOrder[a] ?? 99) - (sizeOrder[b] ?? 99));
-    }, [cachedProducts]);
+    }, [allProducts]);
 
     const maxPriceAvailable = useMemo(() => {
         let max = 0;
-        Object.values(cachedProducts).flat().forEach(p => {
+        allProducts.forEach(p => {
              if (p.price > max) max = p.price;
         });
-        return Math.max(500, Math.ceil(max / 50) * 50); // Default UI to 500, but scale if higher items exist
-    }, [cachedProducts]);
+        return Math.max(500, Math.ceil(max / 50) * 50);
+    }, [allProducts]);
 
     const availableCategories = useMemo(() => {
-        const catMap = new Map<string, string>(); // handle -> label
-        Object.values(cachedProducts).flat().forEach(p => {
+        const catMap = new Map<string, string>();
+        allProducts.forEach(p => {
              if (p.category) {
-                 // Try to get handle from categoryHandles, fallback to slugified category name
                  const handle = p.categoryHandles?.[0] || p.category.toLowerCase().replace(/\s+/g, '-');
                  catMap.set(handle, p.category);
              }
         });
-        
-        const dynamicCats = Array.from(catMap.entries()).map(([id, label]) => ({ id, label }));
-        // Always surface 'All Products' at the top
-        return [{ id: "all", label: "Alle Producten" }, ...dynamicCats];
-    }, [cachedProducts]);
 
-    // Apply Client filtering & sorting over all cached products
+        const dynamicCats = Array.from(catMap.entries()).map(([id, label]) => ({ id, label }));
+        return [{ id: "all", label: "Alle Producten" }, ...dynamicCats];
+    }, [allProducts]);
+
+    // Apply client-side filtering & sorting
     const allFetchedProducts = useMemo(() => {
-        // Flatten cached products 
-        let allProds: Product[] = [];
-        Object.keys(cachedProducts).sort().forEach(key => {
-            allProds = allProds.concat(cachedProducts[Number(key)]);
-        });
+        let allProds = [...allProducts];
 
         // 1. Category filter
         if (categoryId && categoryId !== "all") {
@@ -189,7 +162,7 @@ export function ProductGrid() {
         }
 
         return allProds;
-    }, [cachedProducts, categoryId, sortBy, priceRange, selectedColor, selectedSize]);
+    }, [allProducts, categoryId, sortBy, priceRange, selectedColor, selectedSize]);
 
     // displayed products calculation properly accounting for client-side filtering
     const displayedProducts = useMemo(() => {
@@ -250,13 +223,12 @@ export function ProductGrid() {
 
     return (
         <div className="flex-1 w-full flex flex-col min-h-screen bg-white">
-            {/* Hero Image Section */}
-            <div className="w-full h-[300px] md:h-[400px] pt-16 md:pt-0 relative bg-mint flex items-center justify-center overflow-hidden border-b border-[#18181b]">
-                {/* Random imagery for the mint background */}
-                <Image src="https://picsum.photos/seed/cozyshop1/1920/1080" alt="Shop Hero" fill className="object-cover opacity-80 mix-blend-multiply" />
-                <div className="relative z-10 text-center">
-                    <h1 className="text-5xl md:text-7xl font-bold tracking-tighter text-[#18181b] uppercase">
-                        {categoryId === "all" ? "Alle Producten" : availableCategories.find(c => c.id === categoryId)?.label || "Shop"}
+            {/* Hero Section */}
+            <div className="w-full pt-24 md:pt-32 pb-10 md:pb-14 bg-mint border-b border-[#18181b]">
+                <div className="max-w-7xl mx-auto px-6 md:px-12">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-[#18181b]/40 mb-3">Cozy Mssls.</p>
+                    <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter text-[#18181b] uppercase italic leading-[0.9]">
+                        {categoryId === "all" ? "Alle Producten." : `${availableCategories.find(c => c.id === categoryId)?.label || "Shop"}.`}
                     </h1>
                 </div>
             </div>
@@ -456,7 +428,7 @@ export function ProductGrid() {
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
-                        <span className="text-sm text-[#18181b] font-bold hidden sm:inline">{Math.max(0, categoryId !== "all" ? allFetchedProducts.length : totalCount)} producten</span>
+                        <span className="text-sm text-[#18181b] font-bold hidden sm:inline">{allFetchedProducts.length} producten</span>
 
                         {/* Mobile Filter Button */}
                         <button
@@ -487,7 +459,7 @@ export function ProductGrid() {
                     </div>
                 </div>
 
-                {loading && !allFetchedProducts.length ? (
+                {loading ? (
                     <div className="p-16 flex flex-col items-center justify-center gap-4">
                         <div className="size-12 bg-mint border border-[#18181b] flex items-center justify-center animate-pulse">
                             <span className="material-symbols-outlined !text-[24px] text-[#18181b]">shopping_bag</span>
@@ -608,7 +580,7 @@ export function ProductGrid() {
                                         </Link>
                                         <div className="mt-1 flex items-center justify-center gap-2">
                                             {product.price < 30 && (
-                                                <span className="font-bold text-[#f9a8d4] line-through text-xs">€{(product.price * 1.3).toFixed(2)}</span>
+                                                <span className="font-bold text-[#18181b]/40 line-through text-xs">€{(product.price * 1.3).toFixed(2)}</span>
                                             )}
                                             <span className="font-bold text-[#18181b]">€{product.price.toFixed(2)}</span>
                                         </div>
@@ -685,7 +657,7 @@ export function ProductGrid() {
                         value={email}
                         onChange={e => setEmail(e.target.value)}
                         className="bg-white border border-[#18181b] px-4 py-4 text-xs font-bold uppercase tracking-widest shadow-[4px_4px_0px_#18181b] focus:outline-none focus:translate-x-[2px] focus:translate-y-[2px] focus:shadow-[2px_2px_0px_#18181b] transition-all placeholder:text-[#18181b]/40"
-                        placeholder="YOUR@EMAIL.COM"
+                        placeholder="JOUW@EMAIL.NL"
                         type="email"
                         required
                     />
