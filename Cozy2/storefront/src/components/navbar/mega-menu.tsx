@@ -104,35 +104,45 @@ export function MegaMenu({ isOpen, onClose }: MegaMenuProps) {
             {/* The Menu Drawer */}
             <div
                 ref={menuRef}
-                className="absolute top-0 left-0 w-full bg-background-light text-zinc-950 rounded-b-[3rem] shadow-2xl opacity-0"
+                className="absolute top-0 left-0 w-full bg-background-light text-zinc-950 rounded-b-[2rem] shadow-2xl opacity-0 overflow-hidden"
             >
-                {/* Whitespace buffer to clear the Floating Navbar */}
-                <div className="pt-24 md:pt-32 px-8 md:px-16" />
+                {/* Close button — pinned top-right */}
+                <div className="flex justify-end px-6 md:px-10 pt-5">
+                    <button
+                        onClick={onClose}
+                        className="w-10 h-10 border border-zinc-950 flex items-center justify-center hover:bg-zinc-950 hover:text-white transition-colors group shadow-[3px_3px_0px_#18181b]"
+                        aria-label="Sluit menu"
+                    >
+                        <X size={18} strokeWidth={2} className="group-hover:scale-90 transition-transform" />
+                    </button>
+                </div>
 
-                <div className="max-w-7xl mx-auto px-8 md:px-16">
-                    {/* Animated Separating Line */}
-                    <div ref={lineRef} className="w-full h-px bg-zinc-950/10 mb-12 md:mb-16" />
+                <div className="max-w-5xl mx-auto px-6 md:px-10 pb-8">
+                    {/* Separating line */}
+                    <div ref={lineRef} className="w-full h-px bg-zinc-950/10 mb-6 mt-3" />
 
-                    <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 pb-16 md:pb-24 min-h-[50vh]">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
 
-                        {/* Left Column: Shop Collections */}
-                        <div className="md:col-span-5">
-                            <h3 className="font-sans text-xs uppercase tracking-[0.2em] font-medium text-primary mb-8">Shop Collections</h3>
+                        {/* Shop */}
+                        <div>
+                            <h3 className="font-sans text-xs uppercase tracking-[0.2em] font-bold text-primary mb-3">Shop</h3>
                             {loading ? (
-                                <div className="space-y-4">
-                                    {[1, 2, 3].map(i => <div key={i} className="h-8 bg-zinc-950/5 rounded animate-pulse w-48" />)}
+                                <div className="space-y-2">
+                                    {[1, 2, 3].map(i => <div key={i} className="h-7 bg-zinc-950/5 animate-pulse w-40" />)}
                                 </div>
                             ) : (
-                                <ul className="flex flex-col gap-5">
+                                <ul className="flex flex-col">
                                     <li className="menu-stagger-link">
-                                        <Link href="/shop" onClick={onClose} className="font-serif text-4xl hover:text-primary flex items-center group transition-colors">
-                                            All Products <ArrowRight size={24} className="ml-4 opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                                        <Link href="/shop" onClick={onClose} className="flex items-center justify-between w-full px-3 py-2.5 text-base font-bold uppercase tracking-wide hover:bg-[#ffe4e6] transition-colors group">
+                                            Alle Producten
+                                            <ArrowRight size={15} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
                                         </Link>
                                     </li>
                                     {categories.map(cat => (
                                         <li key={cat.id} className="menu-stagger-link">
-                                            <Link href={`/shop?category=${cat.id}`} onClick={onClose} className="font-serif text-4xl hover:text-primary flex items-center group transition-colors capitalize">
-                                                {cat.label} <ArrowRight size={24} className="ml-4 opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                                            <Link href={`/shop?category=${cat.id}`} onClick={onClose} className="flex items-center justify-between w-full px-3 py-2.5 text-base font-bold uppercase tracking-wide hover:bg-[#ffe4e6] transition-colors group capitalize">
+                                                {cat.label}
+                                                <ArrowRight size={15} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
                                             </Link>
                                         </li>
                                     ))}
@@ -140,45 +150,22 @@ export function MegaMenu({ isOpen, onClose }: MegaMenuProps) {
                             )}
                         </div>
 
-                        {/* Middle Column: Boutique Navigation */}
-                        <div className="md:col-span-3">
-                            <h3 className="font-sans text-xs uppercase tracking-[0.2em] font-medium opacity-50 mb-8">Boutique</h3>
-                            <ul className="flex flex-col gap-6">
+                        {/* Pages */}
+                        <div>
+                            <h3 className="font-sans text-xs uppercase tracking-[0.2em] font-bold text-zinc-950/40 mb-3">Meer</h3>
+                            <ul className="flex flex-col">
                                 <li className="menu-stagger-link">
-                                    <Link href="/journal" onClick={onClose} className="font-serif text-2xl hover:text-primary transition-colors">
-                                        Journal
+                                    <Link href="/about" onClick={onClose} className="flex items-center w-full px-3 py-2.5 text-base font-bold uppercase tracking-wide hover:bg-[#ffe4e6] transition-colors">
+                                        Ons Verhaal
                                     </Link>
                                 </li>
                                 <li className="menu-stagger-link">
-                                    <Link href="/about" onClick={onClose} className="font-serif text-2xl hover:text-primary transition-colors">
-                                        Our Story
-                                    </Link>
-                                </li>
-                                <li className="menu-stagger-link">
-                                    <Link href="/visit" onClick={onClose} className="font-serif text-2xl hover:text-primary transition-colors">
-                                        Visit Maassluis
+                                    <Link href="/visit" onClick={onClose} className="flex items-center w-full px-3 py-2.5 text-base font-bold uppercase tracking-wide hover:bg-[#ffe4e6] transition-colors">
+                                        Bezoek Maassluis
                                     </Link>
                                 </li>
                             </ul>
                         </div>
-
-                        {/* Right Column: Close Header & Large Brand Logo */}
-                        <div className="md:col-span-4 flex flex-col justify-between items-end text-right h-full">
-                            <button
-                                onClick={onClose}
-                                className="w-12 h-12 rounded-full border border-zinc-950/20 flex flex-shrink-0 items-center justify-center hover:bg-zinc-950 hover:text-background-light transition-colors group"
-                                aria-label="Close menu"
-                            >
-                                <X size={20} strokeWidth={1.5} className="group-hover:scale-90 transition-transform" />
-                            </button>
-
-                            <div className="mt-auto pt-12">
-                                <h2 className="font-serif italic text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-primary leading-none tracking-tight">
-                                    Cozy<br />Mssls.
-                                </h2>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>

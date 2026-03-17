@@ -123,7 +123,7 @@ export default function ProductDetailsPage() {
     return (
         <div ref={containerRef} className="flex flex-col w-full bg-white min-h-screen">
             {/* Main Product Section — 2-column on desktop */}
-            <div className="w-full max-w-7xl mx-auto px-6 md:px-12 pt-16 md:pt-24 pb-8 md:pb-16">
+            <div className="w-full max-w-7xl mx-auto px-6 md:px-12 pt-28 md:pt-36 pb-8 md:pb-16">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 lg:gap-24 items-start">
                     {/* Left: Image Gallery */}
                     <div ref={imageRef} className="flex flex-col gap-4">
@@ -163,7 +163,7 @@ export default function ProductDetailsPage() {
                                 className="absolute -top-3 -right-3 z-20 size-10 bg-white border border-[#18181b] shadow-[4px_4px_0px_#18181b] flex items-center justify-center hover:bg-[#ffe4e6] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all"
                                 aria-label={isInWishlist(product.id) ? "Verwijder uit verlanglijst" : "Voeg toe aan verlanglijst"}
                             >
-                                <span className={`material-symbols-outlined !text-[20px] text-[#18181b]`} style={{ fontVariationSettings: isInWishlist(product.id) ? "'FILL' 1" : "'FILL' 0" }}>favorite</span>
+                                <span className="material-symbols-outlined !text-[20px] text-[#18181b]" style={isInWishlist(product.id) ? { fontVariationSettings: "'FILL' 1", color: "#f4258c" } : undefined}>favorite</span>
                             </button>
                         </div>
 

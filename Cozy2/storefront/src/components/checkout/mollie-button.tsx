@@ -61,9 +61,20 @@ export function MolliePaymentButton({ cart, notReady }: { cart: StoreCart | null
             <button
                 disabled={notReady || submitting}
                 onClick={handlePayment}
-                className="w-full flex items-center justify-center py-4 bg-[#18181b] text-white text-xs font-bold uppercase tracking-widest border border-[#18181b] shadow-[4px_4px_0px_#18181b] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
+                className={`w-full flex items-center justify-center gap-2 py-5 text-xs font-bold uppercase tracking-widest border border-[#18181b] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none ${
+                    submitting
+                        ? "bg-mint/80 text-[#18181b] shadow-[2px_2px_0px_#18181b] translate-x-[1px] translate-y-[1px] backdrop-blur-sm"
+                        : "bg-white text-[#18181b] shadow-[4px_4px_0px_#18181b] hover:bg-[#ffe4e6] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b]"
+                }`}
             >
-                {submitting ? "Doorsturen naar Mollie..." : "Betaal met Mollie (iDeal / Klarna)"}
+                {submitting ? (
+                    <>
+                        <span className="material-symbols-outlined !text-[18px]">check_circle</span>
+                        Doorsturen naar Mollie...
+                    </>
+                ) : (
+                    "Betaal met Mollie (iDeal / Klarna)"
+                )}
             </button>
             {errorMessage && (
                 <div className="p-3 bg-[#ffe4e6] text-[#18181b] border border-[#18181b] text-xs font-bold text-center">{errorMessage}</div>

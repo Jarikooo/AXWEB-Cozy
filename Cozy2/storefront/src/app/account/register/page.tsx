@@ -146,7 +146,7 @@ export default function RegisterPage() {
                 </div>
 
                 {/* Right: Promo Panel */}
-                <div className="hidden md:flex flex-col justify-between bg-[#ffe4e6] border-l border-[#18181b] p-12 lg:p-16">
+                <div className="hidden md:flex flex-col justify-between bg-[#ffe4e6] border-l border-[#18181b] px-12 pb-12 pt-32 lg:px-16 lg:pb-16 lg:pt-36">
                     <div>
                         <h2 className="text-3xl lg:text-4xl font-extrabold tracking-tighter uppercase italic text-zinc-950 leading-[0.95] mb-6">
                             10% Korting<br />op je eerste<br />bestelling.

@@ -6,6 +6,7 @@ import { MolliePaymentButton } from "@/components/checkout/mollie-button";
 import Image from "next/image";
 import Link from "next/link";
 import { sdk } from "@/lib/medusa";
+import { FreeShippingHint } from "@/components/ui/free-shipping-hint";
 
 export default function CheckoutPage() {
     const { cart } = useCart();
@@ -17,6 +18,8 @@ export default function CheckoutPage() {
     const [zip, setZip] = useState("");
     const [isUpdating, setIsUpdating] = useState(false);
     const [isSaved, setIsSaved] = useState(false);
+    const [shippingMethod, setShippingMethod] = useState<string | null>(null);
+    const [isShippingOpen, setIsShippingOpen] = useState(false);
 
     const handleUpdateShipping = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -52,6 +55,15 @@ export default function CheckoutPage() {
         }).format(amount);
     };
 
+    const shippingOptions = [
+        { id: "local", label: "Lokale bezorging Maassluis & Maasland", cost: 0, icon: "pedal_bike" },
+        { id: "dhl", label: "DHL (€ 6,95)", cost: 6.95, icon: "local_shipping" },
+        { id: "pickup", label: "Gratis ophalen in Maassluis", cost: 0, icon: "storefront" },
+    ];
+
+    const selectedShipping = shippingOptions.find(o => o.id === shippingMethod) ?? null;
+    const shippingCost = selectedShipping?.cost ?? 0;
+
     const isCartEmpty = !cart || !cart.items || cart.items.length === 0;
 
     return (
@@ -74,15 +86,15 @@ export default function CheckoutPage() {
 
             {/* Main Content */}
             <div className="max-w-7xl w-full mx-auto px-6 md:px-12 py-12 md:py-20 flex-1">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-stretch">
 
                     {/* Left Column: Form */}
                     <div className="lg:col-span-7 flex flex-col gap-8">
-                        <div className="bg-white p-6 md:p-10 border border-[#18181b] shadow-[4px_4px_0px_rgba(9,9,11,0.05)]">
+                        <div className="bg-white p-6 md:p-10 border border-[#18181b] shadow-[4px_4px_0px_rgba(9,9,11,0.05)] flex-1">
 
                             {/* Step Indicator */}
                             <div className="flex items-center gap-3 border-b border-[#18181b]/10 pb-6 mb-8">
-                                <div className={`size-8 flex items-center justify-center font-bold text-xs border border-[#18181b] transition-colors ${isSaved ? "bg-mint text-[#18181b]" : "bg-[#18181b] text-white"}`}>
+                                <div className="size-8 flex items-center justify-center font-bold text-xs border border-[#18181b] bg-[#ffe4e6] text-[#18181b] shadow-[3px_3px_0px_#18181b]">
                                     {isSaved ? (
                                         <span className="material-symbols-outlined !text-[16px]">check</span>
                                     ) : (
@@ -208,12 +220,13 @@ export default function CheckoutPage() {
                         </div>
                     </div>
 
-                    {/* Right Column: Order Summary & Payment */}
-                    <div className="lg:col-span-5 flex flex-col gap-8 lg:sticky lg:top-28">
-
-                        {/* Order Summary */}
-                        <div className="bg-white p-6 md:p-8 border border-[#18181b] shadow-[4px_4px_0px_rgba(9,9,11,0.05)]">
-                            <h3 className="text-sm font-bold uppercase tracking-widest text-[#18181b] mb-6">Bestelling</h3>
+                    {/* Right Column: Order Summary + Payment (single box) */}
+                    <div className="lg:col-span-5 flex flex-col gap-6">
+                        <div className="bg-white p-6 md:p-8 border border-[#18181b] shadow-[4px_4px_0px_rgba(9,9,11,0.05)] flex-1 flex flex-col">
+                            <div className="flex items-center gap-3 mb-6">
+                                <div className="size-8 flex items-center justify-center font-bold text-xs border border-[#18181b] bg-[#ffe4e6] text-[#18181b] shadow-[3px_3px_0px_#18181b]">2</div>
+                                <h3 className="text-sm font-bold uppercase tracking-widest text-[#18181b]">Jouw bestelling</h3>
+                            </div>
 
                             {isCartEmpty ? (
                                 <div className="py-10 text-center border border-dashed border-[#18181b]/20">
@@ -221,10 +234,11 @@ export default function CheckoutPage() {
                                     <p className="text-sm text-[#18181b]/50 font-bold">Je winkelwagen is leeg.</p>
                                 </div>
                             ) : (
-                                <div className="flex flex-col gap-6">
-                                    <ul className="flex flex-col gap-4 max-h-[40vh] overflow-y-auto">
+                                <div className="flex flex-col flex-1">
+                                    {/* Items */}
+                                    <ul className="flex flex-col divide-y divide-[#18181b]/10">
                                         {cart.items?.map((item: any) => (
-                                            <li key={item.id} className="flex gap-4 items-center">
+                                            <li key={item.id} className="flex gap-4 items-center py-4 first:pt-0">
                                                 <div className="relative w-16 h-20 border border-[#18181b] overflow-hidden bg-[#f4f4f5] shrink-0">
                                                     {item.variant?.product?.thumbnail && (
                                                         <Image src={item.variant.product.thumbnail} alt={item.title} fill className="object-cover" />
@@ -236,66 +250,92 @@ export default function CheckoutPage() {
                                                 <div className="flex-1 min-w-0">
                                                     <p className="text-sm font-bold text-[#18181b] leading-tight truncate">{item.title}</p>
                                                     <p className="text-[10px] text-[#18181b]/40 uppercase tracking-widest mt-1">{item.variant?.title}</p>
-                                                    <p className="text-sm font-bold text-[#18181b] mt-2">{formatPrice(item.unit_price * item.quantity)}</p>
                                                 </div>
+                                                <p className="text-sm font-bold text-[#18181b] shrink-0">{formatPrice(item.unit_price * item.quantity)}</p>
                                             </li>
                                         ))}
                                     </ul>
 
-                                    <div className="border-t border-[#18181b]/10 pt-4 flex flex-col gap-3">
+                                    {/* Costs breakdown */}
+                                    <div className="border-t border-[#18181b]/10 pt-5 mt-5 flex flex-col gap-3">
                                         <div className="flex justify-between items-center text-sm">
                                             <span className="text-[#18181b]/60">Subtotaal</span>
                                             <span className="font-bold text-[#18181b]">{formatPrice(cart.subtotal)}</span>
                                         </div>
-                                        <div className="flex justify-between items-center text-sm">
-                                            <span className="text-[#18181b]/60">Verzending</span>
-                                            <span className="font-bold text-primary">Gratis</span>
+
+                                        {/* Bezorgmethode — full-width button */}
+                                        <div className="relative">
+                                            <button
+                                                onClick={() => setIsShippingOpen(!isShippingOpen)}
+                                                className={`w-full flex items-center justify-between gap-2 text-sm font-bold bg-white px-4 py-3 border border-[#18181b] shadow-[4px_4px_0px_#18181b] hover:bg-[#ffe4e6] hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[6px_6px_0px_#18181b] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#18181b] transition-all ${
+                                                    !selectedShipping ? "text-[#18181b]/40" : "text-[#18181b]"
+                                                }`}
+                                            >
+                                                <span className="text-xs">
+                                                    {selectedShipping ? selectedShipping.label : "Kies verzending"}
+                                                </span>
+                                                <span className="material-symbols-outlined !text-[18px] shrink-0">expand_more</span>
+                                            </button>
+
+                                            {isShippingOpen && (
+                                                <div className="absolute top-full left-0 right-0 mt-3 bg-white border border-[#18181b] shadow-[4px_4px_0px_#18181b] z-50 py-1">
+                                                    {shippingOptions.map((option) => (
+                                                        <button
+                                                            key={option.id}
+                                                            onClick={() => { setShippingMethod(option.id); setIsShippingOpen(false); }}
+                                                            className={`w-full flex items-center gap-3 text-left px-4 py-3 text-sm font-bold text-[#18181b] transition-colors ${
+                                                                shippingMethod === option.id ? "bg-[#ffe4e6]" : "hover:bg-[#ffe4e6]"
+                                                            }`}
+                                                        >
+                                                            <span className="material-symbols-outlined !text-[18px] text-[#18181b]/60">{option.icon}</span>
+                                                            <span className="flex-1 text-xs">{option.label}</span>
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
 
-                                    <div className="flex justify-between items-center border-t border-[#18181b] pt-6">
-                                        <span className="text-lg font-extrabold uppercase tracking-tighter text-[#18181b]">Totaal</span>
-                                        <span className="text-2xl font-extrabold tracking-tighter text-primary">{formatPrice(cart.total ?? cart.subtotal)}</span>
+                                    <div className="mt-5">
+                                        <FreeShippingHint total={cart.subtotal ?? 0} />
                                     </div>
-                                </div>
-                            )}
-                        </div>
 
-                        {/* Payment */}
-                        <div className="bg-white p-6 md:p-8 border border-[#18181b] shadow-[4px_4px_0px_rgba(9,9,11,0.05)]">
-                            <div className="flex items-center gap-3 border-b border-[#18181b]/10 pb-6 mb-6">
-                                <div className={`size-8 flex items-center justify-center font-bold text-xs border border-[#18181b] transition-colors ${!isSaved ? "bg-white text-[#18181b]/30" : "bg-[#18181b] text-white"}`}>
-                                    2
-                                </div>
-                                <h3 className="text-sm font-bold uppercase tracking-widest text-[#18181b]">Betaling</h3>
-                            </div>
+                                    {/* Total */}
+                                    <div className="flex justify-between items-center border-t border-[#18181b] pt-5 mt-5">
+                                        <span className="text-lg font-extrabold uppercase tracking-tighter text-[#18181b]">Totaal</span>
+                                        <span className="text-2xl font-extrabold tracking-tighter text-primary">{formatPrice((cart.total ?? cart.subtotal ?? 0) + shippingCost)}</span>
+                                    </div>
 
-                            {!isSaved ? (
-                                <div className="py-8 text-center border border-dashed border-[#18181b]/20">
-                                    <span className="material-symbols-outlined !text-[28px] text-[#18181b]/15 mb-3 block">lock</span>
-                                    <p className="text-sm text-[#18181b]/50">
-                                        Bevestig eerst je bezorggegevens om door te gaan naar de betaling.
-                                    </p>
-                                </div>
-                            ) : (
-                                <div className="flex flex-col gap-4">
-                                    <p className="text-sm text-[#18181b]/60">
-                                        Je wordt doorgestuurd naar Mollie om veilig af te rekenen. We accepteren iDeal, Klarna en alle gangbare creditcards.
-                                    </p>
-                                    <MolliePaymentButton cart={cart} notReady={isCartEmpty} />
+                                    {/* Payment — inline, pushed to bottom */}
+                                    <div className="mt-auto pt-6">
+                                        {!isSaved || !selectedShipping ? (
+                                            <div className="py-8 text-center border border-dashed border-[#18181b]/20">
+                                                <span className="material-symbols-outlined !text-[24px] text-[#18181b]/15 mb-2 block">lock</span>
+                                                <p className="text-xs text-[#18181b]/40">
+                                                    {!isSaved && !selectedShipping
+                                                        ? "Bevestig je bezorggegevens en kies een verzendmethode."
+                                                        : !isSaved
+                                                        ? "Bevestig eerst je bezorggegevens."
+                                                        : "Kies eerst een verzendmethode."}
+                                                </p>
+                                            </div>
+                                        ) : (
+                                            <MolliePaymentButton cart={cart} notReady={isCartEmpty} />
+                                        )}
+                                    </div>
                                 </div>
                             )}
                         </div>
 
                         {/* Trust Signals */}
-                        <div className="flex items-center justify-center gap-6 py-4">
+                        <div className="flex items-center justify-center gap-6 py-2">
                             <div className="flex items-center gap-2 text-[#18181b]/30">
                                 <span className="material-symbols-outlined !text-[16px]">lock</span>
                                 <span className="text-[10px] font-bold uppercase tracking-widest">Veilig betalen</span>
                             </div>
                             <div className="flex items-center gap-2 text-[#18181b]/30">
                                 <span className="material-symbols-outlined !text-[16px]">local_shipping</span>
-                                <span className="text-[10px] font-bold uppercase tracking-widest">Gratis verzending</span>
+                                <span className="text-[10px] font-bold uppercase tracking-widest">Snelle bezorging</span>
                             </div>
                         </div>
                     </div>

@@ -7,6 +7,7 @@ import { useCart } from "@/lib/context/cart-context";
 import Image from "next/image";
 import Link from "next/link";
 import { FeaturedGrid } from "../shop/featured-grid";
+import { FreeShippingHint } from "../ui/free-shipping-hint";
 
 export function SlideOutCart() {
     const { cart, isCartOpen, setIsCartOpen, removeItem, updateItem } = useCart();
@@ -63,7 +64,7 @@ export function SlideOutCart() {
 
             <div
                 ref={cartRef}
-                className="fixed top-0 right-0 h-[100dvh] w-full max-w-[400px] bg-background-light  border-l border-zinc-950/10 z-[201] flex flex-col translate-x-full shadow-2xl"
+                className="fixed top-0 right-0 h-[100dvh] w-full max-w-[400px] bg-background-light  border-l border-zinc-950 z-[201] flex flex-col translate-x-full shadow-2xl"
             >
                 <div className="flex items-center justify-between p-6 border-b border-zinc-950 ">
                     <div className="flex items-center gap-2 text-zinc-950 ">
@@ -172,6 +173,7 @@ export function SlideOutCart() {
 
                 {cart && cart.items && cart.items.length > 0 && (
                     <div className="p-6 space-y-6 bg-white  border-t border-zinc-950  mt-auto flex-shrink-0">
+                        <FreeShippingHint total={cart.subtotal ?? 0} />
                         <div className="space-y-2">
                             <div className="flex justify-between text-sm uppercase tracking-widest font-medium text-zinc-950 ">
                                 <span>Subtotaal</span>

@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useWishlist } from "@/lib/context/wishlist-context";
 import { useCart } from "@/lib/context/cart-context";
 import { FeaturedGrid } from "@/components/shop/featured-grid";
+import { FreeShippingHint } from "@/components/ui/free-shipping-hint";
 
 export default function WishlistPage() {
     const { wishlist, removeFromWishlist, clearWishlist } = useWishlist();
@@ -15,8 +16,6 @@ export default function WishlistPage() {
     const [addingId, setAddingId] = useState<string | null>(null);
 
     const totalValue = wishlist.reduce((sum, p) => sum + p.price, 0);
-    const freeShippingThreshold = 150;
-    const amountToFreeShipping = Math.max(0, freeShippingThreshold - totalValue);
 
     const formatPrice = (price: number) =>
         new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR", minimumFractionDigits: 2 }).format(price);
@@ -86,25 +85,8 @@ export default function WishlistPage() {
                 ) : (
                     <div className="flex flex-col gap-12">
                         {/* Free Shipping Hint */}
-                        <div className="w-full flex items-center gap-3 px-1">
-                            <span className="material-symbols-outlined !text-[16px] text-[#18181b]/30">local_shipping</span>
-                            {amountToFreeShipping > 0 ? (
-                                <p className="text-xs text-[#18181b]/50">
-                                    Nog {formatPrice(amountToFreeShipping)} tot gratis verzending
-                                </p>
-                            ) : (
-                                <p className="text-xs text-[#18181b]/50">
-                                    Gratis verzending van toepassing
-                                </p>
-                            )}
-                            {amountToFreeShipping > 0 && (
-                                <div className="flex-1 max-w-[120px] h-1 bg-[#18181b]/10 overflow-hidden">
-                                    <div
-                                        className="h-full bg-[#18181b]/20 transition-all duration-500"
-                                        style={{ width: `${Math.min(100, (totalValue / freeShippingThreshold) * 100)}%` }}
-                                    />
-                                </div>
-                            )}
+                        <div className="px-1">
+                            <FreeShippingHint total={totalValue} />
                         </div>
 
                         {/* Product Grid */}

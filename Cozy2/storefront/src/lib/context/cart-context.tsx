@@ -82,12 +82,16 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                 localStorage.setItem("cart_id", currentCartId);
             }
 
-            const { cart: updatedCart } = await sdk.store.cart.createLineItem(currentCartId, {
+            await sdk.store.cart.createLineItem(currentCartId, {
                 variant_id: variantId,
                 quantity,
             });
 
-            setCart(updatedCart);
+            // Retrieve cart with full product fields (including thumbnails)
+            const { cart: fullCart } = await sdk.store.cart.retrieve(currentCartId, {
+                fields: "*items,*items.variant,*items.variant.product",
+            });
+            setCart(fullCart);
             setIsCartOpen(true); // Auto-open cart on add
         } catch (e) {
             console.error("Error adding item to cart:", e);
