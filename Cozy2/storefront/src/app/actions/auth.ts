@@ -199,19 +199,22 @@ export async function getCustomer() {
 
     try {
         const authSdk = getIsolatedSdk();
-        console.log("\n\n[Auth Action] Getting Customer with Token:", token.substring(0, 10) + "...\n");
 
         const response = await authSdk.client.fetch(`/store/customers/me`, {
             method: "GET",
             headers: { Authorization: `Bearer ${token}` }
         }) as { customer: any };
 
-        console.log("[Auth Action] Customer ME Response:", JSON.stringify(response, null, 2));
-
         const { customer } = response;
         return customer;
-    } catch (err) {
-        console.error("[Auth Action Error (Get Customer)]", err);
+    } catch (err: any) {
+        // Token is expired or invalid — clear the stale cookies so the user
+        // gets a clean redirect to login instead of an error on every visit
+        if (err?.message?.includes("Unauthorized") || err?.status === 401) {
+            const cookieStore = await cookies();
+            cookieStore.delete("medusa_jwt");
+            cookieStore.delete("has_session");
+        }
         return null;
     }
 }

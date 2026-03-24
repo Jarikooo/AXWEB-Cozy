@@ -4,7 +4,12 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 
 export default async function AccountPage() {
-    const customer = await getCustomer();
+    let customer = null;
+    try {
+        customer = await getCustomer();
+    } catch {
+        // Swallow any SDK errors — treat as unauthenticated
+    }
 
     if (!customer) {
         redirect("/account/login");
